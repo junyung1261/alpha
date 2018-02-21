@@ -1,0 +1,227 @@
+<ion-header no-border>
+    <ion-navbar color="x-skyblue" hideBackButton align-title="center">
+      <!-- LEFT BUTTON -->
+      <ion-buttons left>
+        <button ion-button><ion-icon name="flaticon-cross-1" color="x-skyblue"></ion-icon></button>
+      </ion-buttons>
+      <!-- TITLE -->
+      <ion-title text-center>{{menuName}}</ion-title>
+      <!-- RIGHT BUTTON -->
+      <ion-buttons end>
+        <button ion-button navPop><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
+      </ion-buttons>
+    </ion-navbar> 
+  </ion-header>
+  
+  
+  <ion-content no-padding #myContent>
+      <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menuName =='LIFE'" [(ngModel)]="specificName">
+        <ion-segment-button class="x-category-btn" *ngFor="let life of lifeMenu" value={{life.name}} (ionSelect)="selectedSegment(life.name)">{{life.name}}</ion-segment-button>
+      </ion-segment>
+  
+    <div>
+      <ion-grid no-padding>
+        <ion-row class="x-search">
+          <ion-col col-12>
+            <div class="x-search-box">
+              <div class="x-search-left">
+                <select class="x-search-select">
+                  <ng-container  *ngFor="let categories of categoryItem">
+                    <option *ngIf="categories.type == specificName">{{categories.name}}</option>
+                  </ng-container>
+                </select>
+              </div>
+              <div class="x-search-center"><ion-input class="x-search-input"></ion-input></div>
+              <div class="x-search-right">
+                <button ion-button class="x-search-btn"><ion-icon name="flaticon-search-1" color="x-white"></ion-icon></button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+  
+      <ion-grid class="x-list" no-padding *ngIf="menuName == 'BEAUTY' || menuName == 'STUDY' || (menuName == 'LIFE' && specificName == 'FREE')">
+        <ion-row class="x-list-title">
+          <ion-col col-12>인기글</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-rank x-rank1"><ion-icon name="flaticon-gold-medal"></ion-icon></span>
+            <span class="x-list-label">免费主题&nbsp;&nbsp;</span>住在韩国是非常困难的. 给我一些建议. 住在韩国是非常困难的. 给我一些建议.</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-rank x-rank2"><ion-icon name="flaticon-silver-medal"></ion-icon></span>
+            <span class="x-list-label">免费主题&nbsp;&nbsp;</span>我卖了一次我使用过的香奈儿化妆品.</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-rank x-rank3"><ion-icon name="flaticon-bronze-medal"></ion-icon></span>
+            <span class="x-list-label">免费主题&nbsp;&nbsp;</span>我卖了一次我使用过的香奈儿化妆品.</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-label">免费主题&nbsp;&nbsp;</span>我卖了一次我使用过的香奈儿化妆品.</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-label">免费主题&nbsp;&nbsp;</span>我卖了一次我使用过的香奈儿化妆品.</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row x-list-ctg">
+          <ion-col col-3 text-center>종합인기</ion-col><!--종합인기(추천+조회+댓글)-->
+          <ion-col col-3 text-center>추천많은</ion-col><!--많은추천-->
+          <ion-col col-3 text-center>조회많은</ion-col><!--많은조회-->
+          <ion-col col-3 text-center>댓글많은</ion-col><!--많은댓글-->
+        </ion-row>
+      </ion-grid>
+    
+      <ion-grid class="x-list" no-padding *ngIf="menuName == 'BEAUTY' || menuName == 'STUDY' || (menuName == 'LIFE' && specificName == 'FREE')">
+        <ion-row class="x-list-title">
+          <ion-col col-12>일반게시글</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">免费主题&nbsp;&nbsp;</span>韩国女孩非常漂亮. </ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">免费主题&nbsp;&nbsp;</span>韩国人使用什么化妆品？</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row x-list-noctg">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">免费主题&nbsp;&nbsp;</span>我在美发沙龙做了烫发,但我不喜欢它.</ion-col>
+        </ion-row>
+      </ion-grid>
+    
+      <ion-grid class="x-photolist" no-padding *ngIf="menuName == 'LIFE' && specificName == 'USED'">
+        <ion-row class="x-photolist-title">
+          <ion-col col-12>중고거래 목록</ion-col>
+        </ion-row>
+        <ion-row class="x-photolist-row">
+          <ion-col col-4>
+            <div class="x-photolist-photo"><img src="assets/imgs/user_001.jpg"></div>
+            <!--ngif판매중-->
+            <div class="x-photolist-photo-label-ing">판매중</div>
+          </ion-col>
+          <ion-col col-8>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col col-12 class="x-photolist-col">
+                  <span class="x-photolist-label">가전&nbsp;&nbsp;</span>1년 사용한 거의 새거인 전기밥솥 팔아여 쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임
+                </ion-col>
+              </ion-row>
+              <ion-row class="x-photolist-row-info">
+                  <ion-col col-6><ion-icon name="flaticon-clock-1" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</ion-col>
+                  <ion-col col-6 text-right>
+                    <ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;1550&nbsp;&nbsp;
+                    <ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;1550
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col> 
+        </ion-row>
+        <ion-row class="x-photolist-row">
+          <ion-col col-4>
+            <div class="x-photolist-photo"><img src="assets/imgs/user_001.jpg"></div>
+            <!--ngif판매완료-->
+            <div class="x-photolist-photo-label-end">판매완료</div>
+          </ion-col>
+          <ion-col col-8>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col col-12 class="x-photolist-col">
+                  <span class="x-photolist-label">가전&nbsp;&nbsp;</span>1년 사용한 거의 새거인 전기밥솥 팔아여 쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임쿠쿠꺼임
+                </ion-col>
+              </ion-row>
+              <ion-row class="x-photolist-row-info">
+                  <ion-col col-6><ion-icon name="flaticon-clock-1" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</ion-col>
+                  <ion-col col-6 text-right>
+                    <ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;1550&nbsp;&nbsp;
+                    <ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;1550
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+    
+      <ion-grid class="x-list" no-padding *ngIf="menuName == 'LIFE' && specificName == 'JOB'">
+        <ion-row class="x-list-title">
+          <ion-col col-12>구인구직 목록</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">구인&nbsp;&nbsp;</span>중식당 요리사 찾아요. 40대이상. 급여협의. 서울 강남 호텔인근</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">구인&nbsp;&nbsp;</span>통번역 아르바이트를 찾습니다. 한국어 가능자. 여성</ion-col>
+        </ion-row>
+        <ion-row class="x-list-row x-list-noctg">
+          <ion-col col-12 class="x-list-col"><span class="x-list-label">구인&nbsp;&nbsp;</span>한국학생에게 중국어 과외해주실 분을 찾습니다. 월급협의. 서울 서초</ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      <ion-grid class="x-photolist" no-padding *ngIf="menuName == 'LIFE' && specificName == 'ESTATE'">
+        <ion-row class="x-photolist-title">
+          <ion-col col-12>주거매매 목록</ion-col>
+        </ion-row>
+        <ion-row class="x-photolist-row">
+          <ion-col col-4>
+            <div class="x-photolist-photo"><img src="assets/imgs/room_001.jpg"></div>
+            <!--ngif월세-->
+            <div class="x-photolist-photo-label-ing">월세</div>
+          </ion-col>
+          <ion-col col-8>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col col-12 class="x-photolist-col">
+                  <span class="x-photolist-label">서울&nbsp;&nbsp;</span>강남구 논현동, 학동역 1분거리 월세방 양도합니다. 1000만/50만
+                </ion-col>
+              </ion-row>
+              <ion-row class="x-photolist-row-info">
+                  <ion-col col-6><ion-icon name="flaticon-clock-1" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</ion-col>
+                  <ion-col col-6 text-right>
+                    <ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;1550&nbsp;&nbsp;
+                    <ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;1550
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col> 
+        </ion-row>
+        <ion-row class="x-photolist-row">
+          <ion-col col-4>
+            <div class="x-photolist-photo"><img src="assets/imgs/room_002.jpg"></div>
+            <!--ngif전세-->
+            <div class="x-photolist-photo-label-end">전세</div>
+          </ion-col>
+          <ion-col col-8>
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col col-12 class="x-photolist-col">
+                  <span class="x-photolist-label">경기&nbsp;&nbsp;</span>의정부 역세권 오피스텔 전세매물 있어요. 2억5천, 즉시입주가능!
+                </ion-col>
+              </ion-row>
+              <ion-row class="x-photolist-row-info">
+                  <ion-col col-6><ion-icon name="flaticon-clock-1" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</ion-col>
+                  <ion-col col-6 text-right>
+                    <ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;1550&nbsp;&nbsp;
+                    <ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;1550
+                  </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-col> 
+        </ion-row>
+      </ion-grid>
+  
+      <ion-fab class="x-float-button" *ngIf="specificName == 'FREE'">
+          <button ion-fab color="x-skyblue" (click)="boardWrite(FREE);"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
+        </ion-fab>
+        <ion-fab class="x-float-button" *ngIf="specificName == 'USED'">
+          <button ion-fab color="x-skyblue" (click)="boardWrite(USED);"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
+        </ion-fab>
+        <ion-fab class="x-float-button" *ngIf="specificName == 'JOB'">
+          <button ion-fab color="x-skyblue" (click)="boardWrite(JOB);"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
+        </ion-fab>
+        <ion-fab class="x-float-button" *ngIf="specificName == 'ESTATE'">
+          <button ion-fab color="x-skyblue" (click)="boardWrite(ESTATE);"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
+        </ion-fab>
+        
+    </div>
+  </ion-content>
+  

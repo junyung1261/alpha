@@ -1,0 +1,31 @@
+<ion-header no-border>
+  <ion-navbar color="x-skyblue" hideBackButton align-title="center">
+    <!-- LEFT BUTTON -->
+    <ion-buttons left>
+      <button ion-button><ion-icon name="flaticon-cross" color="x-skyblue"></ion-icon></button>
+    </ion-buttons>
+    <!-- TITLE -->
+    <ion-title text-center>게시글 작성 {{categoryType}}</ion-title>
+    <!-- RIGHT BUTTON -->
+    <ion-buttons end>
+      <button ion-button navPop><ion-icon name="flaticon-cross" color="x-white"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar> 
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-grid no-padding>
+    <ion-row class="bw-top">
+      <ion-col col-12><ion-input class="bw-title"></ion-input></ion-col>
+    </ion-row>
+    <ion-row class="bw-photo"></ion-row>
+    <ion-row class="bw-content">
+      <ion-col col-12><ion-textarea class="bw-textarea"></ion-textarea></ion-col>
+    </ion-row>
+    <ion-row class="bw-tags"></ion-row>
+    <ion-row class="bw-add">
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

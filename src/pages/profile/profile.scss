@@ -1,0 +1,59 @@
+page-profile {
+
+    .um-content { background-color:map-get($colors,x-white) !important; }
+    .um-grid-profile {
+      background-color:map-get($colors,x-white) !important;
+      margin-bottom:2vh !important;
+    }
+    .um-row-profile {
+      background-color:map-get($colors,x-white);
+      margin-top:4vh;
+      margin-bottom:2vh;
+    }
+    .um-photo {
+      
+      img { 
+        border-radius: 100% !important;
+        margin:2vw;
+        width: 30vw;
+        height: 30vw;
+        margin: auto;
+        object-fit: cover; 
+      }
+    
+    }
+    .um-nickname {
+      color:map-get($colors,x-gray-dark);
+      font-weight: bold;
+      font-size:4vw;
+    }
+    .um-email {
+      color:map-get($colors,x-gray-middle);
+      font-size:3.5vw;
+      margin-bottom:2vh !important;
+    }
+    .um-grid-btn {
+      background-color:map-get($colors,x-white);
+      padding-left:2vw !important;
+      width:100vw !important;
+      margin-top:2vh !important;
+    }
+    .um-col-btn {
+      height:24vw;
+      padding-top:2vw !important;
+      padding-bottom:2vw !important;
+    }
+    .um-btn{ 
+      border-radius:2vw !important;
+      box-shadow:none !important;
+      width:22.5vw !important;
+      height:22.5vw !important;
+      margin:0 !important;
+      font-size:8vw !important;
+      border:1px solid map-get($colors,x-gray-light) !important;
+    }
+    .um-btn-label {
+      font-size:3vw !important;
+      color:map-get($colors,x-mint);
+    }
+  }

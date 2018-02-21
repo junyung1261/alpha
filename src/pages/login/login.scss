@@ -1,0 +1,79 @@
+page-login {
+.text-input::-moz-placeholder {
+    color: map-get($colors,x-white);
+}
+
+.text-input:-ms-input-placeholder {
+    color: map-get($colors,x-white);
+}
+
+.text-input::-webkit-input-placeholder {
+    text-indent: 0;
+    color: map-get($colors,x-white);
+}
+.login-top {
+    width:100vw;
+    height:40vh;
+    background-color:map-get($colors,x-mint); 
+}
+.login-title {
+    align-items:center;
+    height:fit-content;
+    padding:30vw 30vw 6vw 30vw;
+    width:100vw;
+    color: map-get($colors,x-white);
+    font-size:12vw;
+}
+.login-subtitle {
+    align-items:center;
+    height:fit-content;
+    width:100vw;
+    color:map-get($colors,x-white);
+    font-size:4vw;
+    margin-bottom:10vw;
+}
+.login-middle {
+    width:100vw;
+    height:50vh;
+    background-color:map-get($colors,x-mint);
+}
+.login-email, .login-password, .login-nickname {
+    margin:0 10vw 5vw 10vw;
+    background-color:rgba(255,255,255,0.4);
+    width:80vw;
+    border-radius:3vw;
+    height:10vw;
+    padding:3vw 2vw 0 2vw;
+    color:map-get($colors,x-white);
+    font-size:4vw;
+}
+.login-btn {
+    border:1px solid map-get($colors,x-white);
+    border-radius:3vw;
+    width:80vw !important;
+    height:10vw !important;
+    background-color:map-get($colors,x-mint) !important;
+    box-shadow:none !important;
+}
+.login-key {
+    align-items:center;
+    height:fit-content;
+    width:100vw;
+    color:map-get($colors,x-white);
+    font-size:30vw;
+    padding:5vw ;
+}
+.login-bottom {
+    width:100vw;
+    height:fit-content;
+    background-color:map-get($colors,x-mint);
+}
+.login-register {
+    border-top:1px solid map-get($colors,x-white);
+    align-items:center;
+    height:10vh;
+    background-color:rgba(255,255,255,0.4);
+    color:map-get($colors,x-white);
+    font-size:4vw;
+    }
+}
