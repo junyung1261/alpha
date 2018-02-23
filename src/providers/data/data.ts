@@ -79,4 +79,12 @@ export class DataProvider {
   getBullets(batch, location, lastKey?) {
     return this.angularfireDatabase.list(location, ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
   }
+
+  getChatList(){
+    return this.angularfireDatabase.list('/chat', ref => ref.orderByChild('lastUpdate'));
+  }
+
+  getChatMessages(UserId){
+    return this.angularfireDatabase.list('/chat/' + UserId + '/messages');
+  }
 }

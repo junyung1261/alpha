@@ -22,6 +22,10 @@ export class ContestApplyPage {
   private voteStatus;
   private applyTime;
 
+  private place : string = '선택';
+  private tag;
+  private speech;
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -64,12 +68,17 @@ export class ContestApplyPage {
       });
     });
 
-    if(this.checkApplierCount * this.checkOverlap == 1){
+    if(this.checkApplierCount * this.checkOverlap == 1 && this.place != '선택'){
       this.afDB.database.ref('/contests/contestPK/'+this.user.payload.val().gender+'/'+this.user.key).set({
         votes : this.voteStatus,
         round : this.roundStatus,
         applytime: this.applyTime,
       }).then((success)=> {
+        this.afDB.database.ref('accounts/' + this.user.key).update({
+          contestSpeech: this.speech,
+          contestTag: this.tag,
+          contestPlace : this.place,
+        });
         if(this.imageUploadContest.images.length > 0) {
           this.imageUploadContest.key = this.user.key;
           this.imageUploadContest.uploadImages();

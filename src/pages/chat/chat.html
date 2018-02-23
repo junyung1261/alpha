@@ -8,9 +8,11 @@
   <div class="x-chatmenu-explain"><ion-icon name="flaticon-exclamation"></ion-icon>&nbsp;아래의 메뉴를 선택하여 대화방에 입장합니다.</div>
   <ion-grid no-padding class="x-chatmenu">
     <ion-row class="x-chatmenu-icon" text-center><ion-col col-12><ion-icon name="flaticon-user-4"></ion-icon></ion-col></ion-row>
+
     <ion-row class="x-chatmenu-title" text-center><ion-col col-12>선택대화</ion-col></ion-row>
     <ion-row class="x-chatmenu-subtitle" text-center><ion-col col-12>현재 접속중인 사용자를 선택하여 대화하기</ion-col></ion-row>
-    <ion-row text-center><ion-col col-12><button ion-button class="x-chatmenu-button">입장하기</button></ion-col></ion-row>
+    <ion-row text-center><ion-col col-12><button ion-button class="x-chatmenu-button" (click)="openChatList()">입장하기</button></ion-col></ion-row>
+
   </ion-grid>
   <ion-grid no-padding class="x-chatmenu">
     <ion-row class="x-chatmenu-icon" text-center><ion-col col-12><ion-icon name="flaticon-technology-1"></ion-icon></ion-col></ion-row>

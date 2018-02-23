@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, ViewController, ModalController } from 'ionic-angular';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import * as firebase from 'firebase';
-
+import { Vibration } from '@ionic-native/vibration';
 
 
 @IonicPage()
@@ -13,7 +13,8 @@ import * as firebase from 'firebase';
 export class ChatLocationPage {
 
     chat_location_ref: AngularFireList<any>;
-
+    explain : string;
+    searchState : any;
     gender: any;
     latitude: any;
     longitude: any;
@@ -30,7 +31,7 @@ export class ChatLocationPage {
 
 
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public modalCtrl: ModalController,
-        public afDB: AngularFireDatabase) {
+        public afDB: AngularFireDatabase, public vibration:Vibration) {
 
         this.chat_location_ref = this.afDB.list('/chat-location');
 
@@ -52,12 +53,21 @@ export class ChatLocationPage {
     }
 
     ionViewDidLoad() {
+       this.explain='검색시작 버튼을 눌러주세요.';
+       this.searchState=1;
+    }
+    startSearching() {
+        this.explain='검색중입니다. 잠시만 기다려주세요!';
         setTimeout(() => {
-            console.log("1. 내 성별  : ", this.gender)
-            console.log("2. 내 lat  : ", this.latitude)
-            console.log("3. 내 lng : ", this.longitude)
+            console.log("1. 내 성별  : ", this.gender);
+            console.log("2. 내 lat  : ", this.latitude);
+            console.log("3. 내 lng : ", this.longitude);
             this.watchLocation(true);
         }, 1000);
+        this.searchState=0;
+    }
+    stopSearching() {
+        this.viewCtrl.dismiss();
     }
 
     ionViewWillLeave() {
@@ -69,17 +79,12 @@ export class ChatLocationPage {
     watchLocation(flag: boolean) {
         console.log("4. 검색 시작")
         if (flag == true) {
-            
             this.getNearbyUser();
-            console.log("5. 검색 끝")
-            console.log("6. 상대 성별 :", this.nearbyUserGender)
-
-
+            console.log("5. 검색 끝");
+            console.log("6. 상대 성별 :", this.nearbyUserGender);
             //사람이 없으면 큐에 넣는다
             if (this.nearbyUserGender == undefined) {
-
                 this.updateUser(firebase.auth().currentUser.uid);
-
                 // if 사용자가 없으면, 첫번째 유저 검색부터 1초뒤에 다시 시작
                 setTimeout(() => {
                     this.watchLocation(this.flag);
@@ -87,14 +92,15 @@ export class ChatLocationPage {
             }
             //성별이 다르면 firstUser를 큐에서 뽑아내서 둘이 짝짝꿍 맞춰준다.
             else {
+                this.vibration.vibrate(1000);
                 this.removeUser(this.nearbyUserKey);
+                this.removeUser(firebase.auth().currentUser.uid);
                 //그만 본다
                 this.flag = false;
-
                 //채팅페이지로 매칭된 유저들의 키값을 넘겨준다. (TODO)
             }
-
-
+        } else if (flag == false) {
+            this.viewCtrl.dismiss();
         }
     }
 
@@ -135,14 +141,6 @@ export class ChatLocationPage {
                 }
             })
         });
-
-
-        // this.afDB.list('/chat-location', ref => ref.limitToFirst(1)).snapshotChanges().take(1).subscribe(users => {
-        //     users.forEach(user => {
-        //         this.nearbyUserGender = user.payload.val().gender ? user.payload.val().gender : 'Anonymous';
-        //         this.nearbyUserKey = user.key;
-        //     })
-        // });
     }
 
     updateUser(key: string) {

@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ChatLocationPage } from './chat-location';
+import { ChatRandomPage } from './chat-random';
 import { Vibration } from '@ionic-native/vibration';
 @NgModule({
   declarations: [
-    ChatLocationPage,
+    ChatRandomPage,
   ],
   imports: [
-    IonicPageModule.forChild(ChatLocationPage),
+    IonicPageModule.forChild(ChatRandomPage),
   ],
-  providers:[
+  providers: [
     Vibration
   ]
 })
-export class ChatLocationPageModule {}
+export class ChatRandomPageModule {}
