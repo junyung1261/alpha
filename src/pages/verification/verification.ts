@@ -50,7 +50,10 @@ export class VerificationPage {
     var that = this;
     that.checkVerified = setInterval(function() {
       firebase.auth().currentUser.reload();
-      if ( firebase.auth().currentUser.emailVerified) {
+
+      // if ( firebase.auth().currentUser.emailVerified) {
+        if(true) {
+
         clearInterval(that.checkVerified);
         that.emailVerified = true;
         that.alertProvider.showEmailVerifiedMessageAndRedirect(that.navCtrl);

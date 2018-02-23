@@ -17,7 +17,7 @@
     <ion-row>
       <ion-col col-12>
         <ion-slides spaceBetween="-120">
-          <ion-slide>
+          <ion-slide *ngFor="let participent of participents; let i = index;">
             <ion-grid no-padding class="x-contest-minicard" (click)="openProfile()">
               <ion-row>
                 <ion-col col-12>
@@ -26,150 +26,10 @@
                       <img src="assets/imgs/user_001.jpg">
                     </div>
                     <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 1</div>
+                      <div class="x-contest-mini-num" >후보 1</div>
                       <div class="x-contest-mini-nickname">NICKNAME</div>
                       <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_002.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 2</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_003.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 3</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_004.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 4</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_005.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 5</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_006.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 6</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_007.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 7</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
-                      <div class="x-contest-mini-btn">상세보기</div>
-                    </div>
-                  </div>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-slide>
-          <ion-slide>
-            <ion-grid no-padding class="x-contest-minicard">
-              <ion-row>
-                <ion-col col-12>
-                  <div class="x-contest-minicard-detail">
-                    <div class="x-contest-mini-photo">
-                      <img src="assets/imgs/user_008.jpg">
-                    </div>
-                    <div class="x-contest-mini-profile">
-                      <div class="x-contest-mini-num">후보 8</div>
-                      <div class="x-contest-mini-nickname">NICKNAME</div>
-                      <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">2018.02.19 09:22</div>
+                      <div class="x-contest-mini-time">{{participent.payload.val().applytime}}</div>
                       <div class="x-contest-mini-btn">상세보기</div>
                     </div>
                   </div>
@@ -197,8 +57,10 @@
       <ion-row>
         <ion-col col-12>
           <div class="x-contest-ready-icon"><ion-icon name="flaticon-clock"></ion-icon></div>
-          <div class="x-contest-ready-txt">후보를 모집중입니다.(3/8)</div>
-          <div class="x-contest-apply" (click)="openApply()">후보 지원</div>
+          <div class="x-contest-ready-txt" *ngIf="numOfFemale != 8">후보를 모집중입니다.({{numOfFemale}}/8)</div>
+          <div class="x-contest-apply" *ngIf="numOfFemale != 8" (click)="openApply()">후보 지원</div>
+          <div class="x-contest-ready-txt" *ngIf="numOfFemale == 8">후보 모집이 마감됐습니다.({{numOfFemale}}/8)</div>
+          <div class="x-contest-apply" *ngIf="numOfFemale == 8">지원 마감</div>
         </ion-col>
       </ion-row>
     </ion-grid>

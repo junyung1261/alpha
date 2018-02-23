@@ -4,6 +4,7 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 import * as firebase from 'firebase';
 
 import { Shake } from '@ionic-native/shake';
+import { Vibration } from '@ionic-native/vibration';
 
 
 @IonicPage()
@@ -22,7 +23,7 @@ export class ChatShakePage {
 
 
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public modalCtrl: ModalController,
-        public afDB: AngularFireDatabase, public shake: Shake) {
+        public afDB: AngularFireDatabase, public shake: Shake, public vibration: Vibration) {
 
         this.chat_shake_ref = this.afDB.list('/chat-shake');
 
@@ -32,8 +33,12 @@ export class ChatShakePage {
     }
 
     ionViewDidLoad() {
+        
+    }
+
+    startShaking(){
         setTimeout(() => {
-            this.watchShaking(true);
+            this.watchShaking(this.flag);
         }, 1000);
     }
 
@@ -51,6 +56,7 @@ export class ChatShakePage {
                 //성별이 같으면 큐에 넣는다
                 if (this.firstUserGender == this.gender || this.firstUserGender == undefined) {
 
+                    // 흔드는걸 멈추면 date 업데이트가 안되서 결국 후순위 큐로 밀리게 됩니다.
                     this.updateUser(firebase.auth().currentUser.uid);
 
                     // if 사용자가 없거나 성별이 같으면, 첫번째 유저 검색부터 1초뒤에 다시 시작
@@ -59,16 +65,20 @@ export class ChatShakePage {
                     }, 1000);
                 }
                 //성별이 다르면 firstUser를 큐에서 뽑아내서 둘이 짝짝꿍 맞춰준다.
-                else if (this.firstUserGender != this.gender) {
+                else if (this.firstUserGender != this.gender && this.firstUserGender != undefined) {
                     this.removeUser(this.firstUserKey);
                     //그만 본다
                     this.flag = false;
                     watch.unsubscribe();
 
-                    //채팅페이지로 매칭된 유저들의 키값을 넘겨준다. (TODO) + 흔드는걸 멈췄는지 어케알지?
+                    //(TODO)채팅페이지로 매칭된 유저들의 키값을 넘겨준다.
+                    this.vibration.vibrate(1000);
                 }
 
             });
+        } else if(flag == false){
+            this.viewCtrl.dismiss();
+            
         }
     }
 

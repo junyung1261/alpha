@@ -29,6 +29,10 @@ export class ChatPage {
     this.user = this.afAuth.auth.currentUser;
   }
 
+  openChatRandom() {
+    let chatRandomModal = this.modalCtrl.create('ChatRandomPage');
+    chatRandomModal.present();
+  }
   openChatShake() {
     let chatShakeModal = this.modalCtrl.create('ChatShakePage', {}, this.opts);
     chatShakeModal.present();

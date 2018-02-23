@@ -27,7 +27,7 @@
       </ion-col>
       <ion-col col-4 text-center>
         <span class="x-contest-apply-introduce-label">거주지역</span><br>
-        <select class="x-contest-apply-introduce">
+        <select class="x-contest-apply-introduce" [(ngModel)]="place">
           <option>선택</option>
           <option>서울</option>
           <option>경기</option>
@@ -43,13 +43,13 @@
     <ion-row class="x-contest-apply-center">
       <ion-col col-12 text-center>
         <span class="x-contest-apply-introduce-label">하고싶은말</span><br>
-        <textarea class="x-contest-apply-story"></textarea>
+        <textarea class="x-contest-apply-story" [(ngModel)]="speech"></textarea>
       </ion-col>
     </ion-row>
     <ion-row class="x-contest-apply-center">
       <ion-col col-12 text-center>
         <span class="x-contest-apply-tags">대표태그</span><br>
-        <textarea class="x-contest-apply-story"></textarea>
+        <textarea class="x-contest-apply-story" [(ngModel)]="tag"></textarea>
       </ion-col>
     </ion-row>
     <ion-row class="x-contest-apply-bottom">
