@@ -32,16 +32,18 @@ export class MyApp {
         }
         else {
           if (true) {
-            if (user["emailVerified"]) {
+            if (true) {
+              //user["emailVerified"]
               //Goto Home Page.
   
               this.nav.setRoot('TabsPage', { animate: false });
               this.user = firebase.auth().currentUser;
               
-            } else {
-              //Goto Verification Page.
-              this.nav.setRoot('VerificationPage', { animate: false });
-            }
+           } //else {
+            //   //Goto Verification Page.
+              
+            //   this.nav.setRoot('VerificationPage', { animate: false });
+            // }
           }
         }
   

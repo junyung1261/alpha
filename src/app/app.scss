@@ -71,7 +71,7 @@
 .x-chatmenu-button { height:8vw;box-shadow:none!important;border:none!important;background-color:map-get($colors,x-chat);color:map-get($colors,x-white);font-size:3vw;margin:3vw 0 3vw 0;}
 
 // 토너먼트 상세프로필 모달 //
-ion-modal {
+.mini-modal {
     .modal-wrapper {
         width:75vw !important;
         height:127vw !important;

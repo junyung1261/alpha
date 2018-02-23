@@ -11,7 +11,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-
+import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
 import { LoadingProvider } from '../providers/loading/loading';
 import { LoginProvider } from '../providers/auth/login';
@@ -19,10 +19,12 @@ import { LogoutProvider } from '../providers/auth/logout';
 import { AlertProvider } from '../providers/alert/alert';
 import { DataProvider } from '../providers/data/data';
 import { ImageProvider } from '../providers/data/image';
+import { RequestProvider } from '../providers/data/request';
 //import { RequestProvider } from '../providers/data/request';
 
 
 import { Camera } from '@ionic-native/camera';
+
 
 
 @NgModule({
@@ -52,7 +54,8 @@ import { Camera } from '@ionic-native/camera';
     AlertProvider,
     DataProvider,
     ImageProvider,
-
+    RequestProvider,
+    AngularFireDatabase,
 
     Camera
   ]

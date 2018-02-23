@@ -8,7 +8,12 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 })
 export class ContestPage {
   private contestProgress : any;
-  
+  opts: any = {
+    showBackdrop: true,
+    enableBackdropDismiss: true,
+    cssClass:'mini-modal'
+  }
+
   constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
   }
 
@@ -18,23 +23,17 @@ export class ContestPage {
   }
 
   openProfile() {
-    let opts: any = {
-      showBackdrop: true,
-      enableBackdropDismiss: true
-    }
-    let profileModal = this.modalCtrl.create('ContestProfilePage', null,opts);
+    
+    let profileModal = this.modalCtrl.create('ContestProfilePage', {},this.opts);
     profileModal.present();
   }
   openVote() {
-    let voteModal = this.modalCtrl.create('ContestVotePage', { userId: 8675309 });
+    let voteModal = this.modalCtrl.create('ContestVotePage',{},this.opts);
     voteModal.present();
   }
   openApply(){
-    let opts: any = {
-      showBackdrop: true,
-      enableBackdropDismiss: true
-    }
-    let applyModal = this.modalCtrl.create('ContestApplyPage', null,opts);
+    
+    let applyModal = this.modalCtrl.create('ContestApplyPage',{},this.opts);
     applyModal.present();
   }
 }
