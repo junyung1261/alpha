@@ -16,6 +16,10 @@ export class ChatPage {
     console.log('ionViewDidLoad ChatPage');
   }
 
+  openChatRandom() {
+    let chatRandomModal = this.modalCtrl.create('ChatRandomPage');
+    chatRandomModal.present();
+  }
   openChatShake() {
     let chatShakeModal = this.modalCtrl.create('ChatShakePage');
     chatShakeModal.present();

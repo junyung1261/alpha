@@ -1,14 +1,18 @@
-<ion-header no-border>
-    <ion-navbar color="x-mint">
-      <!-- LEFT BUTTON -->
-      <ion-buttons left></ion-buttons>
-      <!-- TITLE -->
-      <ion-title>흔들기 매칭</ion-title>  
-    </ion-navbar> 
-  </ion-header>
-  
-  
-  <ion-content no-padding>
-  </ion-content>
-
+<ion-content no-padding class="chat-loading">
+  <ion-grid no-padding class="x-chat-shake">
+    <ion-row>
+      <ion-col col-4 text-right class="x-chat-shake-user"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+      <ion-col col-4>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+      </ion-col>
+      <ion-col col-4 text-left class="x-chat-shake-target"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-center class="x-chat-shake-explain">진동이 울릴 때 까지 휴대폰을 흔들어주세요.<br>매칭 시 대화가 자동으로 시작됩니다.</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-center><button ion-button class="x-chat-shake-cancel" (click)="startShaking()">모션시작</button></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
   

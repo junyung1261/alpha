@@ -1,59 +1,32 @@
 page-profile {
-
-    .um-content { background-color:map-get($colors,x-white) !important; }
-    .um-grid-profile {
-      background-color:map-get($colors,x-white) !important;
-      margin-bottom:2vh !important;
-    }
-    .um-row-profile {
-      background-color:map-get($colors,x-white);
-      margin-top:4vh;
-      margin-bottom:2vh;
-    }
-    .um-photo {
-      
-      img { 
-        border-radius: 100% !important;
-        margin:2vw;
-        width: 30vw;
-        height: 30vw;
-        margin: auto;
-        object-fit: cover; 
-      }
-    
-    }
-    .um-nickname {
-      color:map-get($colors,x-gray-dark);
-      font-weight: bold;
-      font-size:4vw;
-    }
-    .um-email {
-      color:map-get($colors,x-gray-middle);
-      font-size:3.5vw;
-      margin-bottom:2vh !important;
-    }
-    .um-grid-btn {
-      background-color:map-get($colors,x-white);
-      padding-left:2vw !important;
-      width:100vw !important;
-      margin-top:2vh !important;
-    }
-    .um-col-btn {
-      height:24vw;
-      padding-top:2vw !important;
-      padding-bottom:2vw !important;
-    }
-    .um-btn{ 
-      border-radius:2vw !important;
-      box-shadow:none !important;
-      width:22.5vw !important;
-      height:22.5vw !important;
-      margin:0 !important;
-      font-size:8vw !important;
-      border:1px solid map-get($colors,x-gray-light) !important;
-    }
-    .um-btn-label {
-      font-size:3vw !important;
-      color:map-get($colors,x-mint);
-    }
+  ion-content {
+    background-color:map-get($colors,x-gray-bg) !important;
   }
+  .x-profile {width:94vw;height:fit-content;overflow:auto;margin:3vw;background-color:map-get($colors,x-white);border-left:3px solid map-get($colors,x-mint);}
+  .x-profile-title {float:left;padding:2vw 0;margin:0 2vw;width:89vw;height:fit-content;border-bottom:1px solid map-get($colors,x-gray-bg);}
+  .x-profile-title-txt {float:left;width:fit-content;font-size:4vw;color:map-get($colors,x-gray-dark);}
+  .x-profile-title-icon {float:right;width:fit-content;font-size:4vw;color:map-get($colors,x-gray-category);}
+  .x-profile-photo {float:left;margin:2vw;width:24vw;height:24vw;border:1px solid map-get($colors,x-gray-bg);}
+  .x-profile-photo img {width:24vw;height:24vw;}
+  .x-profile-info {float:left;width:63vw;height:24vw;margin:2vw 2vw 2vw 0;padding:2vw 0;}
+  .x-profile-info-nickname {float:left;width:63vw;height:fit-content;color:map-get($colors,x-gray-dark);font-size:4vw;}
+  .x-profile-info-email {float:left;width:63vw;height:fit-content;padding-bottom:2vw;color:map-get($colors,x-gray-category);font-size:3vw;border-bottom:1px solid map-get($colors,x-gray-bg);}
+  .x-profile-info-regtime {float:left;width:43vw;height:fit-content;padding-top:1vw;color:map-get($colors,x-gray-category);font-size:2.5vw;}
+  .x-profile-info-lastlogin {float:left;width:43vw;height:fit-content;color:map-get($colors,x-gray-category);font-size:2.5vw;}
+
+  .x-heart {width:94vw;height:fit-content;overflow:auto;margin:3vw;background-color:map-get($colors,x-white);border-left:3px solid map-get($colors,x-mint);}
+  .x-heart-title {float:left;padding:2vw 0;margin:0 2vw;width:89vw;height:fit-content;font-size:4vw;color:map-get($colors,x-gray-dark);border-bottom:1px solid map-get($colors,x-gray-bg);}
+  .x-heart-title-txt {float:left;width:fit-content;font-size:4vw;color:map-get($colors,x-gray-dark);}
+  .x-heart-title-icon {float:right;width:fit-content;font-size:4vw;color:map-get($colors,x-gray-category);}
+  .x-heart-info {float:left;width:45.5vw;height:fit-content;padding:2vw;}
+  .x-heart-normal,.x-heart-special {float:left;width:10vw;height:10vw;border-radius:1vw;color:map-get($colors,x-white);font-size:6vw;padding-top:1.5vw;text-align:center;}
+  .x-heart-normal {background-color:map-get($colors,x-orange);}
+  .x-heart-special {background-color:map-get($colors,x-yellow);}
+  .x-heart-info-label {float:left;width:30vw;height:fit-content;padding-left:2vw;font-size:3vw;color:map-get($colors,x-gray-category);}
+  .x-heart-info-cnt {float:left;width:30vw;height:fit-content;padding-left:2vw;font-size:5vw;color:map-get($colors,x-gray-category);}
+
+  .x-menu {width:97vw;height:fit-content;overflow:auto;margin:3vw 0 3vw 3vw;}
+  .x-menu-btn {float:left;width:29.3vw;height:29.3vw;padding:2vw;background-color:map-get($colors,x-white);margin-right:3vw;}
+  .x-menu-btn-icon {width:24.3vw;text-align:center;height:fit-content;margin-top:4vw;font-size:10vw;color:map-get($colors,x-gray-category);}
+  .x-menu-btn-txt {width:24.3vw;text-align:center;height:fit-content;margin-top:1vw;font-size:3vw;color:map-get($colors,x-gray-category);}    
+}
