@@ -1,0 +1,17 @@
+<ion-content no-padding class="chat-loading">
+  <ion-grid no-padding class="x-chat-random">
+    <ion-row>
+      <ion-col col-4 text-right class="x-chat-random-user"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+      <ion-col col-4>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+      </ion-col>
+      <ion-col col-4 text-left class="x-chat-random-target"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-center class="x-chat-random-explain">대화상대를 찾고 있습니다.<br>대기인원 ( {{numOfWaiting}}명 )</ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col col-12 text-center><button ion-button class="x-chat-random-cancel" (click)="searchCancel()">검색중지</button></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

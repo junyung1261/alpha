@@ -24,20 +24,14 @@ export class ProfilePage {
 
   ) {
     this.afAuth.authState.subscribe(user => {
-      if (!user) {
-        
-      }
+      if (!user) {      }
       // page for auth. users
       else {
         if (true) {
-        
-            this.user = firebase.auth().currentUser;
-            
-          } else {
-
-          }
-        }
-      });
+          this.user = firebase.auth().currentUser;
+        } else {  }
+      }
+    });
   };
 
   ionViewDidLoad() {
@@ -60,10 +54,8 @@ export class ProfilePage {
   locateCustomerServiceEmail(){ 
     //this email(wangting5@naver.com) is for test.
     //And test is done. So, Don't send any mail.
-    window.location.href = "mailto:wangting5@naver.com";
+    window.location.href = "mailto:support@xianghanguo.com";
   }
-
-  
 
   logout(){
     let alert = this.alertCtrl.create({
@@ -74,20 +66,16 @@ export class ProfilePage {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            //console.log('Cancel clicked');
           }
         },
         {
           text: 'Logout',
           handler: () => {
             this.logoutProvider.logout();
-           
           }
         }
       ]
     });
     alert.present();
-    
   }
-
 }
