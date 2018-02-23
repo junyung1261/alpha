@@ -10,6 +10,14 @@ import { Observable } from '@firebase/util';
   templateUrl: 'contest.html',
 })
 export class ContestPage {
+
+  private contestProgress : any;
+  opts: any = {
+    showBackdrop: true,
+    enableBackdropDismiss: true,
+    cssClass:'mini-modal'
+  }
+
   private contestProgress: any;
 
   private numOfMale: any;
@@ -100,23 +108,20 @@ export class ContestPage {
 
 
   openProfile() {
-    let opts: any = {
-      showBackdrop: true,
-      enableBackdropDismiss: true
-    }
-    let profileModal = this.modalCtrl.create('ContestProfilePage', null, opts);
+
+    
+    let profileModal = this.modalCtrl.create('ContestProfilePage', {},this.opts);
+
     profileModal.present();
   }
   openVote() {
-    let voteModal = this.modalCtrl.create('ContestVotePage', { userId: 8675309 });
+    let voteModal = this.modalCtrl.create('ContestVotePage',{},this.opts);
     voteModal.present();
   }
-  openApply() {
-    let opts: any = {
-      showBackdrop: true,
-      enableBackdropDismiss: true
-    }
-    let applyModal = this.modalCtrl.create('ContestApplyPage', null, opts);
+
+  openApply(){
+    
+    let applyModal = this.modalCtrl.create('ContestApplyPage',{},this.opts);
     applyModal.present();
   }
 }
