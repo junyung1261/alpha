@@ -58,7 +58,7 @@ export class ContestPage {
     this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
       this.user = user;
 
-      let interval = setInterval(function(){
+      let interval = setInterval(() =>{
 
         this.loadingProvider.show();
         this.dataProvider.getLastContestId().once('value', snapshot => {
