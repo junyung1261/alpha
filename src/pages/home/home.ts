@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-
+import { DataProvider } from '../../providers/data/data';
 
 @IonicPage()
 @Component({
@@ -11,22 +11,26 @@ import { AngularFireDatabase } from 'angularfire2/database';
 export class HomePage {
 
   menuType: string;
-  menu: any[] = [];
-
+  menus: any[] = [];
+  
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public afDB: AngularFireDatabase) {
-
-    this.afDB.list('/menu', ref => ref).valueChanges().take(1).subscribe(menuItems => {
-      this.menu = menuItems;
-    });
-
-  }
+    public navCtrl: NavController, public navParams: NavParams, public afDB: AngularFireDatabase, public dataProvider:DataProvider) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
+    this.dataProvider.getMenus().snapshotChanges().take(1).subscribe(menuItems=>{
+      this.menus = menuItems;
+      this.menus.forEach(menu=>{
+        this.dataProvider.getLatestPosts(menu.payload.val().name).snapshotChanges().take(1).subscribe(postItems => {
+          menu.posts = postItems.reverse();
+          menu.posts.forEach(post=>{
+            this.afDB.database.ref('/comments/'+post.payload.key).on('value', comments=>{
+              post.comment_count = comments.numChildren();
+            });
+          });
+        });
+      });
+    });
   }
 
   openCommunity(name) {
@@ -37,6 +41,10 @@ export class HomePage {
   openLifeCommunity(name) {
     this.menuType = 'LIFE';
     this.navCtrl.push('BoardlistPage', { menuName: this.menuType, specificName: name });
+  }
+
+  boardView(category,key){
+    this.navCtrl.push('BoardviewPage',{postCategory:category, postKey : key});
   }
 
 }

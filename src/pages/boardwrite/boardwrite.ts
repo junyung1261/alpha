@@ -54,12 +54,15 @@ export class BoardwritePage {
     text = text.replace(/\n/g, '<br>');
 
     this.boardRef.push({
+      
       wr_category: this.categoryType,
       wr_date: firebase.database['ServerValue'].TIMESTAMP,
       wr_description: text,
       wr_inner: this.selectedInnerCategory,
+      wr_menu:this.menuName,
       wr_tags: tags,
       wr_title: title,
+      wr_views:0,
       wr_writer: firebase.auth().currentUser.uid,
       
       

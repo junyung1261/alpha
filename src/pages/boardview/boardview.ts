@@ -20,7 +20,8 @@ export class BoardviewPage {
   wr_title : string;
   wr_writer : string;
   wr_description : string;
-  
+  wr_views : any;
+
   wr_user : any;
   wr_likes : any;
   wr_likes_count : any;   //총 좋아요 개수
@@ -48,7 +49,7 @@ export class BoardviewPage {
   }
 
   ionViewDidLoad() {
-
+    // 조회수 추가 //
     // 게시글 정보 불러오기 //
     this.afDB.database.ref('/board/'+this.postCategory+'/'+this.postKey).once('value', post=>{
       this.wr_category = post.child('wr_category').val();
@@ -57,11 +58,16 @@ export class BoardviewPage {
       this.wr_title = post.child('wr_title').val();
       this.wr_writer = post.child('wr_writer').val();
       this.wr_description = post.child('wr_description').val();
+      this.wr_views = post.child('wr_views').val()+1;
+
     }).then(()=>{
-    // 게시글 작성자 정보 불러오기 //
+      // 게시글 작성자 정보 불러오기 //
       this.dataProvider.getUser(this.wr_writer).snapshotChanges().take(1).subscribe(user => {
         this.wr_user = user;
       });
+      this.afDB.database.ref('/board/'+this.postCategory+'/'+this.postKey).update({
+        wr_views : this.wr_views
+      })
     });
     // 게시글 좋아요 개수 불러오기 //
     this.afDB.database.ref('/like/'+this.postKey).on('value', likes=>{
@@ -71,19 +77,20 @@ export class BoardviewPage {
     this.afDB.database.ref('/comments/'+this.postKey).on('value', comments=>{
       this.wr_comments_count = comments.numChildren();
     });
+
     // 게시글 댓글 불러오기 //
-    this.afDB.list('/comments/'+this.postKey, ref => ref).valueChanges().subscribe(comments => {
+    this.dataProvider.getComments(this.postKey).snapshotChanges().subscribe(comments => {
       this.wr_comments = comments;
       this.wr_comments.forEach(comment=>{
         // 닉네임, 프로필사진 받아오기 //
-        this.afDB.database.ref('/accounts/'+comment.wr_writer).on('value',user => {
-          this.wr_comment_user.push({
-            nickname:user.child('username').val(),
-            profileImg:user.child('profileImg').val()
-          });
+        this.dataProvider.getUser(comment.payload.val().wr_writer).snapshotChanges().subscribe(userInfo => {
+          comment.username = userInfo.payload.val().username;
+          comment.profileImg = userInfo.payload.val().profileImg;
+          console.log(comment.user);
         });
       });
-    });
+
+    })
   }
 
   // 게시글 좋아요 누르기 //
