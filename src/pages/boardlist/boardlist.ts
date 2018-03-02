@@ -23,7 +23,6 @@ export class BoardlistPage {
     
 
   }
-
   ionViewDidLoad() {
     console.log('ionViewDidLoad BoardlistPage');
     
@@ -42,7 +41,14 @@ export class BoardlistPage {
     }
     this.dataProvider.getPosts(this.menuName).snapshotChanges().take(1).subscribe(post => {
       this.posts = post;
+      this.posts.forEach(post =>{
+        this.afDB.database.ref('/comments/'+post.payload.key).on('value', comments=>{
+          post.comment_count = comments.numChildren();
+        });
+      })
     });
+
+    
   }
 
   boardlistClose(){

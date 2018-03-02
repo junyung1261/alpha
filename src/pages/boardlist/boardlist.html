@@ -69,41 +69,30 @@
       </ion-row>
       <div *ngFor="let post of posts">
         <ion-row class="x-list-row" *ngIf="post.payload.val().wr_category=='FREE'" (click)="boardView(menuName,post.payload.key)">
-          <ion-col col-12 class="x-list-col"><span class="x-list-label">{{post.payload.val().wr_category}}&nbsp;&nbsp;</span>{{post.payload.val().wr_title}} </ion-col>
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-label">{{post.payload.val().wr_category}}</span>&nbsp;&nbsp;{{post.payload.val().wr_title}}&nbsp;
+            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.comment_count}}</span>
+          </ion-col>
         </ion-row>
       </div>
     </ion-grid>
   
-    <!-- 중고거래 -->
-    <ion-grid class="x-photolist" no-padding *ngIf="menuName == 'LIFE' && (specificName == 'USED'||specificName == 'ESTATE')">
-      <ion-row class="x-photolist-title">
-        <ion-col col-12>중고거래 목록</ion-col>
-      </ion-row>
+    <!-- 중고거래 & 집거래-->
+    <div class="x-photolist-container" *ngIf="menuName == 'LIFE' && (specificName == 'USED'||specificName == 'ESTATE')">
+      <div class="x-photolist-title" *ngIf="specificName=='USED'">중고거래 목록</div>
+      <div class="x-photolist-title" *ngIf="specificName=='ESTATE'">주거매매 목록</div>
       <div *ngFor="let post of posts">
-        <ion-row class="x-photolist-row" *ngIf="post.payload.val().wr_category==specificName">
-          <ion-col col-4>
-            <div class="x-photolist-photo"><img src="assets/imgs/user_001.jpg"></div>
-            <div class="x-photolist-photo-label-ing">판매중</div>
-          </ion-col>
-          <ion-col col-8>
-            <ion-grid no-padding>
-              <ion-row>
-                <ion-col col-12 class="x-photolist-col">
-                  <span class="x-photolist-label">{{post.payload.val().wr_inner}}&nbsp;&nbsp;</span>{{post.payload.val().wr_title}}
-                </ion-col>
-              </ion-row>
-              <ion-row class="x-photolist-row-info">
-                  <ion-col col-6><ion-icon name="flaticon-clock-1" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</ion-col>
-                  <ion-col col-6 text-right>
-                    <ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;1550&nbsp;&nbsp;
-                    <ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;1550
-                  </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-col> 
-        </ion-row>
+        <div class="x-photolist" *ngIf="post.payload.val().wr_category==specificName" (click)="boardView(menuName,post.payload.key)">
+          <div class="x-photolist-left"><img src="assets/imgs/user_001.jpg"></div>
+          <div class="x-photolist-right">
+            <div class="x-photolist-contents"><span class="x-photolist-category">{{post.payload.val().wr_inner}}&nbsp;&nbsp;</span>{{post.payload.val().wr_title}}</div>
+            <div class="x-photolist-info-date"><ion-icon name="flaticon-clock" class="x-photolist-info-icon"></ion-icon>&nbsp;2018-02-16</div>
+            <div class="x-photolist-info-comment"><ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.comment_count}}</div>
+            <div class="x-photolist-info-view"><ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.payload.val().wr_views}}</div>
+          </div>
+        </div>  
       </div>
-    </ion-grid>
+    </div>
     
     <!-- 구인구직 -->
     <ion-grid class="x-list" no-padding *ngIf="menuName == 'LIFE' && specificName == 'JOB'">
@@ -111,8 +100,11 @@
         <ion-col col-12>구인구직 목록</ion-col>
       </ion-row>
       <div *ngFor="let post of posts">
-        <ion-row class="x-list-row"  *ngIf="post.payload.val().wr_category=='JOB'">
-          <ion-col col-12 class="x-list-col"><span class="x-list-label">구인&nbsp;&nbsp;</span>{{post.payload.val().wr_title}}</ion-col>
+        <ion-row class="x-list-row"  *ngIf="post.payload.val().wr_category=='JOB'" (click)="boardView(menuName,post.payload.key)">
+          <ion-col col-12 class="x-list-col">
+            <span class="x-list-label">{{post.payload.val().wr_category}}</span>&nbsp;&nbsp;{{post.payload.val().wr_title}}&nbsp;
+            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.comment_count}}</span>
+          </ion-col>
         </ion-row>
       </div>  
     </ion-grid>
