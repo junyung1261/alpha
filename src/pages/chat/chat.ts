@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, AlertController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
@@ -19,7 +19,8 @@ export class ChatPage {
   private user;
   constructor(
     public modalCtrl:ModalController, 
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
     public afDB: AngularFireDatabase,
     public afAuth: AngularFireAuth) {
   }
@@ -41,6 +42,34 @@ export class ChatPage {
   openChatLocation() {
     let chatLocationModal = this.modalCtrl.create('ChatLocationPage', {}, this.opts);
     chatLocationModal.present();
+  }
+
+  presentPrompt() {
+    let alert = this.alertCtrl.create({
+      title: '인사말',
+      subTitle: '대화방 인사말을 적어주세요. 대화방 목록에 노출됩니다.',
+      inputs: [
+        {
+          name: 'chatRommIntro',
+          placeholder: '대화방 소개',
+          type: 'text'
+        }
+      ],
+      buttons: [
+        {
+          text: '대화하기',
+          handler: data => {
+            console.log(data);
+            this.openChatList();
+          }
+        },
+        {
+          text: '취소',
+          role: 'cancel'
+        }
+      ]
+    });
+    alert.present();
   }
 
   openChatList() {

@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, ModalController, LoadingController
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import { Observable } from '@firebase/util';
+import { DataProvider } from '../../providers/data/data';
+import { LoadingProvider } from '../../providers/loading/loading';
 
 @IonicPage()
 @Component({
@@ -18,20 +20,21 @@ export class ContestPage {
     cssClass:'mini-modal'
   }
 
-  private numOfMale: any;
-  private numOfFemale: any;
-  private participents: any;
-  // private participentKey :any = {nickname : ""};
-  private participentKey = [];
-  // private participentInfo = [];
-  private participentInfo: any;
 
   private pageFlag: boolean = false;
+  lastContest: any;
+  numOfMale = 0;
+  numOfFemale = 0;
+  candidate: any;
+  user: any;
 
-
-
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController, public afDB: AngularFireDatabase, public loadingCtrl: LoadingController) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public modalCtrl: ModalController, 
+    public afDB: AngularFireDatabase, 
+    public loadingProvider: LoadingProvider,
+    public dataProvider: DataProvider) {
 
     // let loading = this.loadingCtrl.create({
     //   content: 'Fuck you...'
@@ -42,67 +45,55 @@ export class ContestPage {
     //   loading.dismiss();
     //   this.pageFlag = true;
     // }, 3000);
-
-    var index = 0;
-    this.afDB.list('/contests/contestPK/female', ref=>ref.orderByKey()).snapshotChanges().take(1).subscribe(participents => {
-      this.participents = participents;
-      this.numOfFemale = participents.length;
-      // html에 쓸 때는 participents.payload.val().name 이딴식으로 쓰면 됨.
-      console.log("여성 참가자 수 : ", this.numOfFemale);
-
-
-      participents.forEach(participent => {
-
-        this.participentKey[index] = participent.key;
-        console.log("index 값 : ", index, "key 값 : ", this.participentKey[index])
-
-        // this.angularfireDatabase.list('/feed', ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
-
-        // this.afDB.database.ref('/accounts/' + this.participentKey[index]).on('value', (snapshot) => {
-        //   this.participentInfo[index] = snapshot.child('username').val();
-        //   console.log("index 값 : ", index, "닉네임 값 : ", this.participentInfo[index])
-        // });
-
-        index = index + 1;
-
-      })
-
-    });
-
-    this.afDB.list('/accounts', ref => ref.orderByChild('contestApply').equalTo(true)).snapshotChanges().take(1).subscribe(participentsInfo => {
-      this.participentInfo = participentsInfo;
-      console.log(this.participentInfo)
-    })
-
-
+    
 
   }
 
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MatchingPage');
-    this.contestProgress = 'stage0';
-    let i = 0;
+    
+    
+    
+    this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
+      this.user = user;
 
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Fuck you...'
-    // });
-    // console.log("constructor")
-    // loading.present();
-    // setTimeout(() => {
-    //   loading.dismiss();
-    //   this.pageFlag = true;
-    // }, 3000);
+      let interval = setInterval(function(){
 
-    // setTimeout(() => {
-    //   this.test[i] = this.afDB.database.ref('/accounts/' + this.participentKey[i]);
-    // console.log(this.test[i])
-    // }, 3000);
+        this.loadingProvider.show();
+        this.dataProvider.getLastContestId().once('value', snapshot => {
+          
+          let lastContestId = snapshot.val();
+          
+          this.dataProvider.getContest(lastContestId).once('value', snapshot => {
+            this.lastContest = snapshot;
+            this.contestProgress = snapshot.val().stage;
+                     
+            if( this.contestProgress == 'join' ){
+    
+              this.dataProvider.getCandidate(lastContestId).snapshotChanges().take(1).subscribe(candidates => {
+                let list = [];
+                candidates.forEach(candidate => {
+                  list.push(candidate.key);
+                })
+                this.candidate = list;
+              }); 
+              this.loadingProvider.hide();
+            }
+            else {
+              
+            }
+          })
+        });
 
-
-
+      },60000);
+      
+      
+     
+    })
   }
 
+  
 
 
   openProfile() {
@@ -119,7 +110,27 @@ export class ContestPage {
 
   openApply(){
     
-    let applyModal = this.modalCtrl.create('ContestApplyPage',{},this.opts);
+    let applyModal = this.modalCtrl.create('ContestApplyPage',{lastContest: this.lastContest, user: this.user},this.opts);
     applyModal.present();
+  }
+
+  
+
+  cancelApply(){
+    this.afDB.database.ref('/contests/' + this.lastContest.key + '/candidate/' + this.user.key).remove()
+    .then((success) => {
+
+      this.dataProvider.getCurrentUser().update({contest: null});
+      if(this.user.payload.val().gender == 'male') {
+        this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfMale').transaction(function(currentCount){
+          return currentCount-1;
+        })
+      }
+      else{
+        this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfFemale').transaction(function(currentCount){
+          return currentCount-1;
+        })
+      }
+     })
   }
 }

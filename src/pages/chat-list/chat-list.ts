@@ -106,17 +106,17 @@ export class ChatListPage {
    
     this.requestProvider.getUserChat(this.user.uid).subscribe(myChat => {
       this.myChat = myChat;
-      if(myChat.friends) {
-        if (myChat.friends) {
-          for (var i = 0; i < myChat.friends.length; i++) {
-            this.requestProvider.getUser(myChat.friends[i]).subscribe((friend) => {
-              this.addOrUpdateFriend(friend);
-            });
-          }
-        } else {
-          this.myChatList = [];
+      
+      if (myChat.friends) {
+        for (var i = 0; i < myChat.friends.length; i++) {
+          this.requestProvider.getUser(myChat.friends[i]).subscribe((friend) => {
+            this.addOrUpdateFriend(friend);
+          });
         }
+      } else {
+        this.myChatList = [];
       }
+      
 
       this.requestProvider.getRequestList(this.user.uid).subscribe((requests) => {
         
