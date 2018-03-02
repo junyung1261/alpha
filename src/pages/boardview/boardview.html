@@ -1,0 +1,90 @@
+<ion-header no-border class="feed-header">
+  <ion-navbar color="x-mint" hideBackButton>
+    <ion-buttons left>
+      <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>게시글보기</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="boardviewClose()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-paddding>
+  <ion-grid no-padding class="x-boardview-post">
+    <ion-row class="x-boardview-row">
+      <ion-col col-12>
+        <span class="x-boardview-category">[{{wr_category}}]</span>
+        <span class="x-boardview-title">{{wr_title}}</span>
+      </ion-col>
+    </ion-row>
+    <ion-row class="x-boardview-row">
+      <ion-col col-12>
+        <div class="x-boardview-info" *ngIf="wr_user">
+          <div class="x-boardview-writer"><img src="{{wr_user.payload.val().profileImg}}"></div>
+          <div class="x-boardview-nickname">{{wr_user.payload.val().username}}</div>
+          <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{wr_date}}</div>
+          <div class="x-boardview-tags">#태그1 #태그2</div>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="x-boardview-row-no-border">
+      <ion-col col-12>
+        <div class="x-boardview-post-photo">
+          <!--이미지 슬라이드 가져오는부분 -->
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="x-boardview-row">
+      <ion-col col-12>
+        <div class="x-boardview-post-description">{{wr_description}}</div>
+        </ion-col>
+    </ion-row>
+    <ion-row class="x-boardview-row">
+      <ion-col col-12>
+        <div class="x-boardview-cnt">
+          <div class="x-boardview-view"><span class="x-boardview-ico"><ion-icon name="flaticon-medical"></ion-icon></span>&nbsp;13</div>
+          <div class="x-boardview-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
+          <div class="x-boardview-like" (click)="postLikeOn()" *ngIf="wr_like_state=='0'"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;{{wr_likes_count}}</div>
+          <div class="x-boardview-like-on" (click)="postLikeOff()" *ngIf="wr_like_state=='1'"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;{{wr_likes_count}}</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid no-padding class="x-boardview-comment">
+    <ion-row class="x-boardview-row">
+      <ion-col col-12>
+        <div class="x-boardview-comment-title">
+          <span class="x-boardview-comment-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;이 글의 댓글</div>
+      </ion-col>
+    </ion-row>
+    <div *ngFor="let comment of wr_comments">
+      <div *ngFor="let user of wr_comment_user; let i=index">
+        <ion-row class="x-boardview-row" *ngIf="i%wr_comment_user.length==0">
+          <ion-col col-12>
+            <div class="x-boardview-info">
+              <div class="x-boardview-writer"><img src="{{user.profileImg}}"></div>
+              <div class="x-boardview-nickname">{{user.nickname}}</div>
+              <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{comment.wr_date}}</div>
+              <div class="x-boardview-comment-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
+              <div class="x-boardview-comment-like"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;13</div>
+              <div class="x-boardview-comment-description">{{comment.wr_description}}</div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
+    </div>  
+  </ion-grid>
+
+</ion-content>
+<ion-footer no-border no-padding>
+  <ion-toolbar class="x-boardview-comment-write" no-padding color="x-white">
+    <div class="x-boardview-comment-txt">
+      <ion-input type="text" class="x-boardview-comment-input" placeholder="댓글을 남겨주세요" [(ngModel)]="wr_comment_input"></ion-input>
+    </div>
+    <div class="x-boardview-comment-btn">
+      <button ion-button class="x-boardview-comment-submit" (click)="commentWrite()">작성</button>
+    </div>
+  </ion-toolbar>
+</ion-footer>
