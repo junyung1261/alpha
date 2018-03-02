@@ -27,7 +27,6 @@ export class HomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad HomePage');
-    console.log("이게 메뉴다 :", this.menu)
   }
 
 

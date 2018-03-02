@@ -293,5 +293,10 @@ export class ChatRoomPage {
     }
   }
 
+  ionViewWillLeave() {
+    //   페이지 나가면 쳐다보는거 그만해! DB에서도 빼!
+    // this.afDB.list('/conversations/'+this.conversationId).remove();
+    // this.afDB.list('/chat/'+firebase.auth().currentUser.uid+'/conversations/'+this.userId).remove();
+  }
 
 }

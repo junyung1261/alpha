@@ -73,6 +73,8 @@ export class ChatShakePage {
 
                     //(TODO)채팅페이지로 매칭된 유저들의 키값을 넘겨준다.
                     this.vibration.vibrate(1000);
+                    this.viewCtrl.dismiss();
+                    this.modalCtrl.create('ChatRoomPage', {userId: this.firstUserKey}).present()
                 }
 
             });

@@ -299,9 +299,9 @@ export class ImageProvider {
       });
     }
 
-    sendContestPhoto(userId, imageURL) {
+    sendContestPhoto(imageURL) {
 
-        this.angularfireDatabase.object('/accounts/' + userId ).update({ contestImages: imageURL
+        this.angularfireDatabase.object('/accounts/' + firebase.auth().currentUser.uid + '/contest' ).update({ contestImages: imageURL
         }).then((success) => {
           this.loadingProvider.hide();
           this.alertProvider.showProfileUpdatedMessage();
