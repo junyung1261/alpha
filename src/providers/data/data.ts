@@ -87,4 +87,18 @@ export class DataProvider {
   getChatMessages(UserId){
     return this.angularfireDatabase.list('/chat/' + UserId + '/messages');
   }
+
+  getContest(contestId) {
+    return this.angularfireDatabase.database.ref('/contests/' + contestId)
+  }
+
+  getLastContestId(){
+    return this.angularfireDatabase.database.ref('/contests').child('lastContest');
+  }
+
+  getCandidate(contestId){
+    return this.angularfireDatabase.list('/contests/' + contestId + '/candidate', ref => ref.orderByValue());
+  }
+  
+
 }

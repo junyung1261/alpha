@@ -29,7 +29,7 @@
                       <div class="x-contest-mini-num" >후보 1</div>
                       <div class="x-contest-mini-nickname">NICKNAME</div>
                       <div class="x-contest-mini-birth">1994.03.03</div>
-                      <div class="x-contest-mini-time">{{participent.payload.val().applytime}}</div>
+                      <div class="x-contest-mini-time"></div>
                       <div class="x-contest-mini-btn">상세보기</div>
                     </div>
                   </div>
@@ -43,28 +43,30 @@
     <ion-row>
       <ion-col col-12>
         <ion-segment class="x-contest-stage" mode="md" [(ngModel)]="contestProgress">
-          <ion-segment-button value="stage0">후보모집</ion-segment-button>
-          <ion-segment-button value="stage1">1라운드</ion-segment-button>
-          <ion-segment-button value="stage2">2라운드</ion-segment-button>
-          <ion-segment-button value="stage3">3라운드</ion-segment-button>
-          <ion-segment-button value="stage4">최종결과</ion-segment-button>
+          <ion-segment-button value="join">후보모집</ion-segment-button>
+          <ion-segment-button value="round1">1라운드</ion-segment-button>
+          <ion-segment-button value="round2">2라운드</ion-segment-button>
+          <ion-segment-button value="round3">3라운드</ion-segment-button>
+          <ion-segment-button value="final">최종결과</ion-segment-button>
         </ion-segment>
       </ion-col>
     </ion-row>
   </ion-grid>
   <div [ngSwitch]="contestProgress">
-    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'stage0'">
+    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'join'">
       <ion-row>
-        <ion-col col-12>
+        <ion-col col-12 *ngIf="candidate">
           <div class="x-contest-ready-icon"><ion-icon name="flaticon-clock"></ion-icon></div>
-          <div class="x-contest-ready-txt" *ngIf="numOfFemale != 8">후보를 모집중입니다.({{numOfFemale}}/8)</div>
-          <div class="x-contest-apply" *ngIf="numOfFemale != 8" (click)="openApply()">후보 지원</div>
-          <div class="x-contest-ready-txt" *ngIf="numOfFemale == 8">후보 모집이 마감됐습니다.({{numOfFemale}}/8)</div>
-          <div class="x-contest-apply" *ngIf="numOfFemale == 8">지원 마감</div>
+          <div class="x-contest-ready-txt" *ngIf="numOfFemale != 8">후보를 모집중입니다.({{candidate.length}}) 여성{{lastContest.val().numOfFemale}}</div>
+          <div class="x-contest-apply" (click)="openApply()" *ngIf="candidate.indexOf(user.key) == -1">후보 지원</div>
+          <div class="x-contest-apply" (click)="cancelApply()" *ngIf="candidate.indexOf(user.key) != -1">지원 완료</div>
+         
+          <!-- <div class="x-contest-ready-txt" *ngIf="numOfFemale == 8">후보 모집이 마감됐습니다.({{numOfFemale}}/8)</div>
+          <div class="x-contest-apply" *ngIf="numOfFemale == 8">지원 마감</div> -->
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'stage1'">
+    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'round1'">
       <ion-row class="x-contest-substage-content">
         <ion-col col-12>
           <ion-slides slidesPerView="1">
@@ -130,7 +132,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'stage2'">
+    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'round2'">
       <ion-row>
         <ion-col col-12>
           <div class="x-contest-ready-icon"><ion-icon name="flaticon-clock"></ion-icon></div>
@@ -138,7 +140,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'stage3'">
+    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'round3'">
       <ion-row>
         <ion-col col-12>
           <div class="x-contest-ready-icon"><ion-icon name="flaticon-clock"></ion-icon></div>
@@ -146,7 +148,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'stage4'">
+    <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'final'">
       <ion-row>
         <ion-col col-12>
           <div class="x-contest-ready-icon"><ion-icon name="flaticon-clock"></ion-icon></div>

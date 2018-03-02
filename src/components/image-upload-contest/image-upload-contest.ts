@@ -38,7 +38,7 @@ export class ImageUploadContest {
                 return this.uploadImage(image);
             }))
                 .then(resolve => {
-                    this.imageProvider.sendContestPhoto(this.key, this.imageURL);
+                    this.imageProvider.sendContestPhoto(this.imageURL);
                 })
                 .catch(reason => {
                     this.isUploading = false;
