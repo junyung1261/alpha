@@ -38,10 +38,7 @@ export class ImageUpload {
                 return this.uploadImage(image);
             }))
                 .then(resolve => {
-                    if(location == 'feed')
-                        this.imageProvider.sendFeedPhoto(this.key, this.imageURL);
-                    else if(location.substring(0,9) == 'community') 
-                        this.imageProvider.sendCommunityPhoto(this.key, this.imageURL, location);
+                    this.imageProvider.sendBoardPhoto(this.key, this.imageURL, location);
                     
                 })
                 .catch(reason => {

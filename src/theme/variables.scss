@@ -26,11 +26,12 @@ $app-direction: ltr;
 @include makeIcon(flaticon-silver-medal, '\f104');   // BOARD-RANK2
 @include makeIcon(flaticon-bronze-medal, '\f103');   // BOARD-RANK3
 
-@include makeIcon(flaticon-clock-1, '\f138');   // BOARD-WRITE-TIME
 @include makeIcon(flaticon-medical, '\f161');   // BOARD-VIEWS
 @include makeIcon(flaticon-interface, '\f181');   // BOARD-COMMENTS
 
 @include makeIcon(flaticon-layers-1, '\f12f');   // BOARD-MENU1-BBS-TITLE//
+
+@include makeIcon(flaticon-shapes-1, '\f13f');   //게시판 댓글 싫어요 아이콘
 
 @include makeIcon(flaticon-user-4, '\f164');    //CHAT1
 @include makeIcon(flaticon-technology-1, '\f15c');  //CHAT2
@@ -39,8 +40,8 @@ $app-direction: ltr;
 @include makeIcon(flaticon-exclamation, '\f149');   //대화방 상단설명 // 공지사항
 
 
-@include makeIcon(flaticon-hearts, '\f14d');   //토너먼트 상단 하트아이콘
-@include makeIcon(flaticon-clock, '\f15d');   //토너먼트 후보모집 :: 후보대기
+@include makeIcon(flaticon-hearts, '\f14d');   //토너먼트 상단 하트아이콘 //게시판 댓글 좋아요 아이콘
+@include makeIcon(flaticon-clock, '\f15d');   //토너먼트 후보모집 :: 후보대기  //게시글 작성시간 아이콘
 
 @include makeIcon(flaticon-settings, '\f130');   //프로필::기본정보보기//프로필::환경설정
 @include makeIcon(flaticon-round, '\f148');   //프로필::고객센터
@@ -51,6 +52,7 @@ $colors: (
   x-mint:#00b8d0,
   x-skyblue:  #39a7fd,
   x-skyblue-line:#d0ebfc,
+  x-input-line:#dddddd,
   x-white:    #ffffff,
   x-gray-line:  #f6f6f6,
   x-gray-bg:  #f6f6f6,

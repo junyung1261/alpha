@@ -73,6 +73,18 @@ export class DataProvider {
     return this.angularfireDatabase.object('/groups/' + groupId);
   }
 
+  getPosts(child) {
+    return this.angularfireDatabase.list('/board/'+child, ref => ref);
+  }
+
+  getPostLike(postKey){
+    return this.angularfireDatabase.list('/like/'+postKey, ref => ref);
+  }
+
+  getComments(postKey) {
+    return this.angularfireDatabase.list('/comments/'+postKey, ref=> ref);
+  }
+  
   getFeeds(batch, lastKey?) {
     return this.angularfireDatabase.list('/feed', ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
   }

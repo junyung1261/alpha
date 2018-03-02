@@ -17,7 +17,7 @@
 // 검색바 디자인 //
 .x-search {width:fit-content;height:fit-content;background-color:map-get($colors,x-white);margin:3vw;}
 .x-search-select {width:18vw;height:10vw;border:none;font-size:3vw;color:map-get($colors,x-gray-dark);background-color:map-get($colors,x-white);}
-.x-search-input {width:70vw!important;height:10vw!important;padding:1vw 2vw 0 2vw!important;font-size:4vw;color:map-get($colors,x-gray-dark);}
+.x-search-input {width:70vw!important;height:10vw!important;padding:2.5vw 2vw 0 2vw!important;font-size:3.5vw;color:map-get($colors,x-gray-dark);}
 .x-search-left,.x-search-center,.x-search-right {float:left;height:fit-content;border:1px solid map-get($colors,x-gray-line);}
 .x-search-left {width:20vw;padding:0 1vw 0 1vw; border-right:none;}
 .x-search-center {width:64vw;}
@@ -99,5 +99,12 @@
         visibility: visible;
     }
 
+}
+
+// BBS WRITE FAV BTN COLOR //
+
+// BBS NAV TITLE //
+ion-title {
+    text-align:center;
 }
 
