@@ -7,13 +7,6 @@ import { DataProvider } from '../../providers/data/data';
 import { Observable } from 'rxjs/Observable';
 import { RequestProvider } from '../../providers/data/request';
 
-/**
- * Generated class for the ChatListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-chat-list',

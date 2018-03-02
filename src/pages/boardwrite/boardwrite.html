@@ -1,31 +1,46 @@
-<ion-header no-border>
-  <ion-navbar color="x-skyblue" hideBackButton align-title="center">
-    <!-- LEFT BUTTON -->
+<ion-header no-border class="feed-header">
+  <ion-navbar color="x-mint" hideBackButton>
     <ion-buttons left>
-      <button ion-button><ion-icon name="flaticon-cross" color="x-skyblue"></ion-icon></button>
+      <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
     </ion-buttons>
-    <!-- TITLE -->
-    <ion-title text-center>게시글 작성 {{categoryType}}</ion-title>
-    <!-- RIGHT BUTTON -->
+    <ion-title>게시글작성</ion-title>
     <ion-buttons end>
-      <button ion-button navPop><ion-icon name="flaticon-cross" color="x-white"></ion-icon></button>
+      <button ion-button (click)="boardwriteClose()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
-  </ion-navbar> 
+  </ion-navbar>
 </ion-header>
 
-
 <ion-content no-padding>
-  <ion-grid no-padding>
-    <ion-row class="bw-top">
-      <ion-col col-12><ion-input class="bw-title"></ion-input></ion-col>
-    </ion-row>
-    <ion-row class="bw-photo"></ion-row>
-    <ion-row class="bw-content">
-      <ion-col col-12><ion-textarea class="bw-textarea"></ion-textarea></ion-col>
-    </ion-row>
-    <ion-row class="bw-tags"></ion-row>
-    <ion-row class="bw-add">
-    </ion-row>
-  </ion-grid>
-</ion-content>
+  <div class="x-boardwrite-top" *ngIf="categoryType != 'FREE'">
+    <div class="x-boardwrite-category">
+      <select class="x-boardwrite-category-select" [(ngModel)]="selectedInnerCategory">
+        <option [value]="inner.name" *ngFor="let inner of innerCategory">{{inner.name}}</option>
+      </select>
+    </div>
+    <div class="x-boardwrite-title">
+      <ion-input type="text" class="x-boardwrite-title-input" placeholder="제목을 입력하세요." [(ngModel)]="title"></ion-input>
+    </div>
+  </div>
+  <div class="x-boardwrite-top" *ngIf="categoryType == 'FREE'">
+    <div class="x-boardwrite-title">
+      <ion-input type="text" class="x-boardwrite-title-input-full" placeholder="제목을 입력하세요." [(ngModel)]="title"></ion-input>
+    </div>
+  </div>
 
+  <div class="x-boardwrite-center">
+    <ion-textarea class="x-boardwrite-textarea" placeholder="내용을 입력하세요." [(ngModel)]="text"></ion-textarea>
+  </div>
+
+  <div class="x-boardwrite-photo">
+    <image-upload></image-upload>
+  </div>
+
+  <div class="x-boardwrite-tags">
+    <ion-input type="text" class="x-boardwrite-tags-input" placeholder="태그를 입력하세요.  ex)#정치 #사회 #문화" [(ngModel)]="tags"></ion-input>
+  </div>
+  <div class="x-boardwrite-btn">
+    <button ion-button class="x-boardwrite-submit" [disabled]="checkTrim(text, title)" (click)="addBoard(title, text, tags)">작성완료</button>
+  </div>
+  
+
+</ion-content>

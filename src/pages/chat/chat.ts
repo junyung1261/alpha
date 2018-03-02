@@ -14,7 +14,7 @@ export class ChatPage {
   opts: any = {
     showBackdrop: true,
     enableBackdropDismiss: true,
-    cssClass:'mini-modal'
+    cssClass:'chat-loading'
   }
   private user;
   constructor(
