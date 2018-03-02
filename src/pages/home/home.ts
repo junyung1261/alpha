@@ -29,12 +29,9 @@ export class HomePage {
     console.log('ionViewDidLoad HomePage');
   }
 
-
   openCommunity(name) {
     this.menuType = name;
     this.navCtrl.push('BoardlistPage', { menuName: this.menuType, specificName: 'FREE' });
-
-
   }
 
   openLifeCommunity(name) {

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { DataProvider } from '../../providers/data/data';
 
 @IonicPage()
 @Component({
@@ -14,29 +15,42 @@ export class BoardlistPage {
   categoryItem : any[] = [];
   lifeMenu : any[] = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public afDB: AngularFireDatabase) {
+  
+  posts : any;
 
-    this.menuName = navParams.get('menuName');
-    this.specificName = navParams.get('specificName');
-    // this.categoryType = navParams.get('categoryType');
-    console.log(this.menuName);
+  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl:ModalController, public afDB: AngularFireDatabase, public dataProvider : DataProvider) {
 
-    this.afDB.list('/categories', ref => ref).valueChanges().take(1).subscribe(categoryItems => {
-      this.categoryItem = categoryItems;
-    });
-    if(this.menuName=='LIFE'){
-      this.specificName = navParams.get('specificName');
-      console.log(this.specificName)
-      this.afDB.list('/menu/0/submenu', ref => ref).valueChanges().take(1).subscribe(menuItems => {
-        this.lifeMenu = menuItems;
-      });
-    }
     
 
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad BoardlistPage');
+    
+    this.menuName = this.navParams.get('menuName'); // 대분류 //
+    this.specificName = this.navParams.get('specificName'); //중분류 //
+
+    this.afDB.list('/categories', ref => ref).valueChanges().take(1).subscribe(categoryItems => {
+      this.categoryItem = categoryItems;
+    });
+
+    if(this.menuName=='LIFE'){
+      this.specificName = this.navParams.get('specificName');
+      this.afDB.list('/menu/0/submenu', ref => ref).valueChanges().take(1).subscribe(menuItems => {
+        this.lifeMenu = menuItems;
+      });
+    }
+    this.dataProvider.getPosts(this.menuName).snapshotChanges().take(1).subscribe(post => {
+      this.posts = post;
+    });
+  }
+
+  boardlistClose(){
+    this.navCtrl.pop();
+  }
+
+  boardView(category,key){
+    this.navCtrl.push('BoardviewPage',{postCategory:category, postKey : key});
   }
 
   selectedSegment(name){
@@ -44,9 +58,14 @@ export class BoardlistPage {
     console.log("show me : ",name)
   }
 
-  boardWrite(number){
-    // this.categoryType = number;
-    // this.navCtrl.push('BoardwritePage',{ categoryName: '生活故事', categoryType:this.categoryType });
+  boardWrite(type){
+    this.categoryType = type;
+    let modalCtrl = this.modalCtrl.create('BoardwritePage',{ menuName: this.menuName, categoryType:this.categoryType });
+    modalCtrl.onDidDismiss(data => {
+      if(data){this.ionViewDidLoad()};
+    })
+    modalCtrl.present();
   }
+  
 
 }

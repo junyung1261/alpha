@@ -42,7 +42,7 @@ image-upload {
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
-            color: white;
+            color: map-get($colors,x-input-line);
           }
           .progress-bar {
             height: 6px;
@@ -58,7 +58,8 @@ image-upload {
         }
   
         &.add-image-btn .image {
-          background: #DDD;
+          background: map-get($colors,x-white);
+          border:1px solid map-get($colors,x-input-line);
         }
       }
     }

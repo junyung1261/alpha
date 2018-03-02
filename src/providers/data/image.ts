@@ -322,5 +322,15 @@ export class ImageProvider {
         this.alertProvider.showErrorMessage('profile/error-change-photo');
       });
     }
+    sendBoardPhoto(boardId, imageURL, location) {
+      this.angularfireDatabase.object('/'+location+ '/' + boardId ).update({ images: imageURL
+      }).then((success) => {
+        this.loadingProvider.hide();
+        //this.alertProvider.showProfileUpdatedMessage();
+      }).catch((error) => {
+        this.loadingProvider.hide();
+        this.alertProvider.showErrorMessage('profile/error-change-photo');
+      });
+    }
 
 }
