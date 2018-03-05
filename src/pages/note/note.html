@@ -5,5 +5,14 @@
 </ion-header>
 
 <ion-content no-padding>
-
+  <ion-grid>
+    <div *ngFor="let user of users">
+      <ion-row *ngIf="user.payload.key != currentUser.payload.key && user.payload.val().status =='ready'">
+        <ion-col col-2><img src="{{user.profileImg}}"></ion-col>
+        <ion-col col-8>{{user.nickname}}</ion-col>
+        <ion-col col-2 *ngIf="user.payload.val().status =='ready'"  (click)="chatRequest(currentUser.payload.key,user.payload.key,'sender')">대화요청</ion-col>
+        <ion-col col-2 *ngIf="user.payload.val().status !='ready'">쪽지전송</ion-col>
+      </ion-row>
+  </div>
+  </ion-grid>
 </ion-content>
