@@ -120,6 +120,10 @@ export class DataProvider {
   getCandidate(contestId){
     return this.angularfireDatabase.list('/contests/' + contestId + '/candidate', ref => ref.orderByValue());
   }
+
+  getTestUser() {
+    return this.angularfireDatabase.list('/test/', ref => ref);
+  }
   
 
 }

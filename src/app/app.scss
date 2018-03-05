@@ -84,7 +84,6 @@
 }
 
 .chat-loading {
-
     .modal-wrapper {
         width:75vw;
         height:50vw;
@@ -96,7 +95,19 @@
     ion-backdrop {
         visibility: visible;
     }
-
+}
+.chat-msg {
+    .modal-wrapper {
+        width:75vw;
+        height:50vw;
+        left: 12.5vw;
+        top:60vw ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
 }
 
 // BBS WRITE FAV BTN COLOR //
