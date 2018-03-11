@@ -100,7 +100,8 @@ export class ChatLocationPage {
                 //채팅페이지로 매칭된 유저들의 키값을 넘겨준다. (TODO)
                 this.vibration.vibrate(1000);
                     this.viewCtrl.dismiss();
-                    this.modalCtrl.create('ChatRoomPage', {userId: this.nearbyUserKey}).present();
+                    this.navCtrl.push('ChatProcessingPage',{sender:this.nearbyUserKey,roomtype:'location'});
+                    //this.modalCtrl.create('ChatRoomPage', {userId: this.nearbyUserKey}).present();
             }
         } else if (flag == false) {
             this.viewCtrl.dismiss();

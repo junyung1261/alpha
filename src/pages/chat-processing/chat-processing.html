@@ -1,12 +1,11 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Firebase Chat
-    </ion-title>
+<ion-header no-border>
+  <ion-navbar color="x-mint" hideBackButton>
+    <ion-buttons left>
+      <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
+    </ion-buttons>
+    <ion-title>대화방</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="exitChat()">
-        <ion-icon name="exit"></ion-icon>
-      </button>
+      <button ion-button (click)="exitChat()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>

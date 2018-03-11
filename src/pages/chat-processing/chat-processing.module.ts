@@ -1,16 +1,16 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicPageModule, Content, IonicErrorHandler } from 'ionic-angular';
-import { Chat1Page } from './chat1';
+import { ChatProcessingPage } from './chat-processing';
 
 @NgModule({
   declarations: [
-    Chat1Page,
+    ChatProcessingPage,
   ],
   imports: [
-    IonicPageModule.forChild(Chat1Page),
+    IonicPageModule.forChild(ChatProcessingPage),
   ],
   providers:[
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]
 })
-export class Chat1PageModule {}
+export class ChatProcessingPageModule {}
