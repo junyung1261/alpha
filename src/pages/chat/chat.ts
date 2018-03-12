@@ -30,9 +30,9 @@ export class ChatPage {
     this.user = this.afAuth.auth.currentUser;
   }
 
-  openChatRandom() {
-    let chatRandomModal = this.modalCtrl.create('ChatRandomPage');
-    chatRandomModal.present();
+  openChatWaiting() {
+    let chatIntroduceModal = this.modalCtrl.create('ChatIntroPage',{}, this.opts);
+    chatIntroduceModal.present();
   }
   openChatShake() {
     let chatShakeModal = this.modalCtrl.create('ChatShakePage', {}, this.opts);
@@ -44,44 +44,4 @@ export class ChatPage {
     chatLocationModal.present();
   }
 
-  presentPrompt() {
-    let alert = this.alertCtrl.create({
-      title: '인사말',
-      subTitle: '대화방 인사말을 적어주세요. 대화방 목록에 노출됩니다.',
-      inputs: [
-        {
-          name: 'chatRommIntro',
-          placeholder: '대화방 소개',
-          type: 'text'
-        }
-      ],
-      buttons: [
-        {
-          text: '대화하기',
-          handler: data => {
-            console.log(data);
-            this.openChatList();
-          }
-        },
-        {
-          text: '취소',
-          role: 'cancel'
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  openChatList() {
-    this.afDB.list('/chat').update(this.user.uid, {
-      lastUpdate: firebase.database['ServerValue'].TIMESTAMP,
-      username: this.user.displayName,
-      profileImg: this.user.photoURL,
-      inTalk: false
-      
-    }).then((success)=> {
-      this.navCtrl.push('ChatListPage',{user: this.user});
-    })
-   
-  }
 }

@@ -121,9 +121,12 @@ export class DataProvider {
     return this.angularfireDatabase.list('/contests/' + contestId + '/candidate', ref => ref.orderByValue());
   }
 
-  getTestUser() {
-    return this.angularfireDatabase.list('/test/', ref => ref);
+  getChatQueueUser() {
+    return this.angularfireDatabase.list('/chat-queue/', ref => ref);
   }
   
+  getNoteList(userKey){
+    return this.angularfireDatabase.list('/note-link/'+userKey , ref => ref);
+  }
 
 }

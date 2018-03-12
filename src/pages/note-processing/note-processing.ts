@@ -9,40 +9,36 @@ import {  ElementRef } from '@angular/core';
 
 @IonicPage()
 @Component({
-  selector: 'page-chat1',
-  templateUrl: 'chat1.html',
+  selector: 'page-note-processing',
+  templateUrl: 'note-processing.html',
 })
-export class Chat1Page {
+export class NoteProcessingPage {
   
   @ViewChild(Content) content: Content;
 
   data = { type:'', nickname:'', message:'' };
   chats = [];
   roomkey:string;
+  roomStatus:any;
   nickname:string;
   offStatus:boolean = false;
 
 
+  // 채팅 방을 waiting단에서 만들어도 되나, 코드최적화를 위해서 여기서 푸시함 //
   constructor(public navCtrl: NavController, public navParams: NavParams, public afDB:AngularFireDatabase, public afAuth: AngularFireAuth) {
 
-    // 요청자(SENDER)의  KEY가 방의 KEY로 ! //
-    this.roomkey = this.navParams.get("sender") as string;
-
+    this.roomkey = this.navParams.get("roomKey") as string;
     this.nickname = this.afAuth.auth.currentUser.displayName;
     this.data.type = 'message';
     this.data.nickname = this.nickname;
 
-    let joinData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
-    joinData.set({
-      type:'join',
-      user:this.nickname,
-      message:this.nickname+' has joined this room.',
-      sendDate:Date()
-    });
+  }
 
+  ionViewDidLoad() {
+    
     this.data.message = '';
 
-    firebase.database().ref('chatrooms/'+this.roomkey+'/chats').on('value', resp => {
+    this.afDB.database.ref('note-room/'+this.roomkey+'/chats').on('value', resp => {
       this.chats = [];
       this.chats = snapshotToArray(resp);
       setTimeout(() => {
@@ -51,10 +47,12 @@ export class Chat1Page {
         }
       }, 1000);
     });
-  }
 
+    
+
+  }
   sendMessage() {
-    let newData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
+    let newData = this.afDB.database.ref('note-room/'+this.roomkey+'/chats').push();
     newData.set({
       type:this.data.type,
       user:this.data.nickname,
@@ -65,19 +63,8 @@ export class Chat1Page {
   }
 
   exitChat() {
-    let exitData = firebase.database().ref('chatrooms/'+this.roomkey+'/chats').push();
-    exitData.set({
-      type:'exit',
-      user:this.nickname,
-      message:this.nickname+' has exited this room.',
-      sendDate:Date()
-    });
-
-    this.offStatus = true;
-
     this.navCtrl.pop();
   }
-  
 
 }
 export const snapshotToArray = snapshot => {

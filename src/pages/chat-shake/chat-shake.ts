@@ -6,27 +6,21 @@ import * as firebase from 'firebase';
 import { Shake } from '@ionic-native/shake';
 import { Vibration } from '@ionic-native/vibration';
 
-
 @IonicPage()
 @Component({
     selector: 'page-chat-shake',
     templateUrl: 'chat-shake.html',
 })
 export class ChatShakePage {
-
     chat_shake_ref: AngularFireList<any>;
     gender: any;
     firstUserGender: any;
     firstUserKey: any;
     flag: boolean = true;
 
-
-
     constructor(public navCtrl: NavController, public viewCtrl: ViewController, public modalCtrl: ModalController,
         public afDB: AngularFireDatabase, public shake: Shake, public vibration: Vibration) {
-
         this.chat_shake_ref = this.afDB.list('/chat-shake');
-
         afDB.object('/accounts/' + firebase.auth().currentUser.uid).snapshotChanges().take(1).subscribe(user => {
             this.gender = user.payload.val().gender ? user.payload.val().gender : 'Anonymous';
         });
@@ -74,7 +68,8 @@ export class ChatShakePage {
                     //(TODO)채팅페이지로 매칭된 유저들의 키값을 넘겨준다.
                     this.vibration.vibrate(1000);
                     this.viewCtrl.dismiss();
-                    this.modalCtrl.create('ChatRoomPage', {userId: this.firstUserKey}).present()
+                    this.navCtrl.push('ChatProcessingPage',{sender:this.firstUserKey,roomtype:'shake'});
+                    //this.modalCtrl.create('ChatRoomPage', {userId: this.firstUserKey}).present()
                 }
 
             });
