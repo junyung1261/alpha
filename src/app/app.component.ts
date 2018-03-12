@@ -25,7 +25,6 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       mobileAccessibility.usePreferredTextZoom(false);
-
       this.afAuth.authState.subscribe(user => {
         if (!user) {
           this.nav.setRoot('LoginPage');

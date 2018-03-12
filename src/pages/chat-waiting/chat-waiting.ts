@@ -59,6 +59,9 @@ export class ChatWaitingPage {
       }
     })
   }
+  ionViewWillLeave(){
+    this.afDB.database.ref('/chat-queue/'+firebase.auth().currentUser.uid).remove();
+  }
 
   chatRequest(sender, receiver, type){
     let statusModal = this.modalCtrl.create('ChatStatusPage',{senderKey:sender,receiverKey:receiver,type:type}, this.opts);

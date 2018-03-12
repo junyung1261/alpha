@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController  } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Platform  } from 'ionic-angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LoginProvider } from '../../providers/auth/login';
 import { Validator } from '../../validator';
@@ -51,6 +51,7 @@ export class LoginPage {
   }
 
   ionViewDidLoad() {
+   
     console.log('ionViewDidLoad LoginPage');
     this.mode = 'main';
   }

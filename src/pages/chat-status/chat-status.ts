@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Platform } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 @IonicPage()
@@ -16,14 +16,24 @@ export class ChatStatusPage {
   private explain_receiver : string;
   private senderState : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public afDB:AngularFireDatabase, public viewCtrl:ViewController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public afDB:AngularFireDatabase, public viewCtrl:ViewController, public platform : Platform) {
     this.sender = navParams.get('senderKey');
     this.receiver = navParams.get('receiverKey');
     this.type = navParams.get('type');
   }
 
+  ionViewWillLeave(){
+
+  }
+
   ionViewDidLoad() {
-    console.log('ionViewDidLoad StatusPage');
+    // 모달상태에서 백버튼누르기 -> 초기화 //
+    // this.platform.registerBackButtonAction(() => {
+    //   let data={status:'canceled'};
+    //       this.viewCtrl.dismiss(data);
+    //       this.requestInitialize();
+    // },1);
+
     // SENDER //
     if(this.type=='sender'){
       this.afDB.database.ref('/chat-queue/'+this.sender).update({

@@ -77,6 +77,7 @@ export class ChatLocationPage {
     }
 
     watchLocation(flag: boolean) {
+        
         console.log("4. 검색 시작")
         if (flag == true) {
             this.getNearbyUser();
