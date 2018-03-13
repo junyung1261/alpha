@@ -1,77 +1,33 @@
-<ion-content no-padding>
-  <ion-grid no-padding class="login-top">
-    <ion-row class="login-title">
-      <ion-col col-12 text-center>
-        <img src="assets/img/logo2.png">
-      </ion-col>
-    </ion-row>
-    <ion-row class="login-subtitle">
-      <ion-col col-12 text-center>대한민국 1위
-        <br> 재한중국유학생 커뮤니티앱</ion-col>
-    </ion-row>
-  </ion-grid>
-  <div *ngIf="status!=2">
-    <form [formGroup]="emailPasswordForm">
-      <ion-grid no-padding class="login-middle">
-        <ion-row class="login-key" *ngIf="status==0">
-          <ion-col col-12 text-center>
-            <ion-icon name="flaticon-key" (click)="viewLogin()"></ion-icon>
-          </ion-col>
-        </ion-row>
-        <ion-row class="login-input" *ngIf="status==1" text-center>
-          <ion-col col-12>
-            <ion-input class="login-email" type="email" formControlName="email" placeholder="E-mail Address"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row class="login-input" *ngIf="status==1" text-center>
-          <ion-col col-12>
-            <ion-input class="login-password" type="password" formControlName="password" placeholder="Password"></ion-input>
-          </ion-col>
-        </ion-row> 
-        <ion-row *ngIf="status==1" text-center>
-          <ion-col col-12>
-            <button ion-button class="login-btn" (click)="login()" [disabled]="!emailPasswordForm.valid">이메일로 로그인</button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
-  </div>
-  <div *ngIf="status==2">
-    <form [formGroup]="emailPasswordNicknameForm">
-      <ion-grid no-padding class="login-middle">
-        <ion-row class="login-input" text-center>
-          <ion-col col-12>
-            <ion-input class="login-email" type="email" formControlName="email" placeholder="E-mail Address"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row class="login-input" text-center>
-          <ion-col col-12>
-            <ion-input class="login-password" type="password" formControlName="password" placeholder="Password"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row class="login-input" text-center>
-          <ion-col col-12>
-            <ion-input class="login-nickname" type="text" formControlName="nickname" placeholder="Nickname"></ion-input>
-          </ion-col>
-        </ion-row>
-        <ion-row text-center>
-          <ion-col col-12>
-            <button ion-button class="login-btn" (click)="register()" [disabled]="!emailPasswordNicknameForm.valid">회원가입</button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
+<ion-content no-padding class="no-scroll">
+  <div class="x-login">
+    <div class="x-login-logo"><img src="assets/imgs/logo.png"></div>
+    <div class="x-login-content" *ngIf="status!=2">
+      <div class="x-login-input-area">
+        <ion-input type="text" class="x-login-input" placeholder="E-mail Address"></ion-input>
+      </div>
+      <div class="x-login-input-area">
+        <ion-input type="password" class="x-login-input" placeholder="Password"></ion-input>
+      </div>
+      <div class="x-login-input-area">
+        <button ion-button class="x-login-btn" (click)="login()" [disabled]="!emailPasswordForm.valid">이메일로 로그인</button>
+      </div>
+      <div class="x-login-other" (click)="viewRegister()">아직 계정이 없으신가요? 회원가입하기</div>
+    </div>
+
+    <div class="x-login-content" *ngIf="status==2">
+      <div class="x-login-input-area">
+        <ion-input type="text" class="x-login-input" placeholder="E-mail Address"></ion-input>
+      </div>
+      <div class="x-login-input-area">
+        <ion-input type="text" class="x-login-input" placeholder="Nickname"></ion-input>
+      </div>
+      <div class="x-login-input-area">
+        <ion-input type="password" class="x-login-input" placeholder="Password"></ion-input>
+      </div>
+      <div class="x-login-input-area">
+        <button ion-button class="x-login-btn" (click)="register()" [disabled]="!emailPasswordNicknameForm.valid">회원가입</button>
+      </div>
+      <div class="x-login-other" (click)="viewLogin()">이미 계정을 갖고 계신가요? 로그인하기</div>
+    </div>
   </div>
 </ion-content>
-<ion-footer no-padding>
-  <ion-grid no-padding class="login-bottom" *ngIf="status==1 ||status==0">
-    <ion-row class="login-register" text-center (click)="viewRegister()">
-      <ion-col col-12>아직 계정이 없으신가요? 회원가입하기</ion-col>
-    </ion-row>
-  </ion-grid>
-  <ion-grid no-padding class="login-bottom" *ngIf="status==2">
-    <ion-row class="login-register" text-center (click)="viewLogin()">
-      <ion-col col-12>이미 계정을 갖고 계신가요? 로그인하기</ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-footer>
