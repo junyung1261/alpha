@@ -35,24 +35,22 @@
 .x-list-end {border-bottom:1px solid map-get($colors,x-skyblue-line);}
 .x-list-noctg {border:none;}
 .x-list-ctg {height:10vw;border:none;color:map-get($colors,x-gray-category);}
+.x-list-ico {font-size:2.5vw;color:map-get($colors,x-gray-count);}
+.x-list-count {font-size:3vw;color:map-get($colors,x-gray-count);}
 .x-list-rank {font-size:4vw; font-weight:bold;}
 
 // 앨범형 BBS 디자인 //
-.x-photolist {width:100vw;padding:0 3vw 0 3vw !important;background-color:map-get($colors,x-white);margin-bottom:3vw;}
-.x-photolist-title {align-items:center;height:10vw;border-bottom:1px solid map-get($colors,x-skyblue-line);font-size:3.5vw;font-weight:bold;color:map-get($colors,x-gray-dark);}
-.x-photolist-row { align-items:center;height:30vw;border-bottom:1px solid map-get($colors,x-gray-line);font-size:3.5vw;color:map-get($colors,x-gray-dark);}
-.x-photolist-col { overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 2;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;}
-.x-photolist-row-info { padding-top:3vw; color:map-get($colors,x-gray-count);}
-.x-photolist-label { color:map-get($colors,x-mint); }
-.x-photolist-photo { position:relative;height:30;}
-.x-photolist-photo img{ width:33vw; height:30vw; padding:3.25vw 3vw 3.25vw 0;}
-.x-photolist-photo-label-ing { position:absolute;top:3.25vw;left:0;padding:1vw;width:fit-content;height:fit-content;background-color:map-get($colors,x-mint);color:map-get($colors,x-white); font-size:3vw;}
-.x-photolist-photo-label-end { position:absolute;top:3.25vw;left:0;padding:1vw;width:fit-content;height:fit-content;background-color:map-get($colors,x-mint);color:map-get($colors,x-white); font-size:3vw;}
-.x-photolist-info-icon {font-size:3vw;}
+.x-photolist-container { width:100vw;height:fit-content;background-color:map-get($colors,x-white);padding:0 3vw;}
+.x-photolist-title {width:94vw;height:10vw;padding-top:2.5vw;font-size:3.5vw;font-weight:bold;border-bottom:1px solid map-get($colors,x-skyblue-line);color:map-get($colors,x-gray-dark);}
+.x-photolist {width:94vw;height:25vw;padding:3vw 0;border-bottom:1px solid map-get($colors,x-gray-bg);}
+.x-photolist-left {float:left;width:18vw;height:18vw;border:1px solid map-get($colors,x-gray-bg);margin-right:3vw;}
+.x-photolist-right {float:left;width:fit-content;height:fit-content;}
+.x-photolist-contents {width:73vw;height:12vw;font-size:3.5vw;color:map-get($colors,x-gray-dark); overflow: hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;display: -webkit-box;-webkit-box-orient: vertical;}
+.x-photolist-category {color:map-get($colors,x-mint);}
+.x-photolist-info-icon {font-size:2.5vw;color:map-get($colors,x-gray-count);}
+.x-photolist-info-date {float:left;width:fit-content;height:6vw;font-size:3vw;color:map-get($colors,x-gray-count);}
+.x-photolist-info-view, .x-photolist-info-comment {float:right;width:fit-content;height:6vw;font-size:3vw;margin-left:3vw;color:map-get($colors,x-gray-count);}
+
 
 // BBS 플로팅버튼 //
 .x-float-button {right:5vw;bottom:5vh;}
@@ -86,7 +84,19 @@
 }
 
 .chat-loading {
-
+    .modal-wrapper {
+        width:75vw;
+        height:50vw;
+        left: 12.5vw;
+        top:30% ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
+}
+.note-request {
     .modal-wrapper {
         width:75vw;
         height:50vw;
@@ -98,7 +108,19 @@
     ion-backdrop {
         visibility: visible;
     }
-
+}
+.chat-msg {
+    .modal-wrapper {
+        width:75vw;
+        height:50vw;
+        left: 12.5vw;
+        top:60vw ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
 }
 
 // BBS WRITE FAV BTN COLOR //

@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { AngularFireDatabase } from 'angularfire2/database-deprecated';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { DataProvider } from '../../providers/data/data';
 
-/**
- * Generated class for the NotePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -14,12 +11,31 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'note.html',
 })
 export class NotePage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  private user : string;
+  private noteList : any;
+  private msg : any;
+  
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider : DataProvider, public afDB:AngularFireDatabase, public afAuth:AngularFireAuth) {
+    this.user = afAuth.auth.currentUser.uid;
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotePage');
+    this.dataProvider.getNoteList(this.user).snapshotChanges().subscribe(list=>{
+      this.noteList = list;
+      this.noteList.forEach(noteUser=>{
+        this.dataProvider.getUser(noteUser.payload.val().target).snapshotChanges().take(1).subscribe(userInfo=>{
+          noteUser.nickname = userInfo.payload.val().username;
+          noteUser.profileImg = userInfo.payload.val().profileImg;
+          console.log(noteUser.nickname);
+        });
+        
+                 
+      })
+    })
+  }
+  viewNote(roomKey) {
+    this.navCtrl.push('NoteProcessingPage',{roomKey:roomKey});
   }
 
+  
 }

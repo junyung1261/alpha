@@ -73,8 +73,17 @@ export class DataProvider {
     return this.angularfireDatabase.object('/groups/' + groupId);
   }
 
+  getMenus() {
+    return this.angularfireDatabase.list('/menu/', ref => ref);
+  }
+
+  // HOME 최신글 가져오기 5개씩 //
+  getLatestPosts(child) {
+    return this.angularfireDatabase.list('/board/'+child, ref => ref.orderByChild('wr_date').limitToLast(5));
+  }
+
   getPosts(child) {
-    return this.angularfireDatabase.list('/board/'+child, ref => ref);
+    return this.angularfireDatabase.list('/board/'+child, ref => ref.orderByChild('wr_date'));
   }
 
   getPostLike(postKey){
@@ -123,6 +132,13 @@ export class DataProvider {
   getVoteList(contestId, candidateId, currentRound) {
     return this.angularfireDatabase.list('/contests/'  + contestId + '/vote/' + candidateId , ref => ref.orderByChild(currentRound).limitToLast(10));
   }
+
+  getChatQueueUser() {
+    return this.angularfireDatabase.list('/chat-queue/', ref => ref);
+  }
   
+  getNoteList(userKey){
+    return this.angularfireDatabase.list('/note-link/'+userKey , ref => ref);
+  }
 
 }

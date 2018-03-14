@@ -21,10 +21,10 @@
     <ion-row class="x-boardview-row">
       <ion-col col-12>
         <div class="x-boardview-info" *ngIf="wr_user">
-          <div class="x-boardview-writer"><img src="{{wr_user.payload.val().profileImg}}"></div>
+          <div class="x-boardview-writer"><img src="{{wr_user.payload.val().profileImg}}"/></div>
           <div class="x-boardview-nickname">{{wr_user.payload.val().username}}</div>
-          <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{wr_date}}</div>
-          <div class="x-boardview-tags">#태그1 #태그2</div>
+          <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{wr_date | DateFormat}}</div>
+          <div class="x-boardview-tags">{{wr_tags}}</div>
         </div>
       </ion-col>
     </ion-row>
@@ -37,13 +37,13 @@
     </ion-row>
     <ion-row class="x-boardview-row">
       <ion-col col-12>
-        <div class="x-boardview-post-description">{{wr_description}}</div>
+        <div class="x-boardview-post-description" [innerHTML]="wr_description"></div>
         </ion-col>
     </ion-row>
     <ion-row class="x-boardview-row">
       <ion-col col-12>
         <div class="x-boardview-cnt">
-          <div class="x-boardview-view"><span class="x-boardview-ico"><ion-icon name="flaticon-medical"></ion-icon></span>&nbsp;13</div>
+          <div class="x-boardview-view"><span class="x-boardview-ico"><ion-icon name="flaticon-medical"></ion-icon></span>&nbsp;{{wr_views}}</div>
           <div class="x-boardview-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
           <div class="x-boardview-like" (click)="postLikeOn()" *ngIf="wr_like_state=='0'"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;{{wr_likes_count}}</div>
           <div class="x-boardview-like-on" (click)="postLikeOff()" *ngIf="wr_like_state=='1'"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;{{wr_likes_count}}</div>
@@ -60,20 +60,18 @@
       </ion-col>
     </ion-row>
     <div *ngFor="let comment of wr_comments">
-      <div *ngFor="let user of wr_comment_user; let i=index">
-        <ion-row class="x-boardview-row" *ngIf="i%wr_comment_user.length==0">
-          <ion-col col-12>
-            <div class="x-boardview-info">
-              <div class="x-boardview-writer"><img src="{{user.profileImg}}"></div>
-              <div class="x-boardview-nickname">{{user.nickname}}</div>
-              <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{comment.wr_date}}</div>
-              <div class="x-boardview-comment-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
-              <div class="x-boardview-comment-like"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;13</div>
-              <div class="x-boardview-comment-description">{{comment.wr_description}}</div>
-            </div>
-          </ion-col>
-        </ion-row>
-      </div>
+      <ion-row class="x-boardview-row">
+        <ion-col col-12>
+          <div class="x-boardview-info">
+            <div class="x-boardview-writer"><img src="{{comment.profileImg}}"></div>
+            <div class="x-boardview-nickname">{{comment.username}}</div>
+            <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{comment.payload.val().wr_date | DateFormat}}</div>
+            <div class="x-boardview-comment-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
+            <div class="x-boardview-comment-like"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;13</div>
+            <div class="x-boardview-comment-description" [innerHTML]="comment.payload.val().wr_description"></div>
+          </div>
+        </ion-col>
+      </ion-row>
     </div>  
   </ion-grid>
 

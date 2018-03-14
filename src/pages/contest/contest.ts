@@ -63,8 +63,10 @@ export class ContestPage {
     this.loadingProvider.show();
     this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
       this.user = user;
+
     })
     this.dataProvider.getLastContest().snapshotChanges().take(1).subscribe( snapshot => {
+
           
       this.lastContest = snapshot[0];
       firebase.database().ref('/contests/' + this.lastContest.key +'/stage').on('value', snapshot => {
@@ -74,6 +76,7 @@ export class ContestPage {
                   
         if( snapshot.val()  == 'join' ){
           
+
           this.dataProvider.getApplicant(this.lastContest.key).snapshotChanges().subscribe(applicants => {
             this.applicants = applicants;
           }); 
@@ -136,7 +139,7 @@ export class ContestPage {
         })
         
       })
-      
+
     })
    
     

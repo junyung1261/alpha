@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { BoardviewPage } from './boardview';
-
+import { PipeModule } from '../../pipes/pipe.module';
 
 @NgModule({
   declarations: [
@@ -10,6 +10,7 @@ import { BoardviewPage } from './boardview';
   ],
   imports: [
     IonicPageModule.forChild(BoardviewPage),
+    PipeModule
   ],
   exports: [
     BoardviewPage

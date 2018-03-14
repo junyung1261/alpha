@@ -1,0 +1,31 @@
+<ion-content no-padding class="chat-loading">
+  <ion-grid no-padding class="x-chat-request">
+    <ion-row>
+      <ion-col col-4 text-right class="x-chat-request-user"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+      <ion-col col-4>
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+      </ion-col>
+        <ion-col col-4 text-left class="x-chat-request-target"><ion-icon name="flaticon-user-4"></ion-icon></ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 text-center class="x-chat-request-explain" *ngIf="type=='sender'">{{explain_sender}}</ion-col>
+      <ion-col col-12 text-center class="x-chat-request-explain" *ngIf="type=='receiver'">{{explain_receiver}}</ion-col>
+    </ion-row>
+    <ion-row *ngIf="type=='sender'">
+      <ion-col col-12 text-center *ngIf="senderState=='sending'">
+        <button ion-button class="x-chat-request-cancel" (click)="requestCancel()">취소</button>
+      </ion-col>
+      <ion-col col-12 text-center *ngIf="senderState=='denied'||senderState==missed">
+        <button ion-button class="x-chat-request-cancel" (click)="sendCancel()">닫기</button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="type=='receiver'">
+      <ion-col col-6 text-center>
+        <button ion-button class="x-chat-request-cancel" (click)="requestAccept()" >수락</button>
+      </ion-col>
+      <ion-col col-6 text-center>
+        <button ion-button class="x-chat-request-cancel" (click)="requestDeny()" >거절</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
