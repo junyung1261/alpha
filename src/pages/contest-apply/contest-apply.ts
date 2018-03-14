@@ -49,33 +49,23 @@ export class ContestApplyPage {
   insertApply(){
     
     
-    this.afDB.database.ref('/contests/' + this.lastContest.key + '/candidate').update({[this.user.key]: this.user.payload.val().gender})
+    this.afDB.database.ref('/contests/' + this.lastContest.key + '/applicant').update({[this.user.key]: this.user.payload.val().gender})
     .then((success) => {
 
       var myContest = {
         myContest : this.lastContest.key,
         place : this.place,
         tag : this.tag,
-        Speech : this.speech,
+        speech : this.speech,
       };
      
 
-      console.log(myContest);
 
       this.dataProvider.getCurrentUser().update({contest: myContest }).then((success) => {
         if(this.imageUploadContest.images.length > 0) this.imageUploadContest.uploadImages();
       });
 
-      if(this.user.payload.val().gender == 'male') {
-        this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfMale').transaction(function(currentCount){
-          return currentCount+1;
-        })
-      }
-      else{
-        this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfFemale').transaction(function(currentCount){
-          return currentCount+1;
-        })
-      }
+    this.viewCtrl.dismiss( {data : true } );
 
     })
     
