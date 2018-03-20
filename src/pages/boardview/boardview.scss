@@ -16,13 +16,10 @@ page-boardview {
     .x-boardview-view {float:left;width:46vw;height:fit-content;font-size:3vw;color:map-get($colors,x-gray-count);}
     .x-boardview-like {float:right;width:fit-content;height:fit-content;font-size:3vw;color:map-get($colors,x-gray-count);text-align:right;}
     .x-boardview-like-on {float:right;width:fit-content;height:fit-content;font-size:3vw;color:map-get($colors,x-mint);text-align:right;}
-    .x-boardview-dislike {float:right;width:fit-content;height:fit-content;margin-left:3vw;font-size:3vw;color:map-get($colors,x-gray-count);text-align:right;}
-    .x-boardview-dislike-on {float:right;width:fit-content;height:fit-content;margin-left:3vw;font-size:3vw;color:map-get($colors,x-mint);text-align:right;}
     .x-boardview-comment {margin-bottom:3vw;}
     .x-boardview-comment-ico {font-size:3.5vw;}
     .x-boardview-comment-title {color:map-get($colors,x-gray-dark);font-size:4vw;}
     .x-boardview-comment-like {float:right;width:fit-content;height:fit-content;font-size:3vw;color:map-get($colors,x-gray-count);text-align:right;margin-top:1.5vw;}
-    .x-boardview-comment-dislike {float:right;width:fit-content;height:fit-content;margin-left:3vw;font-size:3vw;color:map-get($colors,x-gray-count);text-align:right;margin-top:1.5vw;}
     .x-boardview-comment-description {
         float:right;
         width:79vw;

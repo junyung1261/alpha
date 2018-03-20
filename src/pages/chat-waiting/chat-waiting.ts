@@ -11,9 +11,7 @@ import * as firebase from 'firebase';
 })
 export class ChatWaitingPage {
   private currentUser : any;   //로그온 사용자
-  private currentUserId : any;
   private users : any;  //채팅방 참여자리스트
-  private introduce : string; //채팅방 인사말
 
   private opts: any = {
     showBackdrop: true,
@@ -22,25 +20,12 @@ export class ChatWaitingPage {
   }
   
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public dataProvider:DataProvider,
-    public afDB:AngularFireDatabase, 
-    public modalCtrl:ModalController) {
-      
-      
+    public navCtrl: NavController, public navParams: NavParams, public dataProvider:DataProvider, public afDB:AngularFireDatabase, public modalCtrl:ModalController) {
       this.currentUser = firebase.auth().currentUser.uid;
-      
-      //입장시 채팅대기열 추가//
-      this.afDB.database.ref('/chat-queue/'+firebase.auth().currentUser.uid).set({
-        status:'ready',
-        introduce:this.navParams.get('introduce')
-      });
-
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad NotePage');
+    console.log('채팅방 대기열 진입');
     // 채팅 참여자 목록 //
     this.dataProvider.getChatQueueUser().snapshotChanges().subscribe(users=>{
       this.users = users;
@@ -53,34 +38,51 @@ export class ChatWaitingPage {
       });
     });
 
+    // 상태 감지 ( ready : 수신대기, sending : 대화요청, receiving : 대화요청수신, cancel : 대화요청취소, deny : 대화요청 거절//
+    
+    // SENDING, RECEIVING //
     this.afDB.database.ref('/chat-queue/'+firebase.auth().currentUser.uid).on('value',status=>{
-      if(status.child('status').val()=='receiving'){
-        this.chatRequest(status.child('status_sender').val(),status.key,'receiver');
+      if(status.child('status').val()=='sending'){
+        this.viewChatProgressModal(status.key,status.child('target').val(),'sending','sender'); //(송신자, 수신자, 상태, 신분)
       }
+      else if(status.child('status').val()=='receiving'){
+        this.viewChatProgressModal(status.child('target').val(),status.key,'receiving','receiver');//(송신자, 수신자, 상태, 신분)
+      }
+     
+
+
+      
+         
     })
   }
-  ionViewWillLeave(){
-    this.afDB.database.ref('/chat-queue/'+firebase.auth().currentUser.uid).remove();
+  
+
+  chatRequestSend(sender, receiver){
+    this.afDB.database.ref('/chat-queue/'+sender).update({
+      status:'sending',
+      target:receiver
+    });
+    this.afDB.database.ref('/chat-queue/'+receiver).update({
+      status:'receiving',
+      target:sender
+    });
   }
 
-  chatRequest(sender, receiver, type){
-    let statusModal = this.modalCtrl.create('ChatStatusPage',{senderKey:sender,receiverKey:receiver,type:type}, this.opts);
-    statusModal.present();
-    statusModal.onDidDismiss(data => {
+  viewChatProgressModal(sender, receiver, status, type){
+    let progressModal = this.modalCtrl.create('ChatStatusPage',{senderKey:sender, receiverKey:receiver, status:status, type:type},this.opts);
+    progressModal.present();
+    progressModal.onDidDismiss((data)=>{
       if(data.status=='chatting'){
-        this.navCtrl.push('ChatProcessingPage',{sender:data.sender,roomtype:'normal'});
+        console.log('채팅진입');
+        this.navCtrl.push('ChatProcessingPage',{roomkey:data.roomkey,roomType:data.roomType,userType:data.userType});
       }
     })
   }
-
+ 
   chatWaitingClose(){
     this.afDB.database.ref('/chat-queue/'+firebase.auth().currentUser.uid).remove();
     this.navCtrl.pop();
   }
 
-  noteRequest(requestTarget){
-    let noteRequestModal = this.modalCtrl.create('NoteRequestPage',{target:requestTarget},this.opts);
-    noteRequestModal.present();
-  }
   
 }
