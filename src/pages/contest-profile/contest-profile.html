@@ -1,10 +1,10 @@
 <ion-content no-padding>
-  <ion-grid no-padding class="x-contest-profile">
+  <ion-grid no-padding class="x-contest-profile" *ngIf="candidate">
     <ion-row class="x-contest-profile-top">
       <ion-col col-12>
-        <div class="x-contest-profile-num">01</div>
+        <div class="x-contest-profile-num">{{candidate.index + 1 }}</div>
         <div class="x-contest-profile-close"><ion-icon name="flaticon-cross-1" (click)="closeProfile()"></ion-icon></div>
-        <img src="assets/imgs/user_001.jpg" class="x-contest-profile-photo">
+        <img src="{{candidate.profileImg}}" class="x-contest-profile-photo">
       </ion-col>
     </ion-row>
     <ion-row class="x-contest-profile-title">
@@ -13,26 +13,26 @@
     <ion-row class="x-contest-profile-center">
       <ion-col col-4 text-center>
         <span class="x-contest-profile-introduce-label">닉네임</span><br>
-        <span class="x-contest-profile-introduce">진세연</span>
+        <span class="x-contest-profile-introduce">{{candidate.username}}</span>
       </ion-col>
       <ion-col col-4 text-center>
         <span class="x-contest-profile-introduce-label">생년월일</span><br>
-        <span class="x-contest-profile-introduce">1994.02.15</span>
+        <span class="x-contest-profile-introduce">{{candidate.birth}}</span>
       </ion-col>
       <ion-col col-4 text-center>
         <span class="x-contest-profile-introduce-label">거주지역</span><br>
-        <span class="x-contest-profile-introduce">서울</span>
+        <span class="x-contest-profile-introduce">{{candidate.contest.place}}</span>
       </ion-col>
     </ion-row>
     <ion-row class="x-contest-profile-center">
       <ion-col col-12 text-center>
         <span class="x-contest-profile-introduce-label">하고싶은말</span><br>
-        <span class="x-contest-profile-introduce">안녕하세요! 진세연입니다.<br>스물다섯이구요. 처음도전하는건데 잘 부탁드려요.<br>투표 많이 부탁드립니다 ㅎㅎ</span>
+        <span class="x-contest-profile-introduce">{{candidate.contest.speech}}</span>
       </ion-col>
     </ion-row>
     <ion-row class="x-contest-profile-bottom">
       <ion-col col-12 text-center>
-        <span class="x-contest-profile-tags">#귀여움 #섹시 #여우 #매력있는</span>
+        <span class="x-contest-profile-tags">{{candidate.contest.tag}}</span>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -1,4 +1,8 @@
 page-login {
+
+    .no-scroll .scroll-content{
+        overflow:hidden;
+    }
 .text-input::-moz-placeholder {
     color: map-get($colors,x-white);
 }
@@ -11,6 +15,66 @@ page-login {
     text-indent: 0;
     color: map-get($colors,x-white);
 }
+
+.x-login {
+    width:100vw;
+    height:100vh;
+    padding-top:20vw;
+    background-color:map-get($colors,x-mint);
+}
+.x-login-logo {
+    width:100vw;
+    height:fit-content;
+    
+    text-align: center;
+    img {
+        height:20vw;
+    }
+}
+.x-login-content {
+    width:100vw;
+    height:fit-content;
+    padding:12vw;
+}
+.x-login-input-area {
+    width:76vw;
+    height:10vw;
+    margin-bottom:5vw;
+    font-size:4vw;
+    color:map-get($colors,x-gray-dark);
+}
+.x-login-input {
+    width:76vw;
+    height:10vw;
+    border-radius:3vw;
+    background-color:rgba(255,255,255,0.4);
+    padding:3vw 5vw 3vw 5vw;
+}
+.x-login-btn {
+    box-shadow:none;
+    width:76vw;
+    height:10vw;
+    border:1px solid map-get($colors,x-white);
+    border-radius:3vw;
+    background-color:map-get($colors,x-mint);
+    color:map-get($colors,x-white);
+    padding:3vw 5vw 3vw 5vw;
+    font-size:4vw;
+}
+.x-login-other {
+    width:76vw;
+    text-align: center;
+    height:10vw;
+    padding-top:3vw;
+    color:map-get($colors,x-white);
+    font-size:3.5vw;
+}
+
+
+
+
+
+
 .login-top {
     width:100vw;
     height:40vh;

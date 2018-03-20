@@ -110,15 +110,27 @@ export class DataProvider {
   }
 
   getContest(contestId) {
-    return this.angularfireDatabase.database.ref('/contests/' + contestId)
+    return this.angularfireDatabase.database.ref('/contests/' + contestId);
   }
 
-  getLastContestId(){
-    return this.angularfireDatabase.database.ref('/contests').child('lastContest');
+  getLastContest(){
+    return this.angularfireDatabase.list('/contests/', ref=> ref.limitToLast(1));
   }
 
-  getCandidate(contestId){
-    return this.angularfireDatabase.list('/contests/' + contestId + '/candidate', ref => ref.orderByValue());
+  getApplicant(contestId){
+    return this.angularfireDatabase.list('/contests/' + contestId + '/applicant', ref => ref.orderByValue());
+  }
+
+  getCandidate(contestId, gender){
+    return this.angularfireDatabase.list('/contests/'  + contestId + '/candidate' , ref => ref.orderByChild('gender').equalTo(gender));
+  }
+  
+  getChampions(contestId) {
+    return this.angularfireDatabase.list('/contests/'  + contestId + '/champion' , ref => ref.orderByValue());
+  }
+
+  getVoteList(contestId, candidateId, currentRound) {
+    return this.angularfireDatabase.list('/contests/'  + contestId + '/vote/' + candidateId , ref => ref.orderByChild(currentRound).limitToLast(10));
   }
 
   getChatQueueUser() {

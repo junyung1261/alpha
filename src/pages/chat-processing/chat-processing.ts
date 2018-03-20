@@ -35,9 +35,9 @@ export class ChatProcessingPage {
     this.nickname = this.afAuth.auth.currentUser.displayName;
     this.data.type = 'message';
     this.data.nickname = this.nickname;
-
-    
+   
   }
+  
   ionViewDidLoad() {
     // 참가자 두명 세팅 //
     let joinData = this.afDB.database.ref('chat-room/'+this.roomkey+'/chats').push();
@@ -98,6 +98,7 @@ export class ChatProcessingPage {
     });
    
     this.navCtrl.pop();
+
   }
 
 }

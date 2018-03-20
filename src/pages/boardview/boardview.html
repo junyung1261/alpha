@@ -23,7 +23,7 @@
         <div class="x-boardview-info" *ngIf="wr_user">
           <div class="x-boardview-writer"><img src="{{wr_user.payload.val().profileImg}}"/></div>
           <div class="x-boardview-nickname">{{wr_user.payload.val().username}}</div>
-          <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{wr_date}}</div>
+          <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{wr_date | DateFormat}}</div>
           <div class="x-boardview-tags">{{wr_tags}}</div>
         </div>
       </ion-col>
@@ -65,7 +65,7 @@
           <div class="x-boardview-info">
             <div class="x-boardview-writer"><img src="{{comment.profileImg}}"></div>
             <div class="x-boardview-nickname">{{comment.username}}</div>
-            <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{comment.payload.val().wr_date}}</div>
+            <div class="x-boardview-time"><span class="x-boardview-ico"><ion-icon name="flaticon-clock"></ion-icon></span>&nbsp;{{comment.payload.val().wr_date | DateFormat}}</div>
             <div class="x-boardview-comment-dislike"><span class="x-boardview-ico"><ion-icon name="flaticon-shapes-1"></ion-icon></span>&nbsp;13</div>
             <div class="x-boardview-comment-like"><span class="x-boardview-ico"><ion-icon name="flaticon-hearts"></ion-icon></span>&nbsp;13</div>
             <div class="x-boardview-comment-description" [innerHTML]="comment.payload.val().wr_description"></div>
