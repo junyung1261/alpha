@@ -20,7 +20,7 @@
             <div class="x-chat-waiting-user"><img src="{{user.profileImg}}"/></div>
             <div class="x-chat-waiting-nickname">{{user.nickname}}</div>
             <div class="x-chat-waiting-introduce">{{user.payload.val().introduce}}</div>
-            <div class="x-chat-waiting-btns x-btn-mint" *ngIf="user.payload.val().status =='ready'" (click)="chatRequest(currentUser,user.payload.key,'sender')">대화요청</div>
+            <div class="x-chat-waiting-btns x-btn-mint" *ngIf="user.payload.val().status =='ready'" (click)="chatRequestSend(currentUser, user.payload.key)">대화요청</div>
             <div class="x-chat-waiting-btns x-btn-orange" *ngIf="user.payload.val().status !='ready'" (click)="noteRequest(user.payload.key)">쪽지전송</div>
           </div>
         </ion-col>

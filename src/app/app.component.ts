@@ -34,7 +34,7 @@ export class MyApp {
             if (true) {
               //user["emailVerified"]
               //Goto Home Page.
-  
+             
               this.nav.setRoot('TabsPage', { animate: false });
               this.user = firebase.auth().currentUser;
               

@@ -36,15 +36,14 @@
     </ion-item>
   </ion-list>
 </ion-content>
-<ion-footer>
-  <ion-grid>
-    <ion-row>
-      <ion-col col-10>
-        <ion-input type="text" placeholder="메세지를 입력하세요." [(ngModel)]="data.message" name="message"></ion-input>
-      </ion-col>
-      <ion-col col-2 (click)="sendMessage()">
-        <ion-icon name="paper-plane"></ion-icon>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
+<ion-footer no-border no-padding>
+  <ion-toolbar class="x-chat-processing-write" no-padding color="x-white">
+    <div class="x-chat-processing-txt">
+      <ion-input type="text" class="x-chat-processing-input" placeholder="메세지를 입력하세요." [(ngModel)]="data.message" name="message"></ion-input>
+    </div>
+    <div class="x-chat-processing-btn">
+      <button ion-button class="x-chat-processing-submit" (click)="sendMessage()"><ion-icon name="flaticon-message"></ion-icon></button>
+    </div>
+  </ion-toolbar>
 </ion-footer>

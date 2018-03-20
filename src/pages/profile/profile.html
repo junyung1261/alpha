@@ -11,7 +11,7 @@
       <div class="x-profile-title-icon"><ion-icon name="flaticon-settings" (click)="presentModal('ProfileModifyPage')"></ion-icon></div>
     </div>
     <div class="x-profile-photo">
-      <img src="assets/img/noavatar.png" *ngIf="!user.photoURL"/>
+      <img src="assets/imgs/noavatar.png" *ngIf="!user.photoURL"/>
       <img src="{{user.photoURL}}"  *ngIf="user.photoURL"/>
     </div>
     <div class="x-profile-info">

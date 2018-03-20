@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { ChatWaitingPage } from '../chat-waiting/chat-waiting';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage()
 @Component({
@@ -9,16 +11,22 @@ import { ChatWaitingPage } from '../chat-waiting/chat-waiting';
 })
 export class ChatIntroPage {
   private introduce : string;
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController) {
+  private user : string;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public viewCtrl:ViewController, public afDB:AngularFireDatabase, public afAuth:AngularFireAuth) {
+    this.user = afAuth.auth.currentUser.uid;
   }
   
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatIntroPage');
+
   }
-  viewChatWaiting() {
+  insertChatQueue() {
+    this.afDB.database.ref('/chat-queue/'+this.user).set({
+      status:'ready',
+      introduce:this.introduce
+    })
     this.viewCtrl.dismiss();
-    this.navCtrl.push('ChatWaitingPage',{introduce:this.introduce});
+    this.navCtrl.push('ChatWaitingPage',{});
   }
   
   

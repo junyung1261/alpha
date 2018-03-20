@@ -20,37 +20,15 @@ export class LoginProvider {
   // redirects the user to its respective views. Make sure to enable Anonymous login on Firebase app authentication console.
   // Login on Firebase given the email and password.
   emailLogin(email, password) {
-    this.loadingProvider.show();
-    this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((success) => {
-        this.loadingProvider.hide();
-       
-      })
-      .catch((error) => {
-        this.loadingProvider.hide();
-        let code = error["code"];
-        this.alertProvider.showErrorMessage(code);
-      });
+    
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+     
+      
   }
 
   // Register user on Firebase given the email and password.
   register(email, password, nickname) {
-    this.loadingProvider.show();
-    this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((success) => {
-        success.updateProfile({
-          displayName: nickname
-        }).then((success) => {
-          this.loadingProvider.hide();
-          this.navCtrl.setRoot('VerificationPage');
-        });
-        
-      })
-      .catch((error) => {
-        this.loadingProvider.hide();
-        let code = error["code"];
-        this.alertProvider.showErrorMessage(code);
-      });
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password);
   }
 
   // Send Password Reset Email to the user.

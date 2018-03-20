@@ -12,67 +12,35 @@ import { Validator } from '../../validator';
 })
 export class LoginPage {
 
-  private mode: string;
-  private emailPasswordForm: FormGroup;
-  private emailPasswordNicknameForm: FormGroup;
-  private emailForm: FormGroup;
-  public text: any;
-  private status: any;
+  private opts_login: any = {
+    showBackdrop: true,
+    enableBackdropDismiss: true,
+    cssClass:'x-login-view'
+  }
+
+  private opts_join: any = {
+    showBackdrop: true,
+    enableBackdropDismiss: true,
+    cssClass:'x-join-view'
+  }
+
 
   constructor(
-    public navCtrl: NavController, 
-    public navParams: NavParams, 
-    public loginProvider: LoginProvider, 
-    public formBuilder: FormBuilder,
-    public modalCtrl: ModalController) {
-
-    this.status = 0;
-    this.mode = this.navParams.get('mode'); 
-    
-    this.loginProvider.setNavController(this.navCtrl);
-    // Create our forms and their validators based on validators set on validator.ts.
-    this.emailPasswordForm = formBuilder.group({
-      email: Validator.emailValidator,
-      password: Validator.passwordValidator
-    });
-    this.emailPasswordNicknameForm = formBuilder.group({
-      email: Validator.emailValidator,
-      password: Validator.passwordValidator,
-      nickname: Validator.nicknameValidator
-    });
+    public navCtrl: NavController, public navParams: NavParams, public modalCtrl: ModalController) {
   }
 
 
   viewLogin(){
-    this.status = 1;
+    let loginModal = this.modalCtrl.create('LoginViewPage',{type:'login'},this.opts_login);
+    loginModal.present();
   }
-  viewRegister(){
-    this.status = 2;
+  viewJoin(){
+    let joinModal = this.modalCtrl.create('LoginViewPage',{type:'join'},this.opts_join);
+    joinModal.present();
   }
 
   ionViewDidLoad() {
-   
     console.log('ionViewDidLoad LoginPage');
-    this.mode = 'main';
   }
 
-  login() {
-    this.loginProvider.emailLogin(this.emailPasswordForm.value["email"], this.emailPasswordForm.value["password"]);
-  }
-
-  register() {
-    this.loginProvider.register(this.emailPasswordNicknameForm.value["email"], this.emailPasswordNicknameForm.value["password"], this.emailPasswordNicknameForm.value["nickname"]);
-  }
-
-  // Call loginProvider and send a password reset email.
-  forgotPassword() {
-    this.loginProvider.sendPasswordReset(this.emailForm.value["email"]);
-    this.clearForms();
-  }
-
-  // Clear the forms.
-  clearForms() {
-    this.emailPasswordForm.reset();
-    this.emailForm.reset();
-  }
 }

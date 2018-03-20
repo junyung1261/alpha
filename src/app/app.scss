@@ -69,6 +69,34 @@
 .x-chatmenu-button { height:8vw;box-shadow:none!important;border:none!important;background-color:map-get($colors,x-chat);color:map-get($colors,x-white);font-size:3vw;margin:3vw 0 3vw 0;}
 
 // 토너먼트 상세프로필 모달 //
+
+.x-login-view {
+    .modal-wrapper {
+        width:75vw;
+        height:63vw;
+        left: 12.5vw;
+        top:20% ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
+}
+.x-join-view {
+    .modal-wrapper {
+        width:75vw;
+        height:75vw;
+        left: 12.5vw;
+        top:20% ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
+}
+
 .mini-modal {
     .modal-wrapper {
         width:75vw;
