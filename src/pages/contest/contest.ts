@@ -25,6 +25,7 @@ export class ContestPage {
   private pageFlag: boolean = false;
   lastContest: any;
   currentStage: any;
+  currentGender: any;
   candidates = [];
   candidates_round2 = [];
   candidates_round3 = [];
@@ -63,7 +64,7 @@ export class ContestPage {
     this.loadingProvider.show();
     this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
       this.user = user;
-
+      this.currentGender = user.payload.val().gender;
     })
     this.dataProvider.getLastContest().snapshotChanges().take(1).subscribe( snapshot => {
 
@@ -127,7 +128,7 @@ export class ContestPage {
           candidate.round_1 = snapshot.val().round_1;
           candidate.total = candidate.round_1;
           if(snapshot.child('round_2').exists()) {
-            console.log(snapshot.val().round_2)
+            
             candidate.round_2 = snapshot.val().round_2;
             candidate.total += candidate.round_2;
           }
@@ -135,11 +136,10 @@ export class ContestPage {
             candidate.round_3 = snapshot.val().round_3;
             candidate.total += candidate.round_3;
           }
-          if(i == candidates.length-1) this.chunckCanditates(this.candidates);
+          if(i == candidates.length -1) this.chunckCanditates(this.candidates);
         })
         
       })
-
     })
    
     
@@ -180,8 +180,6 @@ export class ContestPage {
         return i%chunk_size===0 ? candidates_round3.slice(i,i+chunk_size) : null; 
     })
     .filter(e =>{ return e; });
-
-    console.log(this.candidates_round2);
 
     this.loadingProvider.hide();
   }
@@ -266,5 +264,9 @@ export class ContestPage {
 
 
     
+  }
+
+  changeGender(gender){
+    console.log(gender);
   }
 }

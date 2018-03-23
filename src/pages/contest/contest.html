@@ -1,9 +1,6 @@
 <ion-content no-padding>
   <ion-grid no-padding class="x-contest-top">
     <ion-row text-center>
-      <ion-col col-12><div class="x-contest-icon"><ion-icon name="flaticon-hearts"></ion-icon></div></ion-col>
-    </ion-row>
-    <ion-row text-center>
       <ion-col col-12><div class="x-contest-status">후보모집중</div></ion-col>
     </ion-row>
     <ion-row text-center>
@@ -11,6 +8,12 @@
     </ion-row>
     <ion-row text-center>
       <ion-col col-12><div class="x-contest-time">2月 19日 9時 ~ 2月 19日 18時</div></ion-col>
+    </ion-row>
+    <ion-row text-center [hidden]="currentProgress == 'join'">
+      <ion-segment class="x-contest-stage" mode="md" [(ngModel)]="currentGender">
+        <ion-segment-button value="female" (click) = "changeGender('male')" >남성</ion-segment-button>
+        <ion-segment-button value="male"(click) = "changeGender('female')" >여성</ion-segment-button>
+      </ion-segment>
     </ion-row>
   </ion-grid>
   <ion-grid no-padding class="x-contest-center">

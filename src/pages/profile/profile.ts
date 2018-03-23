@@ -78,4 +78,8 @@ export class ProfilePage {
     });
     alert.present();
   }
+
+  openPage(pagename){
+    this.navCtrl.push(pagename);
+  }
 }
