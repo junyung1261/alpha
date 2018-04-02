@@ -6,6 +6,7 @@ import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
+import { timer } from 'rxjs/observable/timer';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,6 +15,7 @@ import * as firebase from 'firebase';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
   private user : any;
+  showSplash = true;
 
   constructor(
     private platform: Platform, 
@@ -28,6 +30,8 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       mobileAccessibility.usePreferredTextZoom(false);
+      timer(3000).subscribe(() => this.showSplash = false)
+
       this.afAuth.authState.subscribe(user => {
         if (!user) {
           this.nav.setRoot('LoginPage');
@@ -43,7 +47,6 @@ export class MyApp {
               
            } //else {
             //   //Goto Verification Page.
-              
             //   this.nav.setRoot('VerificationPage', { animate: false });
             // }
           }
