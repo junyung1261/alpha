@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NavController, App } from 'ionic-angular';
-import { LoadingProvider } from '../loading/loading';
-import { AlertProvider } from '../alert/alert';
+import { LoadingProvider, AlertProvider } from '../';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()

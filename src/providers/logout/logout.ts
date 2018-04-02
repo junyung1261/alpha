@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { App } from 'ionic-angular';
-import { LoadingProvider } from '../loading/loading';
+import { LoadingProvider } from '../../providers';
 import * as firebase from 'firebase';
 
 @Injectable()

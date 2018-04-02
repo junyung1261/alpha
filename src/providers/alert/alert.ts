@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from 'ionic-angular';
 import { Validator } from '../../validator';
-//import { Login } from '../auth/login';
-import { LogoutProvider } from '../auth/logout';
 
 const errorMessages = {
   // Alert Provider
@@ -60,7 +58,7 @@ const successMessages = {
 export class AlertProvider {
   private alert;
 
-  constructor(public alertCtrl: AlertController, public logoutProvider: LogoutProvider) {
+  constructor(public alertCtrl: AlertController) {
     console.log("Initializing Alert Provider");
   }
 

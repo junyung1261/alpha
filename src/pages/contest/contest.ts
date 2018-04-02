@@ -3,8 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, LoadingController
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import { Observable } from '@firebase/util';
-import { DataProvider } from '../../providers/data/data';
-import { LoadingProvider } from '../../providers/loading/loading';
+import { DataProvider, LoadingProvider } from '../../providers';
 import { filter } from 'rxjs/operator/filter';
 
 @IonicPage()

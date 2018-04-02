@@ -86,5 +86,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <plugin name="cordova-plugin-shake" spec="^0.6.0" />
     <plugin name="cordova-plugin-vibration" spec="^3.0.1" />
-    <engine name="android" spec="7.0.0" />
+    <engine name="android" spec="~6.4.0" />
+    <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
 </widget>

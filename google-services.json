@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "286006030163",
+    "firebase_url": "https://tianya-6d56d.firebaseio.com",
+    "project_id": "tianya-6d56d",
+    "storage_bucket": "tianya-6d56d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286006030163:android:c9a6809f5e1e1648",
+        "android_client_info": {
+          "package_name": "alpha.xinhan.tianya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286006030163-u0ed1huqeq5esdf6rmg1ejvbkauu2q06.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB08jsaovfWNT4wh9aejAT_uqNFJzQSCak"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

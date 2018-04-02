@@ -2,9 +2,8 @@ import { Component, ViewChild, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Content, Keyboard } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { ImageProvider } from '../../providers/data/image';
+import { ImageProvider, RequestProvider } from '../../providers';
 import { Camera } from '@ionic-native/camera';
-import { RequestProvider } from '../../providers/data/request';
 import * as firebase from 'firebase';
 
 /**

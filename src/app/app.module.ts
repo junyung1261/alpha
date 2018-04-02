@@ -8,7 +8,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
-import { environment } from "../../src/environments/environment"
+import { Environment } from "../environments/environment"
+import { FCM } from '@ionic-native/fcm';
 
 import { IonicStorageModule, Storage } from '@ionic/storage';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -17,18 +18,10 @@ import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
-import { LoadingProvider } from '../providers/loading/loading';
-import { LoginProvider } from '../providers/auth/login';
-import { LogoutProvider } from '../providers/auth/logout';
-import { AlertProvider } from '../providers/alert/alert';
-import { DataProvider } from '../providers/data/data';
-import { ImageProvider } from '../providers/data/image';
-import { RequestProvider } from '../providers/data/request';  
-//import { RequestProvider } from '../providers/data/request';
-
+import { LoadingProvider, LoginProvider, LogoutProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, Settings  } from '../providers';
+ 
 
 import { Camera } from '@ionic-native/camera';
-import { Settings } from '../providers/settings/settings';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -58,7 +51,7 @@ export function provideSettings(storage: Storage) {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireModule.initializeApp(Environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
     HttpClientModule,
@@ -80,7 +73,7 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     MobileAccessibility,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-
+    FCM,
     LoadingProvider,
     LoginProvider,
     LogoutProvider,
@@ -88,6 +81,9 @@ export function provideSettings(storage: Storage) {
     DataProvider,
     ImageProvider,
     RequestProvider,
+    AuthProvider,
+    NotificationProvider,
+    ToastProvider,
     AngularFireDatabase,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
 

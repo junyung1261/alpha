@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { LogoutProvider } from '../../providers/auth/logout';
-import { LoadingProvider } from '../../providers/loading/loading';
-import { AlertProvider } from '../../providers/alert/alert';
+import { LogoutProvider, LoadingProvider, AlertProvider } from '../../providers';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Validator } from '../../validator';
 import * as firebase from 'firebase';

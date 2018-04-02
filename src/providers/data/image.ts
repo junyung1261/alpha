@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertProvider } from '../alert/alert';
-import { LoadingProvider } from '../loading/loading';
+import { LoadingProvider } from '../';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';

@@ -3,9 +3,8 @@ import { IonicPage, NavController, NavParams, AlertController, ModalController }
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
-import { DataProvider } from '../../providers/data/data';
+import { DataProvider, RequestProvider } from '../../providers';
 import { Observable } from 'rxjs/Observable';
-import { RequestProvider } from '../../providers/data/request';
 
 @IonicPage()
 @Component({

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { DataProvider } from '../../providers/data/data';
+import { DataProvider } from '../../providers';
 import * as firebase from 'firebase';
 import { ImageUploadContest } from "../../components/image-upload-contest/image-upload-contest";
 import { refCount } from 'rxjs/operators';
