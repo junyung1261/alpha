@@ -136,6 +136,19 @@
         visibility: visible;
     }
 }
+.x-edit-profile-view {
+    .modal-wrapper {
+        width:75vw;
+        height:100vw;
+        left: 12.5vw;
+        top:20% ;
+        position: absolute;
+        overflow: hidden;
+    }
+    ion-backdrop {
+        visibility: visible;
+    }
+}
 
 .mini-modal {
     .modal-wrapper {
