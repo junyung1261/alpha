@@ -7,13 +7,12 @@ page-login {
         padding:15vw 28vw 0vw 28vw;
         margin:20vw 0 25vw 0;
     }
-
     .x-btn-area {
         width:100vw;
         height:fit-content;
         text-align: center;
         margin-bottom:5vw;
-    }
+    } 
     .x-btn {
         box-shadow:none;
         width:74vw;
@@ -28,7 +27,7 @@ page-login {
     .x-main-footer {
         position: absolute;
         bottom:10vw;
-        height:fit-content;
+        height:10vw;
         width:100vw;
         color:map-get($colors,x-white);
         font-size:3vw;
@@ -40,6 +39,4 @@ page-login {
         background-color:rgba(255,255,255,0.8) !important;
         box-shadow:none !important;
     }
-
-    
 }
