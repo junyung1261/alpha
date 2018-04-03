@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Platform, App } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
-import { AuthProvider, DataProvider } from '../';
+import { DataProvider } from '../';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
+import * as firebase from 'firebase';
 
 @Injectable()
 export class NotificationProvider {
@@ -13,7 +14,6 @@ export class NotificationProvider {
   private app: App;
   constructor(private platform: Platform,
     private fcm: FCM,
-    private auth: AuthProvider,
     private dataProvider: DataProvider,
     
     private http: HttpClient) { }
@@ -29,10 +29,10 @@ export class NotificationProvider {
         this.subscriptions = [];
       }
       this.fcm.getToken().then((token: string) => {
-        this.dataProvider.setPushToken(this.auth.getUserData().userId, token);
+        this.dataProvider.setPushToken(firebase.auth().currentUser.uid, token);
 
         let sub = this.fcm.onTokenRefresh().subscribe((token: string) => {
-          this.dataProvider.setPushToken(this.auth.getUserData().userId, token);
+          this.dataProvider.setPushToken(firebase.auth().currentUser.uid, token);
         });
         this.subscriptions.push(sub);
         // Deeplink when push notification is tapped.
@@ -42,7 +42,7 @@ export class NotificationProvider {
             if (data.partnerId) {
               // Open the conversation
               this.app.getActiveNavs()[0].popToRoot().then(() => {
-                this.app.getActiveNavs()[0].parent.select(0);
+                this.app.getActiveNavs()[0].parent.select(2);
                 this.app.getRootNavs()[0].push('ChatPage', { userId: data.partnerId });
               });
             }
@@ -62,10 +62,18 @@ export class NotificationProvider {
             if (data.newRequest) {
               // View pending user requests
               this.app.getRootNavs()[0].popToRoot().then(() => {
-                this.app.getActiveNavs()[0].parent.select(2);
-                this.app.getRootNavs()[0].push('RequestsPage');
+                this.app.getActiveNavs()[0].parent.select(1);
+                
               });
             }
+            if (data.acceptRequest) {
+              // View pending user requests
+              this.app.getRootNavs()[0].popToRoot().then(() => {
+                this.app.getActiveNavs()[0].parent.select(2);
+                
+              });
+            }
+
           } else {
             //Notification was received while the app is opened or in foreground. In case the user needs to be notified.
           }
@@ -83,7 +91,7 @@ export class NotificationProvider {
   public destroy(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.platform.is('cordova')) {
-        this.dataProvider.removePushToken(this.auth.getUserData().userId);
+        this.dataProvider.removePushToken(firebase.auth().currentUser.uid);
         resolve();
       } else {
         reject();

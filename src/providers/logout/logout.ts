@@ -5,7 +5,9 @@ import * as firebase from 'firebase';
 
 @Injectable()
 export class LogoutProvider {
-  constructor(public app: App, public loadingProvider: LoadingProvider) {
+  constructor(public app: App, 
+    public loadingProvider: LoadingProvider,
+    ) {
     console.log("Initializing Logout Provider");
   }
 
@@ -18,6 +20,7 @@ export class LogoutProvider {
     // Sign the user out on Firebase
     firebase.auth().signOut().then((success) => {
       // Clear navigation stacks
+      
       this.app.getRootNav().popToRoot().then(() => {
         this.loadingProvider.hide();
         // Restart the entire app

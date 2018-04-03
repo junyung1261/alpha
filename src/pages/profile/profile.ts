@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ModalController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
-import { LogoutProvider } from '../../providers';
+import { LogoutProvider, NotificationProvider } from '../../providers';
 
 @IonicPage()
 @Component({
@@ -20,7 +20,8 @@ export class ProfilePage {
     private afAuth: AngularFireAuth, 
     private modalCtrl: ModalController,
     private alertCtrl: AlertController,
-    private logoutProvider: LogoutProvider
+    private logoutProvider: LogoutProvider,
+    private notificationProvider: NotificationProvider
 
   ) {
     this.afAuth.authState.subscribe(user => {
@@ -72,6 +73,7 @@ export class ProfilePage {
           text: 'Logout',
           handler: () => {
             this.logoutProvider.logout();
+            this.notificationProvider.destroy();
           }
         }
       ]

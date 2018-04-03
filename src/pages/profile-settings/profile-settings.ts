@@ -1,15 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-import { Settings } from '../../providers';
-/**
- * Generated class for the ProfileSettingsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, MenuController, AlertController, ActionSheetController, App, Platform } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { AuthProvider, AlertProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider, LogoutProvider } from '../../providers';
+// import { Keyboard } from '@ionic-native/keyboard'
+import { Camera } from '@ionic-native/camera';
+import { Subscription } from 'rxjs/Subscription';
+import firebase from 'firebase';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage()
 @Component({
@@ -17,81 +14,209 @@ import { Settings } from '../../providers';
   templateUrl: 'profile-settings.html',
 })
 export class ProfileSettingsPage {
+  private android: boolean;
+  private profileForm: FormGroup;
+  private user: any;
+  private userId: string;
+  private hasError: boolean;
+  private hasPassword: boolean;
+  private hasPushToken: boolean;
+  private subscription: Subscription;
+  private uniqueUsername: boolean;
+  private nameValidator: ValidatorFn = Validators.compose([
+    Validators.required
+  ]);
+  private usernameValidator: ValidatorFn = Validators.compose([
+    Validators.pattern('^[0-z.]{4,20}$'),
+    Validators.required
+  ]);
+  private emailValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.email
+  ]);
+  private bioValidator: ValidatorFn = Validators.compose([
+    Validators.required
+  ]);
 
-  options: any;
-
-  settingsReady = false;
-
-  form: FormGroup;
-
-  profileSettings = {
-    page: 'profile',
-    pageTitleKey: 'SETTINGS_PAGE_PROFILE'
-  };
-
-  page: string = 'main';
-  pageTitleKey: string = 'SETTINGS_TITLE';
-  pageTitle: string;
-
-  subSettings: any = ProfileSettingsPage;
-
-  constructor(public navCtrl: NavController,
-    public settings: Settings,
-    public formBuilder: FormBuilder,
-    public navParams: NavParams,
-    public translate: TranslateService) {
+  constructor(private navCtrl: NavController,
+    private app: App,
+    private navParams: NavParams,
+    private menuCtrl: MenuController,
+    private alertCtrl: AlertController,
+    private actionSheetCtrl: ActionSheetController,
+    private formBuilder: FormBuilder,
+    private afAuth: AngularFireAuth,
+    private alert: AlertProvider,
+    private translate: TranslateProvider,
+    private dataProvider: DataProvider,
+    private imageProvider: ImageProvider,
+    private logoutProvider: LogoutProvider,
+    private loading: LoadingProvider,
+    private toast: ToastProvider,
+    private notification: NotificationProvider,
+    private camera: Camera,
+    private platform: Platform) {
+    this.profileForm = formBuilder.group({
+     
+      birth: ['', this.bioValidator],
+      username: ['', this.usernameValidator],
+      email: ['', this.emailValidator],
+      bio: ['', this.bioValidator],
+      gender: ['', this.bioValidator]
+    });
   }
 
-  _buildForm() {
-    let group: any = {
-      option1: [this.options.option1],
-      option2: [this.options.option2],
-      option3: [this.options.option3]
-    };
-
-    switch (this.page) {
-      case 'main':
-        break;
-      case 'profile':
-        group = {
-          option4: [this.options.option4]
-        };
-        break;
+  keyDownFunction(event) {
+    // User pressed return on keypad, proceed with updating profile.
+    if (event.keyCode == 13) {
+     
+      this.updateProfile();
     }
-    this.form = this.formBuilder.group(group);
+  }
 
-    // Watch the form for changes, and
-    this.form.valueChanges.subscribe((v) => {
-      this.settings.merge(this.form.value);
-    });
+  onInput(username: string) {
+    // Check if the username entered on the form is still available.
+    // this.uniqueUsername = true;
+    // if (this.profileForm.controls.username.valid && !this.profileForm.controls.username.hasError('required')) {
+    //   this.firestore.getUserByUsername('@' + username.toLowerCase()).then((user: User) => {
+    //     if (user && (this.userId != user.userId)) {
+    //       this.uniqueUsername = false;
+    //     }
+    //   }).catch(() => { });
+    // }
   }
 
   ionViewDidLoad() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
+    // this.platform.ready().then(() => {
+    //   // Check if device is running on android and adjust the scss accordingly.
+    //   if (this.device.platform == 'Android') {
+    //     this.android = true;
+    //   } else {
+    //     this.android = false;
+    //   }
+    // }).catch(() => { });
+    // Set placeholder photo, while the user data is loading.
+    
+
+    
+      // Check if user is logged in using email and password and show the change password button.
+      this.userId = this.afAuth.auth.currentUser.uid;
+    
+      // Get userData from Firestore and update the form accordingly.
+      this.dataProvider.getUser(this.userId).valueChanges().subscribe(user => {
+        
+          this.user = user;
+          this.hasPushToken = this.user.notifications;
+          this.profileForm.setValue({
+            username: this.user.username,
+            birth: this.user.birth,
+            gender: this.user.gender,
+            email: this.user.email,
+            bio: 'sdf'
+          });
+          this.uniqueUsername = true;
+        });
+  }
+ 
+
+  ionViewWillUnload() {
+    // Unsubscribe to Subscription.
+    if (this.subscription)
+      this.subscription.unsubscribe();
+    // Delete the photo uploaded from storage to preserve Firebase storage space since it's no longer going to be used.
+    // if (this.auth.getUserData().photo != this.user.photo)
+    //   this.storage.delete(this.user.userId, this.user.photo);
   }
 
-  ionViewWillEnter() {
-    // Build an empty form for the template to render
-    this.form = this.formBuilder.group({});
+  
 
-    this.page = this.navParams.get('page') || this.page;
-    this.pageTitleKey = this.navParams.get('pageTitleKey') || this.pageTitleKey;
+  private setPhoto(): void {
+    // Allow user to upload and set their profile photo using their camera or photo gallery.
+    if (true) {
+      this.actionSheetCtrl.create({
+        title: this.translate.get('auth.profile.photo.title'),
+        buttons: [
+          {
+            text: this.translate.get('auth.profile.photo.take'),
+            role: 'destructive',
+            handler: () => {
+              this.imageProvider.setProfilePhoto(this.user, this.camera.PictureSourceType.CAMERA);
+              
+            }
+          },
+          {
+            text: this.translate.get('auth.profile.photo.gallery'),
+            handler: () => {
+              this.imageProvider.setProfilePhoto(this.user, this.camera.PictureSourceType.PHOTOLIBRARY);
+            }
+          },
+          {
+            text: this.translate.get('auth.profile.photo.cancel'),
+            role: 'cancel',
+            handler: () => { }
+          }
+        ]
+      }).present();
+    }
+  }
 
-    this.translate.get(this.pageTitleKey).subscribe((res) => {
-      this.pageTitle = res;
-    })
+  private updateProfile(): void {
+    // Check if profileForm is valid and username is unique and proceed with updating the profile.
+    if (!this.profileForm.valid || !this.uniqueUsername) {
+      this.hasError = true;
+    } else {
+      if (this.uniqueUsername) {
+        this.loading.show();
+       
+       
+        
+        let username =  '@' + this.profileForm.value['username'].toLowerCase();
+        let bio = this.profileForm.value['bio'];
+            
+      
+        this.dataProvider.getUser(this.userId).update({
+          
+        
+          username: username,
+          bio: bio,
+          notifications: this.hasPushToken
 
-    this.settings.load().then(() => {
-      this.settingsReady = true;
-      this.options = this.settings.allSettings;
+        }).then(success => {
+          // Formatting the first and last names to capitalized.
+            // Initialize pushToken to receive push notifications if the user enabled them, otherwise clear pushToken.
+            if (this.hasPushToken) {
+              this.notification.init();
+            } else {
+              this.notification.destroy();
+            }
+            this.loading.hide();
+            this.toast.show(this.translate.get('auth.profile.updated'));
+          }).catch(() => { });
+       
+      }
+    }
+  }
 
-      this._buildForm();
+   logout(){
+    let alert = this.alertCtrl.create({
+      title: '로그아웃',
+      message: '정말로 로그아웃 하시겠습니까?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Logout',
+          handler: () => {
+            this.logoutProvider.logout();
+            this.notification.destroy();
+          }
+        }
+      ]
     });
+    alert.present();
   }
-
-  ngOnChanges() {
-    console.log('Ng All Changes');
-  }
-
 }

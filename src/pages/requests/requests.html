@@ -1,0 +1,57 @@
+
+<ion-header no-border>
+  <ion-navbar color="x-mint" hideBackButton>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="closeChatList()" class="leftbtn">
+        <ion-icon name="flaticon-left-arrow" color="x-white"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title color="top-text">사용자 목록</ion-title>
+    <ion-buttons end></ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+
+
+        <ion-item-group>
+                <ion-item-divider color="light">대화요청</ion-item-divider>
+                <ion-item *ngFor="let request of requestsReceived" tappable>
+                    <ion-avatar item-left>
+                        <img src="{{ request.payload.val().profileImg }}" [hidden]="!request.payload.val().profileImg">
+                        <img src="assets/imgs/noavatar.png" [hidden]="request.payload.val().profileImg"/>
+                    </ion-avatar>
+        
+                    <span class="nickname">{{ request.payload.val().username }}</span>
+                <span class="distance">[122km]</span><br>
+                <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
+                <span class="conversation"  item-right><ion-icon name="flaticon-chat" color="x-mint" (click)="acceptFriendRequest(request)"></ion-icon></span>
+                </ion-item>
+               
+            </ion-item-group>
+
+
+    <ion-item-group>
+        <ion-item-divider color="light">사용자 대화방 <button item-right>대화중</button></ion-item-divider>
+        <ion-item *ngFor="let lastestUser of users | slice:0:usersToShow " tappable  [hidden]="lastestUser.key == user.key">
+            <ion-avatar item-left>
+                <img src="{{ lastestUser.payload.val().profileImg }}" *ngIf="lastestUser.payload.val().profileImg">
+                <img src="assets/imgs/noavatar.png"  *ngIf="!lastestUser.payload.val().profileImg"/>
+            </ion-avatar>
+
+            <span class="nickname">{{ lastestUser.payload.val().username }}</span>
+        <span class="distance">[122km]</span><br>
+        <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
+        
+        <span class="memo" item-right><ion-icon name="flaticon-note-1" color="x-pink" (click)="presentAlert(0)"></ion-icon></span>
+        <span class="conversation"  item-right *ngIf="!lastestUser.payload.val().inTalk"><ion-icon name="flaticon-chat" color="x-mint" (click)="presentAlert(1, lastestUser)"></ion-icon></span>
+        </ion-item>
+    </ion-item-group>
+   
+
+    <ion-infinite-scroll (ionInfinite)="$event.waitFor(doInfinite())" [enabled]="users?.length > usersToShow">
+        <ion-infinite-scroll-content loadingSpinner="none"></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+ 
+</ion-content>

@@ -49,23 +49,23 @@ export class ChatRoomPage {
     console.log('ionViewDidLoad ChatRoomPage');
     
     this.userId = this.navParams.get('userId');
-    this.requestProvider.getUser(this.userId).subscribe((user) => {
-      this.title = user.username;
+    this.requestProvider.getUser(this.userId).snapshotChanges().subscribe((user) => {
+      this.title = user.payload.val().username;
     });
    // Get conversationInfo with friend.
-   this.requestProvider.getChatMessages(this.userId).subscribe((conversation) => {
-    if (conversation.$exists()) {
+   this.requestProvider.getChatMessages(this.userId).snapshotChanges().subscribe((conversation) => {
+    if (conversation.payload.exists()) {
       // User already have conversation with this friend, get conversation
-      this.conversationId = conversation.conversationId;
+      this.conversationId = conversation.payload.val().conversationId;
 
       // Get conversation
-      this.requestProvider.getConversationMessages(this.conversationId).subscribe((messages) => {
+      this.requestProvider.getConversationMessages(this.conversationId).snapshotChanges().subscribe((messages) => {
         if (this.messages) {
           // Just append newly added messages to the bottom of the view.
-          if (messages.length > this.messages.length) {
-            let message = messages[messages.length - 1];
-            this.requestProvider.getUser(message.sender).subscribe((user) => {
-              message.avatar = user.profileImg;
+          if (messages.payload.val().length > this.messages.length) {
+            let message = messages[messages.payload.val().length - 1];
+            this.requestProvider.getUser(message.sender).snapshotChanges().subscribe((user) => {
+              message.avatar = user.payload.val().profileImg;
             });
             this.messages.push(message);
             // Also append to messagesToShow.
@@ -76,9 +76,9 @@ export class ChatRoomPage {
         } else {
           // Get all messages, this will be used as reference object for messagesToShow.
           this.messages = [];
-          messages.forEach((message) => {
-            this.requestProvider.getUser(message.sender).subscribe((user) => {
-              message.avatar = user.profileImg;
+          messages.payload.val().forEach((message) => {
+            this.requestProvider.getUser(message.sender).snapshotChanges().subscribe((user) => {
+              message.avatar = user.payload.val().profileImg;
             });
             this.messages.push(message);
           });
@@ -119,6 +119,7 @@ export class ChatRoomPage {
 }
 
   send() {
+    console.log('sdfdsf');
     if (this.message) {
       // User entered a text on messagebox
       if (this.conversationId) {
@@ -139,35 +140,7 @@ export class ChatRoomPage {
         // Clear messagebox.
         this.message = '';
       } else {
-        // New Conversation with friend.
-        var messages = [];
-        messages.push({
-          date: new Date().toString(),
-          sender: firebase.auth().currentUser.uid,
-          type: 'text',
-          message: this.message
-        });
-        var users = [];
-        users.push(firebase.auth().currentUser.uid);
-        users.push(this.userId);
-        // Add conversation.
-        this.afDB.list('conversations').push({
-          dateCreated: new Date().toString(),
-          messages: messages,
-          users: users
-        }).then((success) => {
-          let conversationId = success.key;
-          this.message = '';
-          // Add conversation reference to the users.
-          this.afDB.object('/chat/' + firebase.auth().currentUser.uid + '/conversations/' + this.userId).update({
-            conversationId: conversationId,
-            messagesRead: 1
-          });
-          this.afDB.object('/chat/' + this.userId + '/conversations/' + firebase.auth().currentUser.uid).update({
-            conversationId: conversationId,
-            messagesRead: 0
-          });
-        });
+       
       }
     }
     this.myInput.setFocus();

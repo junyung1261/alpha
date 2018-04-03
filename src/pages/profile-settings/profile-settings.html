@@ -1,45 +1,52 @@
 <ion-header>
-
-  <ion-navbar>
-    <ion-title>{{ pageTitle }}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-<ion-content>
-
-  <form [formGroup]="form" *ngIf="settingsReady">
-    <ion-list *ngIf="page == 'main'">
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION1' | translate }}</ion-label>
-        <ion-toggle formControlName="option1"></ion-toggle>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION2' | translate }}</ion-label>
-        <ion-input formControlName="option2"></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION3' | translate }}</ion-label>
-        <ion-select formControlName="option3">
-          <ion-option value="1" checked="true">1</ion-option>
-          <ion-option value="2">2</ion-option>
-          <ion-option value="3">3</ion-option>
-        </ion-select>
-      </ion-item>
-
-      <button ion-item [navPush]="subSettings" [navParams]="profileSettings">
-        {{ 'SETTINGS_PROFILE_BUTTON' | translate }}
-      </button>
-    </ion-list>
-
-    <ion-list *ngIf="page == 'profile'">
-      <ion-item>
-        <ion-label>{{ 'SETTINGS_OPTION4' | translate }}</ion-label>
-        <ion-input formControlName="option4"></ion-input>
-      </ion-item>
-    </ion-list>
-  </form>
-
-</ion-content>
+    <ion-navbar hideBackButton="true">
+      <ion-title><b>{{ 'auth.nav.title.profile' | translate }}</b></ion-title>
+      <ion-buttons end>
+        <button ion-button tappable (click)="logout()"><ion-icon name="icon-logout"></ion-icon></button>
+      </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+  <ion-content [ngClass]="{'android': android}">
+    <div class="profile" *ngIf="user" text-center>
+      <img src="{{ user.profileImg }}" (click)="setPhoto()"> 
+      <!-- <img-loader [src]="user.photo" tappable (click)="setPhoto()" *ngIf="user"></img-loader> -->
+    </div>
+    <div class="form">
+      <form [formGroup]="profileForm">
+        <ion-list>
+          
+          
+          <ion-item no-lines margin-bottom>
+            <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</p>
+          <p text-center *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</p>
+          <ion-item no-lines margin-bottom>
+            <ion-input type="text" formControlName="email" [placeholder]="translate.get('auth.form.email')"></ion-input>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.email.hasError('required') || !profileForm.controls.email.valid) && hasError">{{ 'auth.form.error.email' | translate }}</p>
+          <ion-item no-lines margin-bottom class="textarea">
+            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3"></ion-textarea>
+          </ion-item>
+          <p text-center *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</p>
+          
+        </ion-list>
+      </form>
+    </div>
+    <div class="toggle">
+      <ion-list>
+        <ion-list-header>
+          <b>{{ 'auth.profile.notifications' | translate }}</b>
+        </ion-list-header>
+        <ion-item no-lines>
+          <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
+          <ion-toggle [(ngModel)]="hasPushToken"></ion-toggle>
+        </ion-item>
+        <div text-center>
+          <button ion-button color="primary" (click)="updateProfile()" ><b>{{ 'auth.button.save' | translate }}</b></button>
+          <button ion-button color="dark" (click)="logout()" ><b>{{ 'auth.button.logout' | translate }}</b></button>
+        </div>
+      </ion-list>
+    </div>
+  </ion-content>
+  

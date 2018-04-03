@@ -1,84 +1,41 @@
+<!--
+  Generated template for the ChatListPage page.
 
-<ion-header no-border>
-  <ion-navbar color="x-mint" hideBackButton>
-    <ion-buttons left>
-      <button ion-button icon-only (click)="closeChatList()" class="leftbtn">
-        <ion-icon name="flaticon-left-arrow" color="x-white"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-title color="top-text">대화방 목록</ion-title>
-    <ion-buttons end></ion-buttons>
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>chat-list</ion-title>
   </ion-navbar>
+
 </ion-header>
 
 
-<ion-content no-padding>
+<ion-content >
 
-    
+    <div text-center class="empty" *ngIf="(conversations)?.length == 0">
+        <ion-icon name="icon-empty-02"></ion-icon>
+        <h2><b>{{ 'chats.main.empty.noconversation.title' | translate }}</b></h2>
+        <p>{{ 'chats.main.empty.noconversation.text' | translate }}</p>
+      </div>
+      <ion-list>
+        <ion-item no-lines *ngFor="let conversation of conversations " tappable (click)="chat(conversation.conversationId)">
+          <ion-badge item-right color="danger">{{ getUnreadMessages(conversation.conversationId, conversation.messages) }}</ion-badge>
+          <ion-avatar item-start *ngIf="partners.get(conversation.conversationId)">
+              <img src="{{ partners.get(conversation.conversationId).payload.val().profileImg }}" >
+          </ion-avatar>
+          <h2 text-uppercase *ngIf="partners.get(conversation.conversationId)"><span>{{ partners.get(conversation.conversationId).payload.val().username }}</span><span text-lowercase>{{ getLastMessageDate(conversation.messages)  | DateFormat }}</span></h2>
+          <p text-wrap *ngIf="partners.get(conversation.conversationId)">{{ getLastMessage(conversation.messages) }}</p>
+        </ion-item>
+      </ion-list>
+      <!-- No conversations yet -->
+      <div text-center class="empty" *ngIf="!conversations">
+        <ion-icon name="icon-empty-03"></ion-icon>
+        <h2><b>{{ 'chats.main.empty.noconversations.title' | translate }}</b></h2>
+        <p>{{ 'chats.main.empty.noconversations.text' | translate }}</p>
+        <!-- <button ion-button color="dark" (click)="compose()" [disabled]="!network.online()"><b>{{ 'chats.main.empty.noconversations.button' | translate }}</b></button> -->
+      </div>
 
-    <ion-list >
-
-
-        <ion-item-group>
-            <ion-item-divider color="light">내 대화방</ion-item-divider>
-            <ion-item tappable *ngFor="let chat of myChatList" (click)="message(chat)">
-                <ion-avatar item-left>
-                    <img src="{{ chat.profileImg }}" [hidden]="!chat.profileImg">
-                    <img src="assets/imgs/noavatar.png" [hidden]="chat.profileImg"/>
-                </ion-avatar>
-    
-                <span class="nickname">{{ chat.username }}</span>
-            <span class="distance">[122km]</span><br>
-            <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
-           
-            </ion-item>
-        </ion-item-group>
-
-        <ion-item-group>
-                <ion-item-divider color="light">대화요청</ion-item-divider>
-                <ion-item *ngFor="let request of requestsList" tappable>
-                    <ion-avatar item-left>
-                        <img src="{{ request.profileImg }}" [hidden]="!request.profileImg">
-                        <img src="assets/imgs/noavatar.png" [hidden]="request.profileImg"/>
-                    </ion-avatar>
-        
-                    <span class="nickname">{{ request.username }}</span>
-                <span class="distance">[122km]</span><br>
-                <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
-                <span class="conversation"  item-right><ion-icon name="flaticon-chat" color="x-mint" (click)="acceptFriendRequest(request)"></ion-icon></span>
-                </ion-item>
-                <ion-item *ngFor="let request of requestsSent" tappable>
-                    <ion-avatar item-left>
-                        <img src="{{ request.profileImg }}" [hidden]="!request.profileImg">
-                        <img src="assets/imgs/noavatar.png" [hidden]="request.profileImg"/>
-                    </ion-avatar>
-        
-                    <span class="nickname">{{ request.username }}</span>
-                <span class="distance">[122km]</span><br>
-                <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
-                <span class="conversation"  item-right><ion-icon name="flaticon-chat" color="x-mint" (click)="cancelFriendRequest(request)"></ion-icon></span>
-                </ion-item>
-            </ion-item-group>
-
-
-        <ion-item-group>
-            <ion-item-divider color="light">사용자 대화방 <button item-right>대화중</button></ion-item-divider>
-            <ion-item *ngFor="let chat of chatList" tappable  [hidden]="chat.key == user.uid || isFriends(chat.key)">
-                <ion-avatar item-left>
-                    <img src="{{ chat.payload.val().profileImg }}" *ngIf="chat.payload.val().profileImg">
-                    <img src="assets/imgs/noavatar.png"  *ngIf="!chat.payload.val().profileImg"/>
-                </ion-avatar>
-    
-                <span class="nickname">{{ chat.username }}</span>
-            <span class="distance">[122km]</span><br>
-            <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
-            
-            <span class="memo" item-right><ion-icon name="flaticon-note-1" color="x-pink" (click)="presentAlert(0)"></ion-icon></span>
-            <span class="conversation"  item-right *ngIf="!chat.payload.val().inTalk"><ion-icon name="flaticon-chat" color="x-mint" (click)="presentAlert(1, chat.key)"></ion-icon></span>
-            </ion-item>
-        </ion-item-group>
-
-    </ion-list>
-
- 
 </ion-content>

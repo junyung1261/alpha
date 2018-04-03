@@ -9,7 +9,8 @@ export class DataProvider {
   // Data Provider
   // This is the provider class for most of the Firebase observables in the app.
 
-  constructor(public angularfireDatabase: AngularFireDatabase) {
+  constructor(public angularfireDatabase: AngularFireDatabase,
+  ) {
     console.log("Initializing Data Provider");
   }
 
@@ -42,6 +43,13 @@ export class DataProvider {
   getFriendRequests(userId) {
     return this.angularfireDatabase.list('/requests', ref => ref.orderByChild('receiver').equalTo(userId));
   }
+
+
+   // Get conversation given the conversationId.
+   getUserConversation(userId, partnerId) {
+    return this.angularfireDatabase.object('/accounts/' + userId + '/conversations/' + partnerId);
+  }
+
 
   // Get conversation given the conversationId.
   getConversation(conversationId) {
@@ -99,6 +107,11 @@ export class DataProvider {
   }
   getBullets(batch, location, lastKey?) {
     return this.angularfireDatabase.list(location, ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
+  }
+
+  getLatestUsers(){
+   
+    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToLast(20));
   }
 
   getChatList(){
