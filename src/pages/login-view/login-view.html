@@ -1,0 +1,51 @@
+<ion-content no-padding class="no-scroll">
+  <div *ngIf="viewType=='login'">
+    <form [formGroup]="emailPasswordForm">
+      <ion-grid no-padding class="x-login-intro">
+        <ion-row class="x-login-title-text-row">
+          <ion-col col-12 text-center>{{explain_login}}</ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-text-row">
+          <ion-col col-12 text-center>
+            <ion-input type="email" class="x-login-intro-input" placeholder="E-mail Address" formControlName="email"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-text-row">
+          <ion-col col-12 text-center>
+            <ion-input type="password" class="x-login-intro-input" placeholder="Password" formControlName="password"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-btn-row">
+            <ion-col col-12 text-center><button ion-button class="x-login-intro-btn" (click)="login()" [disabled]="!emailPasswordForm.valid">로그인하기</button></ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+  <div *ngIf="viewType=='join'">
+    <form [formGroup]="emailPasswordNicknameForm">
+      <ion-grid no-padding class="x-login-intro">
+        <ion-row class="x-login-title-text-row">
+            <ion-col col-12 text-center>{{explain_join}}</ion-col>
+          </ion-row>
+        <ion-row class="x-login-intro-text-row">
+          <ion-col col-12 text-center>
+            <ion-input type="email" class="x-login-intro-input" placeholder="E-mail Address" formControlName="email"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-text-row">
+          <ion-col col-12 text-center>
+            <ion-input type="password" class="x-login-intro-input" placeholder="Password" formControlName="password"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-text-row">
+          <ion-col col-12 text-center>
+            <ion-input type="text" class="x-login-intro-input" placeholder="Nickname" formControlName="nickname"></ion-input>
+          </ion-col>
+        </ion-row>
+        <ion-row class="x-login-intro-btn-row">
+            <ion-col col-12 text-center><button ion-button class="x-login-intro-btn" (click)="join()" [disabled]="!emailPasswordNicknameForm.valid">회원가입하기</button></ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </div>
+</ion-content>

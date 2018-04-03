@@ -4,7 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import { DataProvider } from '../../providers';
 import { AngularFireAuth } from 'angularfire2/auth';
-import {  ElementRef } from '@angular/core';
+import { ElementRef } from '@angular/core';
 
 
 @IonicPage()
@@ -20,38 +20,36 @@ export class ChatProcessingPage {
   chats = [];
   roomkey:string;
   roomType:string;
+  userType:string;
   nickname:string;
   offStatus:boolean = false;
-
-  sender:string;
-  receiver:string;
 
   // 채팅 방을 waiting단에서 만들어도 되나, 코드최적화를 위해서 여기서 푸시함 //
   constructor(public navCtrl: NavController, public navParams: NavParams, public afDB:AngularFireDatabase, public afAuth: AngularFireAuth) {
 
     // 요청자(SENDER)의  KEY가 방의 KEY로 ! //
-    this.roomkey = this.navParams.get("sender") as string;
-    this.roomType = this.navParams.get("roomtype") as string;
+    this.roomkey = this.navParams.get("roomkey") as string;
+    this.roomType = this.navParams.get("roomType") as string;
+    this.userType = this.navParams.get("userType") as string;
     this.nickname = this.afAuth.auth.currentUser.displayName;
     this.data.type = 'message';
     this.data.nickname = this.nickname;
-   
+    
   }
-  
   ionViewDidLoad() {
     // 참가자 두명 세팅 //
     let joinData = this.afDB.database.ref('chat-room/'+this.roomkey+'/chats').push();
     joinData.set({
       type:'join',
       user:this.nickname,
-      message:this.nickname+' has joined this room.',
+      message:this.nickname+'님이 대화방에 참가하셨습니다.',
       sendDate:Date()
     });
 
     // 방 타입 세팅 (1:대화방, 2:흔들기, 3: 위치) //
     // 방 생성 시 업데이트 두번일어남 -> 유저가 두명이기때문에 -> 그냥 둠.. //
     this.afDB.database.ref('chat-room/'+this.roomkey+"/").update({
-      roomtype:this.roomType
+      roomType:this.roomType
     });
 
     this.data.message = '';
@@ -66,6 +64,12 @@ export class ChatProcessingPage {
       }, 1000);
     });
 
+    // 대화방 참여인원 모두 나갔을 때 채팅방 제거 //
+    this.afDB.database.ref('chat-room/'+this.roomkey+'/user/').on('value',status=>{
+      if(status.numChildren()==0){
+        this.afDB.database.ref('chat-room/'+this.roomkey).remove();
+      }
+    })
     
 
   }
@@ -90,15 +94,18 @@ export class ChatProcessingPage {
     });
     this.offStatus = true;
     
-    // 대화방 나갔을 경우 큐 초기화 //
+    
+    // 대화방 나갔을 경우 대기열 큐 초기화 //
     this.afDB.database.ref('chat-queue/'+this.afAuth.auth.currentUser.uid).update({
       status:'ready',
-      status_sender:'',
-      status_receiver:''
+      target:'',
+      roomkey:''
     });
-   
-    this.navCtrl.pop();
 
+    this.afDB.database.ref('chat-room/'+this.roomkey+'/user/'+this.userType).remove();
+    this.navCtrl.pop();
+    
+    
   }
 
 }

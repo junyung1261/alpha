@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import * as firebase from 'firebase';
 import { FCM } from '@ionic-native/fcm';
 import { TranslateProvider } from '../providers';
+import { timer } from 'rxjs/observable/timer';
 
 @Component({
   templateUrl: 'app.html'
@@ -18,6 +19,7 @@ export class MyApp {
   rootPage: any;
 
   private user : any;
+  showSplash = true;
 
   constructor(
     private platform: Platform, 
@@ -56,7 +58,8 @@ export class MyApp {
       // }
      
       mobileAccessibility.usePreferredTextZoom(false);
-
+      timer(3000).subscribe(() => this.showSplash = false)
+      
       this.translateService.setDefaultLang('en');
       this.translateService.use('en');
       this.translateService.getTranslation('en').subscribe(translations => {

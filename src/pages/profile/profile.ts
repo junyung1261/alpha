@@ -12,7 +12,11 @@ import { LogoutProvider, NotificationProvider } from '../../providers';
 export class ProfilePage {
   category: any[];
   user;
-
+  private opts_edit: any = {
+    showBackdrop: true,
+    enableBackdropDismiss: true,
+    cssClass:'x-edit-profile-view'
+  }
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -40,6 +44,10 @@ export class ProfilePage {
     this.user = firebase.auth().currentUser;
   }
 
+  editProfile(){
+    let editModal = this.modalCtrl.create('ProfileModifyPage',{},this.opts_edit);
+    editModal.present();
+  }
   presentModal(modalName) {
     let createModal = this.modalCtrl.create(modalName, { userId: 8675309 }, {
       enterAnimation: 'modal-slide-in',

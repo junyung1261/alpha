@@ -8,10 +8,10 @@
   <div class="x-profile">
     <div class="x-profile-title">
       <div class="x-profile-title-txt">기본정보</div>
-      <div class="x-profile-title-icon"><ion-icon name="flaticon-settings" (click)="presentModal('ProfileModifyPage')"></ion-icon></div>
+      <div class="x-profile-title-icon"><ion-icon name="flaticon-settings" (click)="editProfile()"></ion-icon></div>
     </div>
     <div class="x-profile-photo">
-      <img src="assets/img/noavatar.png" *ngIf="!user.photoURL"/>
+      <img src="assets/imgs/noavatar.png" *ngIf="!user.photoURL"/>
       <img src="{{user.photoURL}}"  *ngIf="user.photoURL"/>
     </div>
     <div class="x-profile-info">
@@ -24,7 +24,7 @@
   <div class="x-heart">
     <div class="x-heart-title">
       <div class="x-heart-title-txt">하트정보</div>
-      <div class="x-heart-title-icon"><ion-icon name="flaticon-settings" (click)="presentModal('HeartPage')"></ion-icon></div>
+      <div class="x-heart-title-icon"><ion-icon name="flaticon-settings" (click)="presentModal('HeartChargePage')"></ion-icon></div>
     </div>
     <div class="x-heart-info">
       <div class="x-heart-normal"><ion-icon name="flaticon-hearts"></ion-icon></div>
