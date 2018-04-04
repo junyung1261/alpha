@@ -6,6 +6,7 @@ import { ImageProvider, RequestProvider, TranslateProvider, NotificationProvider
 import { Camera } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Generated class for the ChatRoomPage page.
@@ -22,6 +23,8 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class ChatPage {
   @ViewChild(Content) content: Content;
   @ViewChild('messageBox') messageBox: ElementRef;
+
+  private subscriptions: Subscription[];
 
   private partnerId: any;
   private partner: any;
@@ -45,6 +48,7 @@ export class ChatPage {
   private expanded: string;
 
 
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
@@ -63,22 +67,24 @@ export class ChatPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ChatRoomPage');
     
+    this.subscriptions = [];
+
     this.partnerId = this.navParams.get('userId');
-    this.dataProvider.getUser(this.partnerId).snapshotChanges().subscribe((user) => {
+    let subscription = this.dataProvider.getUser(this.partnerId).snapshotChanges().subscribe((user) => {
       this.partner = user;
+      this.subscriptions.push(subscription);
     });
-    this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe((user) => {
+
+    let subscription_ = this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe((user) => {
       this.user = user;
-      console.log(this.user.key);
-      this.dataProvider.getUserConversation(this.partnerId, this.user.key).snapshotChanges().subscribe((userConversation) => {
+      let subscription = this.dataProvider.getUserConversation(this.partnerId, this.user.key).snapshotChanges().subscribe((userConversation) => {
         if (userConversation) {
           // User already have conversation with this friend, get conversation
           this.conversationId = userConversation.payload.val().conversationId;
     
           // Get conversation
-          this.dataProvider.getConversation(this.conversationId).valueChanges().subscribe((conversation) => {
+          let subscription = this.dataProvider.getConversation(this.conversationId).valueChanges().subscribe((conversation) => {
             this.conversation = conversation
-            console.log(this.conversation.messages);
             if (this.conversation.messages) {
               this.from = this.conversation.messages.length - this.messagesToShow;
               if (this.from < 1) {
@@ -89,12 +95,15 @@ export class ChatPage {
                 messagesRead: this.conversation.messages.length
               });
             } 
+            this.subscriptions.push(subscription);
           });
+          
         } else{
           this.conversationId = null;
         }
+        this.subscriptions.push(subscription);
       });
-      
+      this.subscriptions.push(subscription_);
     });
     
    // Get conversationInfo with friend.
@@ -113,6 +122,17 @@ export class ChatPage {
     }, 60000);
   }
 }
+
+  ionViewWillUnload() {
+    
+    // Clear subscriptions.f
+    if (this.subscriptions) {
+      for (let i = 0; i < this.subscriptions.length; i++) {
+        this.subscriptions[i].unsubscribe();
+      }
+    }
+  }
+
 
   send() {
     
@@ -172,14 +192,14 @@ export class ChatPage {
       this.scrollTop();
     }
   }
+// Scroll to bottom of the view.
+private scrollBottom(): void {
+  let self = this;
+  setTimeout(function() {
+    if(self.content._scroll) self.content.scrollToBottom();
+  }, 300);
+}
 
-  // Scroll to bottom of page after a short delay.
-  scrollBottom() {
-    var that = this;
-    setTimeout(function() {
-      that.content.scrollToBottom();
-    }, 300);
-  }
 
   // Scroll to top of the page after a short delay.
   scrollTop() {
