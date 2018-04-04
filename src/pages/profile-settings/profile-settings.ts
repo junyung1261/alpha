@@ -140,14 +140,14 @@ export class ProfileSettingsPage {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.user, this.camera.PictureSourceType.CAMERA);
+              this.imageProvider.setProfilePhoto(this.afAuth.auth.currentUser.uid, this.user, this.camera.PictureSourceType.CAMERA);
               
             }
           },
           {
             text: this.translate.get('auth.profile.photo.gallery'),
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.user, this.camera.PictureSourceType.PHOTOLIBRARY);
+              this.imageProvider.setProfilePhoto(this.afAuth.auth.currentUser.uid, this.user, this.camera.PictureSourceType.PHOTOLIBRARY);
             }
           },
           {
