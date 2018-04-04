@@ -44,73 +44,7 @@ export class RequestsPage {
   ) {
   }
   
-  presentAlert(req, user) {
-    /* 쪽지 전송 시작 req=0 */
-    if(req==0){
-      let alert = this.alertCtrl.create({
-        title: '쪽지 전송',
-        subTitle: '상대방에게 쪽지를 전송합니다. 전송 시 90p가 차감됩니다. (최대 100자)',
-        inputs: [
-          {
-            name: 'msg',
-            placeholder: '전송할 내용을 작성하세요.',
-            type: 'text',
-          }
-        ],
-        buttons: [
-          {
-            text: '취소',
-            role: 'cancel',
-            handler: data => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            text: '전송',
-            handler: data => {
-              
-            }
-          }
-        ]
-      });
-      alert.present();
-    }
-    /* 쪽지 전송 끝 req=0 */
-    /* 대화 요청 시작 req=1 */
-    if(req==1){
-      let alert = this.alertCtrl.create({
-        title: '대화 참가',
-        subTitle: '상대방에게 대화를 신청합니다',
-        buttons: [
-          {
-            text:'취소',
-            role:'cancel',
-            handler:() => {
-              console.log('Cancel clicked');
-            }
-          },
-          {
-            text:'신청',
-            handler:() => {
-              this.requestProvider.sendFriendRequest(this.user.key, user.key).then(() => {
-                if(user.payload.val().notifications){
-                  var text;
-                  this.translate.get('push.requests.sent').subscribe(res => {
-                    text = res;
-                  } );
-                  this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, text , {newRequest: true});
-                }
-              })
-              // this.afDB.object('/chat/'+ chatId + '/request').update({})
-              // this.navCtrl.push('ChatRoomPage',{chatId: this.chatId, user:this.user});
-            }
-          }
-        ]
-      });
-      alert.present();
-    }
-    /* 대화 요청 끝 req=1 */
-  }
+  
 
   closeChatList(){
     this.navCtrl.pop();
@@ -132,15 +66,27 @@ export class RequestsPage {
     
     console.log('ionViewDidLoad ChatListPage');
     //this.chatId = this.navParams.get('chatId');
+
+    this.subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
+      this.users = users;
+      
+    });
+
+
     this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe(user => {
       this.user = user;
+
+      
+    
       
       this.excludedIds = [this.user.key];
       if(this.user.payload.val().requestsReceived){
         this.user.payload.val().requestsReceived.forEach(request => {
+          
           this.dataProvider.getUser(request).snapshotChanges().subscribe(user => {
             if (this.user.payload.val().requestsReceived && this.user.payload.val().requestsReceived.indexOf(user.key) > -1) {
               this.addOrUpdateReceived(user);
+              this.excludedIds.push(request);
             }
           })
         })
@@ -148,12 +94,8 @@ export class RequestsPage {
       else this.requestsReceived = [];
       
     });
-    this.subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
-        this.users = users.reverse();
-        console.log(users);
-      });
     
-     
+   
     
  
 
@@ -238,6 +180,74 @@ addOrUpdateFriend(friend) {
   }
 }
 
+presentAlert(req, user) {
+  /* 쪽지 전송 시작 req=0 */
+  if(req==0){
+    let alert = this.alertCtrl.create({
+      title: '쪽지 전송',
+      subTitle: '상대방에게 쪽지를 전송합니다. 전송 시 90p가 차감됩니다. (최대 100자)',
+      inputs: [
+        {
+          name: 'msg',
+          placeholder: '전송할 내용을 작성하세요.',
+          type: 'text',
+        }
+      ],
+      buttons: [
+        {
+          text: '취소',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: '전송',
+          handler: data => {
+            
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  /* 쪽지 전송 끝 req=0 */
+  /* 대화 요청 시작 req=1 */
+  if(req==1){
+    let alert = this.alertCtrl.create({
+      title: '대화 참가',
+      subTitle: '상대방에게 대화를 신청합니다',
+      buttons: [
+        {
+          text:'취소',
+          role:'cancel',
+          handler:() => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text:'신청',
+          handler:() => {
+            this.requestProvider.sendFriendRequest(this.user.key, user.key).then(() => {
+              if(user.payload.val().notifications){
+                var text;
+                this.translate.get('push.requests.sent').subscribe(res => {
+                  text = res;
+                } );
+                this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, text , {newRequest: true});
+              }
+            })
+            // this.afDB.object('/chat/'+ chatId + '/request').update({})
+            // this.navCtrl.push('ChatRoomPage',{chatId: this.chatId, user:this.user});
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+  /* 대화 요청 끝 req=1 */
+}
+
 // Accept Friend Request.
 acceptFriendRequest(user) {
   console.log(user.key)
@@ -314,7 +324,7 @@ acceptFriendRequest(user) {
 cancelFriendRequest(user) {
   this.alert = this.alertCtrl.create({
     title: 'Friend Request Pending',
-    message: 'Do you want to delete your friend request to <b>' + user.username + '</b>?',
+    message: 'Do you want to delete your friend request to <b>' + user.payload.val().username + '</b>?',
     buttons: [
       {
         text: 'Cancel',
@@ -323,7 +333,7 @@ cancelFriendRequest(user) {
       {
         text: 'Delete',
         handler: () => {
-          this.requestProvider.cancelFriendRequest(this.user.key, user.$key);
+          this.requestProvider.cancelFriendRequest(this.user.key, user.key);
         }
       }
     ]
@@ -355,6 +365,20 @@ updateLogin(){
   ref.update({
     lastLogin: firebase.database['ServerValue'].TIMESTAMP
   });
+}
+
+private getRequestStatus(target): number {
+  //0 -> Can be requested | 1 -> Request is pending | 2 -> Sent a contact request
+  if (target) {
+    if (this.user.payload.val().requestsSent && this.user.payload.val().requestsSent.indexOf(target.key) > -1) {
+      return 1;
+    } else if (this.user.payload.val().requestsReceived && this.user.payload.val().requestsReceived.indexOf(target.key) > -1) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+  return 0;
 }
 
 }

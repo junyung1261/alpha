@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { RequestsPage } from './requests';
 import { TranslateModule } from '@ngx-translate/core';
+import { PipeModule } from '../../pipes/pipe.module';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(RequestsPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    PipeModule
   ],
   
 })
