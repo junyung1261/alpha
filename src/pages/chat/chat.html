@@ -1,14 +1,14 @@
-<ion-header>
-    <ion-navbar >
-      <ion-title *ngIf="partner"><b>{{ partner.payload.val().username }}</b></ion-title>
-      <ion-buttons start>
-        <button ion-button tappable (click)="navCtrl.pop()"><ion-icon name="icon-close"></ion-icon></button>
-      </ion-buttons>
-      <ion-buttons end>
-        <button ion-button tappable (click)="viewProfile(partner.userId)"><ion-icon name="icon-user"></ion-icon></button>
-      </ion-buttons>
-    </ion-navbar>
-  </ion-header>
+<ion-header no-border>
+  <ion-navbar color="x-mint" hideBackButton>
+    <ion-buttons left>
+      <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
+    </ion-buttons>
+    <ion-title *ngIf="partner">{{ partner.payload.val().username }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="navCtrl.pop()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
   <ion-content>
     <ion-refresher *ngIf="conversation" (ionRefresh)="onRefresh($event)" [enabled]="messagesToShow < conversation.messages.length" snapbackDuration="500" closeDuration="500">
       <ion-refresher-content pullingIcon="none"

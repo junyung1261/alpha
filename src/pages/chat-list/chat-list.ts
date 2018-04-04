@@ -5,12 +5,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 
-/**
- * Generated class for the ChatListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -21,8 +15,8 @@ export class ChatListPage {
 
   private subscriptions: Subscription[];
   private conversations: any[];
-  private searchUser: string;
-  private user;
+  //private searchUser: string;
+  //private user;
   private userConversations: Map<string, any>;
   private partners: Map<string, any>;
 
@@ -30,9 +24,7 @@ export class ChatListPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    private modalCtrl: ModalController,
     private afAuth: AngularFireAuth,
-    private platform: Platform,
     private dataProvider: DataProvider,
     private translate: TranslateProvider,
     private app: App

@@ -8,10 +8,28 @@ page-profile-settings {
         }
       }
     }
+    .profile_save_btn{
+      background-color:map-get($colors,x-mint);
+      border:none;
+      box-shadow:none;
+      color:map-get($colors,x-white);
+    }
   
+    .profile_logout_btn {
+      background-color:map-get($colors,x-gray-category);
+      border:none;
+      box-shadow:none;
+      color:map-get($colors,x-white);
+
+    }
+    .button-md.activated {
+      background-color:rgba(255,255,255,0.4) !important;
+      box-shadow:none !important;
+    }
+
     div.profile {
       height: 20vh;
-      background: color($colors,x-gray-light);
+      background: color($colors,x-gray-bg);
       position: relative;
       img {
         border-radius: 100%;
@@ -48,7 +66,7 @@ page-profile-settings {
       ion-list {
         margin-top: 2.5vh;
         ion-item {
-          background: color($colors, x-gray-light) !important;
+          background: color($colors, x-gray-bg) !important;
           margin-left: auto !important;
           margin-right: auto !important;
           font-size: 1.2rem !important;
