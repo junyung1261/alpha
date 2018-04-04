@@ -29,7 +29,8 @@ export class ImageProvider {
       targetHeight: 384,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      correctOrientation: true
+      correctOrientation: true,
+      allowEdit: true
     };
 
     this.photoMessageOptions = {
@@ -76,7 +77,9 @@ export class ImageProvider {
   // Set ProfilePhoto given the user and the cameraSourceType.
   // This function processes the imageURI returned and uploads the file on Firebase,
   // Finally the user data on the database is updated.
-  setProfilePhoto(user, sourceType) {
+  setProfilePhoto(key, user, sourceType) {
+
+
     this.profilePhotoOptions.sourceType = sourceType;
     this.loadingProvider.show();
     // Get picture from camera or gallery.
@@ -87,15 +90,15 @@ export class ImageProvider {
         'contentType': imgBlob.type
       };
       // Generate filename and upload to Firebase Storage.
-      firebase.storage().ref().child('images/' + user.key + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+      firebase.storage().ref().child('images/' + key + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
         // Delete previous profile photo on Storage if it exists.
-        if(user.payload.val().profileImg)this.deleteImageFile(user.payload.val().profileImg);
+        if(user.profileImg)this.deleteImageFile(user.profileImg);
         
         // URL of the uploaded image!
         let url = snapshot.metadata.downloadURLs[0];
         
         let profile = {
-          displayName: user.payload.val().username,
+          displayName: user.username,
           photoURL: url
         };
         
@@ -103,7 +106,7 @@ export class ImageProvider {
         firebase.auth().currentUser.updateProfile(profile)
           .then((success) => {
             // Update User Data on Database.
-            this.angularfireDatabase.object('/accounts/' + user.key).update({
+            this.angularfireDatabase.object('/accounts/' + key).update({
               profileImg: url
             }).then((success) => {
               
