@@ -19,10 +19,16 @@
     <div *ngIf="conversation" no-margin no-padding>
       <ion-row *ngFor="let message of conversation.messages | slice:from:conversation.messages.length; last as last; index as index" tappable>
         <ion-col class="profile" col-2 text-center *ngIf="message.sender == partner.key" tappable (click)="viewProfile(partner.key); $event.stopPropagation();"><img src="{{ partner.payload.val().profileImg }}" ></ion-col>
-        <ion-col class="message" col-10 *ngIf="message.sender == 'chatInitializer'">
-            <p text-wrap float-center *ngIf="message.type == 'text'">{{ message.message }}</p>
+        <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
+            <p text-wrap float-center *ngIf="message.type == 'notice_start'">채팅이 시작되었습니다!</p>
             
-          </ion-col>
+        </ion-col>
+
+        <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
+            <p text-wrap float-center *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} 님께서 채팅방을 나갔습니다.</p>
+            
+        </ion-col>
+
         <ion-col class="message" col-10 *ngIf="message.sender == partner.key">
           <p text-wrap float-left *ngIf="message.type == 'text'">{{ message.message }}</p>
           
@@ -33,7 +39,7 @@
         </ion-col>
         <ion-col col-12 class="date">
           <p class="other" *ngIf="message.sender == partner.key" text-left>{{ message.date | DateFormat }}</p>
-          <p *ngIf="message.sender != partner.key" text-right>{{ message.date | DateFormat }}</p>
+          <p *ngIf="message.sender != partner.key && message.sender != 'tianya'" text-right>{{ message.date | DateFormat }}</p>
         </ion-col>
       </ion-row>
     </div>

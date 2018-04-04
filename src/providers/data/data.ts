@@ -34,6 +34,10 @@ export class DataProvider {
     return this.angularfireDatabase.object('/accounts/' + userId);
   }
 
+  getUserFriends(userId){
+    return this.angularfireDatabase.list('/accounts/' +  userId + '/friends/');
+  }
+
   // Get requests given the userId.
   getRequests(userId) {
     return this.angularfireDatabase.object('/requests/' + userId);
@@ -111,7 +115,7 @@ export class DataProvider {
 
   getLatestUsers(){
    
-    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToLast(20));
+    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(20));
   }
 
   getChatList(){

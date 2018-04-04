@@ -38,12 +38,13 @@ export class TabsPage {
   }
 
   ionViewDidLoad() {
-    
-    this.subscriptions = [];
     this.userConversations = new Map<string, any>();
     
+    this.subscriptions = [];
     // Subscribe to current user data on Firestore and sync.
     this.dataProvider.get('/accounts/' + this.afAuth.auth.currentUser.uid).then(ref => {
+      
+    
       let subscription = ref.valueChanges().subscribe((user: User) => {
         this.user = user;
         
@@ -59,7 +60,7 @@ export class TabsPage {
       });
     }).catch(() => { });
 
-
+    
     let conversationSubscription = this.dataProvider.getConversations().snapshotChanges().subscribe(conversations => {
       conversations.forEach(conversation => {
         let partnerId = conversation.key;
@@ -68,8 +69,25 @@ export class TabsPage {
           this.userConversations.set(conversationId, userConversation);
         })
         this.subscriptions.push(subscription);
-        let subscription_ = this.dataProvider.getConversation(conversationId).valueChanges().subscribe(conversation => {
-          this.addOrUpdateConversation(conversation); 
+        let subscription_ = this.dataProvider.getConversation(conversationId).valueChanges().subscribe((conversation: any) => {
+          if(conversation){
+            if(conversation.users.indexOf(this.afAuth.auth.currentUser.uid) > -1){
+              this.addOrUpdateConversation(conversation);
+            }else {
+              this.deleteConversationById(conversationId);
+              this.userConversations.delete(conversationId);
+              if(this.conversations && this.conversations.length == 0) {
+                this.conversations = null;
+              }
+            }
+          }else{
+            this.deleteConversationById(conversationId);
+            this.userConversations.delete(conversationId);
+            if(this.conversations && this.conversations.length == 0) {
+              this.conversations = null;
+            }
+          }
+          
           this.subscriptions.push(subscription_);   
         })
       })
@@ -107,6 +125,20 @@ export class TabsPage {
       this.conversations = [conversation];
     }
   }
+
+  deleteConversationById(conversationId): void {
+    if (this.conversations) {
+      let index = -1;
+      for (let i = 0; i < this.conversations.length; i++) {
+        if (conversationId == this.conversations[i].conversationId) {
+          index = i;
+        }
+      }
+      if (index > -1) {
+        this.conversations.splice(index, 1);
+      }
+    }
+  }
    
 
   getRequestsReceived(): number {
@@ -116,14 +148,14 @@ export class TabsPage {
     return null;
   }
 
-  private getUnreadMessages(): number {
+  getUnreadMessages(): number {    
     if (this.conversations) {
       let unread = 0;
-      for (let i = 0; i < this.conversations.length; i++) {
-        if (this.conversations[i].messages) {
-          unread += this.conversations[i].messages.length - this.userConversations.get(this.conversations[i].conversationId).messagesRead;
-        }
-      }
+      this.conversations.forEach(conversation => {
+         if(conversation.messages && this.userConversations.get(conversation.conversationId)){
+           unread +=  conversation.messages.length - this.userConversations.get(conversation.conversationId).messagesRead;
+         }
+      })
       if (unread > 0) {
         return unread;
       } else {

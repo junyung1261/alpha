@@ -27,9 +27,9 @@ export class RequestsPage {
   friends: any;
   private updateRef: any;
   private usersToShow: number = 10;
-  private subscription: Subscription;
-  private excludedIds: string[];
-
+  private subscriptions: Subscription [];
+  private excludedIds = [];
+  
   constructor(
     public alertCtrl: AlertController,
     public navCtrl: NavController, 
@@ -67,43 +67,50 @@ export class RequestsPage {
     console.log('ionViewDidLoad ChatListPage');
     //this.chatId = this.navParams.get('chatId');
 
-    this.subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
-      this.users = users;
-      
+    this.subscriptions = [];
+    let subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
+      this.users = users.reverse();
+      this.subscriptions.push(subscription);
     });
 
 
-    this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe(user => {
+    let subscription_ = this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe(user => {
       this.user = user;
-
-      
-    
-      
       this.excludedIds = [this.user.key];
+      
+      if(this.user.payload.val().friends){
+        this.user.payload.val().friends.forEach(friend => {
+          this.excludedIds.push(friend);
+        })
+      }
+
       if(this.user.payload.val().requestsReceived){
         this.user.payload.val().requestsReceived.forEach(request => {
           
-          this.dataProvider.getUser(request).snapshotChanges().subscribe(user => {
+          let subscription = this.dataProvider.getUser(request).snapshotChanges().subscribe(user => {
             if (this.user.payload.val().requestsReceived && this.user.payload.val().requestsReceived.indexOf(user.key) > -1) {
               this.addOrUpdateReceived(user);
+              
               this.excludedIds.push(request);
+              this.subscriptions.push(subscription);
             }
           })
         })
       }
       else this.requestsReceived = [];
-      
+      this.subscriptions.push(subscription_);
     });
     
    
-    
  
-
   }
 
   ionViewWillLeave(){
-    this.subscription.unsubscribe();
-    //this.afDB.object('/chat/' + this.chatId).remove();
+    // if (this.subscriptions) {
+    //   for (let i = 0; i < this.subscriptions.length; i++) {
+    //     this.subscriptions[i].unsubscribe();
+    //   }
+    // }
     clearInterval(this.updateRef);
   }
 
@@ -230,6 +237,7 @@ presentAlert(req, user) {
           handler:() => {
             this.requestProvider.sendFriendRequest(this.user.key, user.key).then(() => {
               if(user.payload.val().notifications){
+                console.log('ttt');
                 var text;
                 this.translate.get('push.requests.sent').subscribe(res => {
                   text = res;
@@ -250,7 +258,6 @@ presentAlert(req, user) {
 
 // Accept Friend Request.
 acceptFriendRequest(user) {
-  console.log(user.key)
   this.alert = this.alertCtrl.create({
     
     title: 'Confirm Friend Request',
@@ -264,7 +271,6 @@ acceptFriendRequest(user) {
         text: 'Reject Request',
         handler: () => {
           this.requestProvider.cancelFriendRequest(user.key, this.user.key);
-          console.log(this.requestsReceived.indexOf(user));
           this.requestsReceived.splice( this.requestsReceived.indexOf(user), 1)
         }
       },
@@ -278,9 +284,9 @@ acceptFriendRequest(user) {
         var messages = [];
         messages.push({
           date: new Date().toString(),
-          sender: 'chatInitializer',
-          type: 'text',
-          message: '채팅이 시작되었습니다'
+          sender: 'tianya',
+          type: 'notice_start',
+          message: 'chat_start'
         });
         var users = [];
         users.push(this.user.key);

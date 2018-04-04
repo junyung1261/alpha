@@ -65,7 +65,7 @@ export class ChatPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ChatRoomPage');
+    console.log('ionViewDidLoad ChatPage');
     
     this.subscriptions = [];
 
@@ -77,7 +77,7 @@ export class ChatPage {
 
     let subscription_ = this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe((user) => {
       this.user = user;
-      let subscription = this.dataProvider.getUserConversation(this.partnerId, this.user.key).snapshotChanges().subscribe((userConversation) => {
+      let subscription = this.dataProvider.getUserConversation(this.user.key, this.partnerId).snapshotChanges().subscribe((userConversation) => {
         if (userConversation) {
           // User already have conversation with this friend, get conversation
           this.conversationId = userConversation.payload.val().conversationId;
