@@ -28,6 +28,7 @@ export class NotificationProvider {
       } else {
         this.subscriptions = [];
       }
+      
       this.fcm.getToken().then((token: string) => {
         this.dataProvider.setPushToken(firebase.auth().currentUser.uid, token);
 

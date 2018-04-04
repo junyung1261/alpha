@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, App, ModalController, Platform } f
 import { AuthProvider, TranslateProvider, DataProvider } from '../../providers';
 import { Subscription } from 'rxjs/Subscription';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 
 
@@ -25,6 +27,7 @@ export class ChatListPage {
     public navCtrl: NavController, 
     public navParams: NavParams,
     private afAuth: AngularFireAuth,
+    private afDB: AngularFireDatabase,
     private dataProvider: DataProvider,
     private translate: TranslateProvider,
     private app: App
@@ -49,14 +52,29 @@ export class ChatListPage {
         })
         this.subscriptions.push(subscription);
 
-        let subscription_ = this.dataProvider.getConversation(conversationId).valueChanges().subscribe(conversation => {
-          this.addOrUpdateConversation(conversation);
+        let subscription_ = this.dataProvider.getConversation(conversationId).valueChanges().subscribe((conversation : any) => {
+          
+          if(conversation){
+            if(conversation.users.indexOf(this.afAuth.auth.currentUser.uid) > -1){
+              this.addOrUpdateConversation(conversation);
+              console.log(this.conversations);
+            }else {
+              this.deleteConversationById(conversationId);
+              this.userConversations.delete(conversationId);
+              if(this.conversations && this.conversations.length == 0) this.conversations = null;
+            }
+          }else{
+            this.deleteConversationById(conversationId);
+            this.userConversations.delete(conversationId);
+            if(this.conversations && this.conversations.length == 0) this.conversations = null;
+          }
+         
           this.subscriptions.push(subscription_);
         });
 
         let subscription__ = this.dataProvider.getUser(partnerId).snapshotChanges().subscribe(user => {
           this.partners.set(conversationId, user);
-          console.log(this.partners)
+          
           this.subscriptions.push(subscription__);
         })
       });
@@ -74,7 +92,7 @@ export class ChatListPage {
   }
 
 
-  private addOrUpdateConversation(conversation): void {
+  addOrUpdateConversation(conversation): void {
     
     if (this.conversations) {
       let index = -1;
@@ -94,8 +112,22 @@ export class ChatListPage {
     }
   }
 
+  deleteConversationById(conversationId): void {
+    if (this.conversations) {
+      let index = -1;
+      for (let i = 0; i < this.conversations.length; i++) {
+        if (conversationId == this.conversations[i].conversationId) {
+          index = i;
+        }
+      }
+      if (index > -1) {
+        this.conversations.splice(index, 1);
+      }
+    }
+  }
+
   // Get the last message given the messages list.
-  private getLastMessage(messages): string {
+  getLastMessage(messages): string {
     
     let message = messages[messages.length - 1];
     // Photo Message
@@ -109,20 +141,24 @@ export class ChatListPage {
       // Text Message
       if (message.sender == this.afAuth.auth.currentUser.uid) {
         return this.translate.get('chats.message.you') + message.message;
-      } else {
+      } else if(message.type == 'notice_start') {
+        return '채팅이 시작되었습니다.';
+      } else if(message.type == 'notice_userOut') {
+        return '대화가 종료되었습니다.'
+      } else{
         return message.message;
       }
     }
   }
 
    // Get the last date of the message given the messages list.
-   private getLastMessageDate(messages): Date {
+  getLastMessageDate(messages): Date {
     let message = messages[messages.length - 1];
     return message.date;
   }
 
   // Get the number of unread messages given the conversationId, and messages list.
-  private getUnreadMessages(conversationId: string, messages): number {
+  getUnreadMessages(conversationId: string, messages): number {
    
     if (!this.userConversations.get(conversationId))
       return null;
@@ -139,10 +175,70 @@ export class ChatListPage {
 
 
   // Open the chat with the user given the conversationId.
-  private chat(conversationId: string): void {
+  chat(conversationId: string): void {
     if (true)
       this.app.getRootNavs()[0].push('ChatPage', { userId: this.partners.get(conversationId).key });
   }
+
+  delete(conversation){
+    
+    let conversationId = conversation.conversationId;
+    let partner = this.partners.get(conversationId);
+    let users = conversation.users;
+    let messages = conversation.messages;
+    let uid = this.afAuth.auth.currentUser.uid;
+
+
+  
+
+    this.afDB.object('/accounts/' + uid + '/conversations/' + partner.key).remove().then(success => {
+      
+     
+      
+      if(users.length == 2) {
+        messages.push({
+          date: new Date().toString(),
+          sender: 'tianya',
+          type: 'notice_userOut',
+          message: 'user_out'
+        });
+          
+        users.splice(users.indexOf(uid), 1);
+
+        this.dataProvider.getConversation(conversationId).update({
+          messages: messages,
+          users: users
+        })
+      }
+      else{
+        this.dataProvider.getConversation(conversationId).remove()
+        .then(() => {
+
+          this.dataProvider.getUserFriends(uid).valueChanges().take(1).subscribe( friends => {
+            friends.splice(friends.indexOf(partner.key),1);
+            
+            this.dataProvider.getCurrentUser().update({
+              friends: friends
+            })
+          });
+  
+          this.dataProvider.getUserFriends(partner.key).valueChanges().take(1).subscribe( friends => {
+            friends.splice(friends.indexOf(uid),1);
+            
+            this.dataProvider.getUser(partner.key).update({
+               
+              friends: friends
+            });
+          });
+        })
+      }
+
+    })
+    
+
+    
+  }
+
 
 
 
