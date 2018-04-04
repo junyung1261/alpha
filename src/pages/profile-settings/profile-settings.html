@@ -1,11 +1,11 @@
-<ion-header>
-    <ion-navbar hideBackButton="true">
-      <ion-title><b>{{ 'auth.nav.title.profile' | translate }}</b></ion-title>
-      <ion-buttons end>
-        <button ion-button tappable (click)="logout()"><ion-icon name="icon-logout"></ion-icon></button>
-      </ion-buttons>
+
+
+  <ion-header no-border>
+    <ion-navbar color="x-mint">
+      <ion-title text-center>{{ 'auth.nav.title.profile' | translate }}</ion-title>
     </ion-navbar>
   </ion-header>
+
   <ion-content [ngClass]="{'android': android}">
     <div class="profile" *ngIf="user" text-center>
       <img src="{{ user.profileImg }}" (click)="setPhoto()"> 
@@ -14,8 +14,6 @@
     <div class="form">
       <form [formGroup]="profileForm">
         <ion-list>
-          
-          
           <ion-item no-lines margin-bottom>
             <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
           </ion-item>
@@ -40,11 +38,11 @@
         </ion-list-header>
         <ion-item no-lines>
           <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
-          <ion-toggle [(ngModel)]="hasPushToken"></ion-toggle>
+          <ion-toggle [(ngModel)]="hasPushToken" color="x-gray-category"></ion-toggle>
         </ion-item>
         <div text-center>
-          <button ion-button color="primary" (click)="updateProfile()" ><b>{{ 'auth.button.save' | translate }}</b></button>
-          <button ion-button color="dark" (click)="logout()" ><b>{{ 'auth.button.logout' | translate }}</b></button>
+          <button ion-button (click)="updateProfile()" class="profile_save_btn"><b>{{ 'auth.button.save' | translate }}</b></button>
+          <button ion-button (click)="logout()" class="profile_logout_btn"><b>{{ 'auth.button.logout' | translate }}</b></button>
         </div>
       </ion-list>
     </div>
