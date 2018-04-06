@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import { Observable } from '@firebase/util';
 import { DataProvider, LoadingProvider } from '../../providers';
 import { filter } from 'rxjs/operator/filter';
+import { ChatPage } from '../chat/chat';
 
 @IonicPage()
 @Component({
@@ -25,10 +26,11 @@ export class ContestPage {
   lastContest: any;
   currentStage: any;
   currentGender: any;
-  candidates = [];
-  candidates_round2 = [];
-  candidates_round3 = [];
-  chunckedCanditates = [];
+  candidates = {female:[], male:[]};
+  candidatesByGender = {candidates: [], round_1: [], round_2: [], round_3: [], final: []}
+  chuncked_round1 = {female:[], male: []};
+  chuncked_round2 = {female:[], male: []};
+  chuncked_round3 = {female:[], male: []};
   champions = [];
   applicants: any;
   user: any;
@@ -64,6 +66,7 @@ export class ContestPage {
     this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
       this.user = user;
       this.currentGender = user.payload.val().gender;
+      
     })
     this.dataProvider.getLastContest().snapshotChanges().take(1).subscribe( snapshot => {
 
@@ -84,65 +87,130 @@ export class ContestPage {
         }
         else if (snapshot.val() != 'join'){
           
-          if(this.user.payload.val().gender == 'male'){
-            this.dataProvider.getCandidate(this.lastContest.key, 'female').snapshotChanges().take(1).subscribe(snapshots => {
-              this.candidates = snapshots;
-              this.initializeCandidates(this.candidates);
+          
+            this.dataProvider.getCandidate(this.lastContest.key).snapshotChanges().take(1).subscribe(candidates => {
+              candidates.forEach((candidate, i) => {
+                this.dataProvider.getUser(candidate.key).valueChanges().take(1).subscribe((user : any) => {
+                  user.key = candidate.key;
+                  user.index = user.gender == 'female'? i : i-8;
+                  this.dataProvider.getScores(this.lastContest.key, candidate.key).valueChanges().subscribe((score: any) => {                  
+                    user.round_1 = score.round_1;
+                    user.total = user.round_1;
+                    if(score.round_2 >= 0){
+                      user.round_2 = score.round_2;
+                      user.total += user.round_2
+                    }
+                    if(score.round_3 >= 0){
+                      user.round_3 = score.round_3;
+                      user.total += user.round_3
+                    }
+                    if(user.gender == 'male') this.addOrUpdateMaleCandidate(user);
+                    else this.addOrUpdateFemaleCandidate(user);
+                  });
+                 
+                });
+              });
             });
-            
-        
-          }
-          else {
-            this.dataProvider.getCandidate(this.lastContest.key, 'male').snapshotChanges().take(1).subscribe(snapshots => {
-              this.candidates = snapshots;
-              this.initializeCandidates(this.candidates);
-            });
-          }
-
+           
         }
         if(snapshot.val() =='final'){
           
-          this.dataProvider.getChampions(this.lastContest.key).snapshotChanges().take(1).subscribe(snapshots => {
-            this.champions = snapshots;
-            this.initializeCandidates(this.champions);
-            
+          this.dataProvider.getChampions(this.lastContest.key).snapshotChanges().take(1).subscribe(champions => {
+            champions.forEach(champ => {
+              this.champions.push(champ.key);
+            })           
           });
         }
       });
     });
   }
 
-  initializeCandidates(candidates){
-    candidates.forEach((candidate, i) => {
-      let user;
-      this.dataProvider.getUser(candidate.key).snapshotChanges().take(1).subscribe(account => {
-        candidate.profileImg = account.payload.val().profileImg;
-        candidate.username = account.payload.val().username;
-        candidate.birth = account.payload.val().birth;
-        candidate.gender = account.payload.val().gender;
-        candidate.contest = account.payload.val().contest;
-        candidate.index = i;
-        firebase.database().ref('/contests/' + this.lastContest.key + '/candidate/' + candidate.key + '/score').on('value', snapshot => {
+
+  addOrUpdateMaleCandidate(candidate): void {
+    if (this.candidates.male) {
+      let index = -1;
+      for (let i = 0; i < this.candidates.male.length; i++) {
+        if (candidate.key == this.candidates.male[i].key) {
+          index = i;
+        }
+      }
+      if (index > -1) {
+        this.candidates.male[index] = candidate;
+      }
+      else {
+        this.candidates.male.push(candidate);
+      }
+    } else {
+      this.candidates.male = [candidate];
+    }
+    if(this.candidates.male.length == 8) {
+      this.chuncked_round1.male = this.chunckCanditates(this.candidates.male, 1);
+      this.chuncked_round2.male = this.chunckCanditates(this.candidates.male, 2);
+      this.chuncked_round3.male = this.chunckCanditates(this.candidates.male, 3);
+      this.changeGender(this.currentGender)
+      if(this.champions.length == 2){
+        this.findChampions()
+      }
+      this.loadingProvider.hide();
+    }
+  }
+
+  addOrUpdateFemaleCandidate(candidate): void {
+    if (this.candidates.male) {
+      let index = -1;
+      for (let i = 0; i < this.candidates.female.length; i++) {
+        if (candidate.key == this.candidates.female[i].key) {
+          index = i;
+        }
+      }
+      if (index > -1) {
+        this.candidates.female[index] = candidate;
+      }
+      else {
+        this.candidates.female.push(candidate);
+      }
+    } else {
+      this.candidates.female = [candidate];
+    }
+    if(this.candidates.female.length == 8) {
+      this.chuncked_round1.female = this.chunckCanditates(this.candidates.female, 1);
+      this.chuncked_round2.female = this.chunckCanditates(this.candidates.female, 2);
+      this.chuncked_round3.female = this.chunckCanditates(this.candidates.female, 3);
+      
+    }
+  }
+
+  // initializeCandidates(candidates){
+  //   candidates.forEach((candidate, i) => {
+  //     let user;
+  //     this.dataProvider.getUser(candidate.key).snapshotChanges().take(1).subscribe(account => {
+  //       candidate.profileImg = account.payload.val().profileImg;
+  //       candidate.username = account.payload.val().username;
+  //       candidate.birth = account.payload.val().birth;
+  //       candidate.gender = account.payload.val().gender;
+  //       candidate.contest = account.payload.val().contest;
+  //       candidate.index = i;
+  //       firebase.database().ref('/contests/' + this.lastContest.key + '/candidate/' + candidate.key + '/score').on('value', snapshot => {
           
-          candidate.round_1 = snapshot.val().round_1;
-          candidate.total = candidate.round_1;
-          if(snapshot.child('round_2').exists()) {
+  //         candidate.round_1 = snapshot.val().round_1;
+  //         candidate.total = candidate.round_1;
+  //         if(snapshot.child('round_2').exists()) {
             
-            candidate.round_2 = snapshot.val().round_2;
-            candidate.total += candidate.round_2;
-          }
-          if(snapshot.child('round_3').exists()) {
-            candidate.round_3 = snapshot.val().round_3;
-            candidate.total += candidate.round_3;
-          }
-          if(i == candidates.length -1) this.chunckCanditates(this.candidates);
-        })
+  //           candidate.round_2 = snapshot.val().round_2;
+  //           candidate.total += candidate.round_2;
+  //         }
+  //         if(snapshot.child('round_3').exists()) {
+  //           candidate.round_3 = snapshot.val().round_3;
+  //           candidate.total += candidate.round_3;
+  //         }
+  //         if(i == candidates.length -1) this.chunckCanditates(this.candidates);
+  //       })
         
-      })
-    })
+  //     })
+  //   })
    
     
-  }
+  // }
 
 
   checkApplied(applicants){
@@ -152,35 +220,38 @@ export class ContestPage {
     }).length;
   }
 
-  chunckCanditates(candidates){
-    var chunk_size = 2;
-    var candidates_round2 = candidates.filter(e => {
-      return e.round_2 > -1;
-    });
-    var candidates_round3 = candidates.filter(e => {
-      return e.round_3 > -1;
-    });
-   
-    this.chunckedCanditates = candidates.map( (e,i) => { 
-     
-        return i%chunk_size===0 ? candidates.slice(i,i+chunk_size) : null; 
-    })
-    .filter(e =>{ return e; });
-
-    this.candidates_round2 = candidates_round2.map( (e,i) => { 
-     
-        return i%chunk_size===0 ? candidates_round2.slice(i,i+chunk_size) : null; 
-    })
-    .filter(e =>{ return e; });
-
+  chunckCanditates(candidates, round){
     
-    this.candidates_round3 = candidates_round3.map( (e,i) => { 
-      
-        return i%chunk_size===0 ? candidates_round3.slice(i,i+chunk_size) : null; 
+    var chunk_size = 2;
+    var candidates_rounded;
+
+    if(round == 1){
+      candidates_rounded= candidates;
+    }
+    else if(round == 2){
+      candidates_rounded = candidates.filter(e => {
+        return e.round_2 > -1;
+        });
+    }
+    else {
+      candidates_rounded = candidates.filter(e => {
+        return e.round_3 > -1;
+        });
+    }
+    
+  
+
+     return candidates_rounded.map( (e,i) => { 
+     
+        return i%chunk_size===0 ? candidates_rounded.slice(i,i+chunk_size) : null; 
     })
     .filter(e =>{ return e; });
 
-    this.loadingProvider.hide();
+  
+    
+   
+
+
   }
 
 
@@ -266,6 +337,29 @@ export class ContestPage {
   }
 
   changeGender(gender){
-    console.log(gender);
+
+    if(gender == 'female'){
+      this.candidatesByGender.candidates = this.candidates.male;
+      this.candidatesByGender.round_1 = this.chuncked_round1.male;
+      this.candidatesByGender.round_2 = this.chuncked_round2.male;
+      this.candidatesByGender.round_3 = this.chuncked_round3.male;
+    }
+    else{
+      this.candidatesByGender.candidates = this.candidates.female;
+      this.candidatesByGender.round_1 = this.chuncked_round1.female;
+      this.candidatesByGender.round_2 = this.chuncked_round2.female;
+      this.candidatesByGender.round_3 = this.chuncked_round3.female;
+    }
+
+
+  }
+
+  findChampions(){
+    let candidates = this.candidates.female.concat(this.candidates.male);
+
+    this.candidatesByGender.final = candidates.filter((user)=> {
+      return this.champions.indexOf(user.key) != -1;
+    })
+    console.log(this.candidatesByGender.final );
   }
 }

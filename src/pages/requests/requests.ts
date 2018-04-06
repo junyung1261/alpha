@@ -237,7 +237,7 @@ presentAlert(req, user) {
           handler:() => {
             this.requestProvider.sendFriendRequest(this.user.key, user.key).then(() => {
               if(user.payload.val().notifications){
-                console.log('ttt');
+                
                 var text;
                 this.translate.get('push.requests.sent').subscribe(res => {
                   text = res;

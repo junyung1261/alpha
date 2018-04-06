@@ -138,8 +138,12 @@ export class DataProvider {
     return this.angularfireDatabase.list('/contests/' + contestId + '/applicant', ref => ref.orderByValue());
   }
 
-  getCandidate(contestId, gender){
-    return this.angularfireDatabase.list('/contests/'  + contestId + '/candidate' , ref => ref.orderByChild('gender').equalTo(gender));
+  getCandidate(contestId){
+    return this.angularfireDatabase.list('/contests/'  + contestId + '/candidate' , ref => ref.orderByChild('gender'));
+  }
+
+  getScores(contestId, candidateId){
+    return this.angularfireDatabase.object('/contests/' + contestId + '/candidate/' + candidateId + '/score');
   }
   
   getChampions(contestId) {
