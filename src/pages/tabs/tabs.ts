@@ -18,7 +18,7 @@ export class TabsPage {
   tab2Root = 'RequestsPage';
   tab3Root = 'ChatListPage';
   tab4Root = 'ContestPage';
-  tab5Root = 'ProfileSettingsPage';
+  tab5Root = 'ProfilePage';
   
   private user: User;
   private subscriptions: Subscription[];

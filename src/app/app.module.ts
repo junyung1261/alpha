@@ -18,7 +18,7 @@ import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
-import { LoadingProvider, LoginProvider, LogoutProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, TranslateProvider, Settings  } from '../providers';
+import { LoadingProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, TranslateProvider, Settings  } from '../providers';
  
 
 import { Camera } from '@ionic-native/camera';
@@ -75,8 +75,6 @@ export function provideSettings(storage: Storage) {
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FCM,
     LoadingProvider,
-    LoginProvider,
-    LogoutProvider,
     AlertProvider,
     DataProvider,
     ImageProvider,

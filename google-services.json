@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "286006030163",
-    "firebase_url": "https://tianya-6d56d.firebaseio.com",
-    "project_id": "tianya-6d56d",
-    "storage_bucket": "tianya-6d56d.appspot.com"
+    "project_number": "629459665964",
+    "firebase_url": "https://xianghanguo-alpha.firebaseio.com",
+    "project_id": "xianghanguo-alpha",
+    "storage_bucket": "xianghanguo-alpha.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:286006030163:android:c9a6809f5e1e1648",
+        "mobilesdk_app_id": "1:629459665964:android:c9a6809f5e1e1648",
         "android_client_info": {
           "package_name": "alpha.xinhan.tianya"
         }
       },
       "oauth_client": [
         {
-          "client_id": "286006030163-u0ed1huqeq5esdf6rmg1ejvbkauu2q06.apps.googleusercontent.com",
+          "client_id": "629459665964-lvs0mgmliv9o9qgm9ltprjkood3ilbrs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB08jsaovfWNT4wh9aejAT_uqNFJzQSCak"
+          "current_key": "AIzaSyARwDJqluclM2LVZ4-BUHG9bDBEZJH6RZ8"
         }
       ],
       "services": {

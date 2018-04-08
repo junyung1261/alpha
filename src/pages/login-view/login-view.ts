@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,Platform, ViewController } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { LoginProvider } from '../../providers';
-import { Validator } from '../../validator';
+import { IonicPage, NavController, NavParams,Platform, ViewController, Toast } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { AuthProvider, ToastProvider, TranslateProvider } from '../../providers';
+
 import { LoadingProvider } from '../../providers/loading/loading';
 import { AlertProvider } from '../../providers/alert/alert';
 
@@ -15,26 +15,48 @@ import { AlertProvider } from '../../providers/alert/alert';
 export class LoginViewPage {
 
   private viewType : any;
-  private emailPasswordForm: FormGroup;
-  private emailPasswordNicknameForm: FormGroup;
-  private explain_login : string;
-  private explain_join : string;
+  private loginForm: FormGroup;
+  private registerForm: FormGroup;
+  private hasError: boolean;
+  private loginText : string;
+  private registerText : string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public loginProvider: LoginProvider, public formBuilder: FormBuilder, public viewCtrl:ViewController, 
-    public loadingProvider: LoadingProvider, public alertProvider: AlertProvider) {
+  private emailValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.email,
+    Validators.pattern('^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$')
+  ]);
+  private passwordValidator: ValidatorFn = Validators.compose([
+    Validators.required,
+    Validators.minLength(6),
+    Validators.pattern('^[a-zA-Z0-9!@#$%^&*()_+-=]*$')
+  ]);
+
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public authProvider: AuthProvider,
+              public loadingProvider: LoadingProvider, 
+              public alertProvider: AlertProvider,
+              public toastProvider: ToastProvider,
+              public translate: TranslateProvider,
+              public formBuilder: FormBuilder, 
+              public viewCtrl: ViewController, 
+    ) {
     this.viewType = this.navParams.get('type');
 
-    this.emailPasswordForm = formBuilder.group({
-      email: Validator.emailValidator,
-      password: Validator.passwordValidator
+    this.loginForm = formBuilder.group({
+      email: ['', this.emailValidator],
+      password: ['', this.passwordValidator]
     });
-    this.emailPasswordNicknameForm = formBuilder.group({
-      email: Validator.emailValidator,
-      password: Validator.passwordValidator,
-      nickname: Validator.nicknameValidator
+  
+    this.registerForm = formBuilder.group({
+      email: ['', this.emailValidator],
+      password: ['', this.passwordValidator],
+      confirmPassword: ['', this.passwordValidator]
     });
-    this.explain_login= '이메일 주소와 비밀번호를 입력해주세요.';
-    this.explain_join ='이메일 주소, 닉네임, 비밀번호를 입력해주세요.';
+   
+    this.loginText = this.translate.get('auth.login.text');
+    this.registerText = this.translate.get('auth.register.text');
   }
 
   ionViewDidLoad() {
@@ -43,39 +65,66 @@ export class LoginViewPage {
 
 
   login() {
-    this.loadingProvider.show();
-    this.loginProvider.emailLogin(this.emailPasswordForm.value["email"], this.emailPasswordForm.value["password"])
-    .then((success) => {
-      this.loadingProvider.hide();
-      this.viewCtrl.dismiss();
-    })
-    .catch((error) => {
-      this.loadingProvider.hide();
-      // let code = error["code"];
-      // this.alertProvider.showErrorMessage(code);
-      this.explain_login='아이디 혹은 비밀번호가 잘못되었습니다.';
-      this.emailPasswordForm.reset();
-    });
+
+    if (!this.loginForm.valid) {
+      this.hasError = true;
+      this.loginText = this.translate.get('auth.form.error.email');
+    } else {
+      this.loadingProvider.show();
+      this.authProvider.loginWithEmail(this.loginForm.value['email'], this.loginForm.value['password']).then(res => {
+        this.loadingProvider.hide();
+        this.viewCtrl.dismiss();
+        this.navCtrl.setRoot('LoaderPage');
+      }).catch(err => {
+        this.toastProvider.show(this.translate.get(err.code));
+        this.loadingProvider.hide();
+      });
+    }
+
+    // this.loadingProvider.show();
+    // this.authProvider.loginWithEmail(this.loginForm.value["email"], this.loginForm.value["password"])
+    // .then((success) => {
+    //   this.loadingProvider.hide();
+    //   this.viewCtrl.dismiss();
+    // })
+    // .catch((error) => {
+    //   this.loadingProvider.hide();
+    //   // let code = error["code"];
+    //   // this.alertProvider.showErrorMessage(code);
+    //   this.explain_login='아이디 혹은 비밀번호가 잘못되었습니다.';
+    //   this.loginForm.get('password').reset();
+    // });
     
   }
 
-  join() {
-    this.loadingProvider.show();
-    this.loginProvider.register(this.emailPasswordNicknameForm.value["email"], this.emailPasswordNicknameForm.value["password"], this.emailPasswordNicknameForm.value["nickname"])
-      .then((success) => {
-        success.updateProfile({
-          displayName: this.emailPasswordNicknameForm.value["nickname"]
-        }).then((success) => {
-          this.loadingProvider.hide();
-          this.navCtrl.setRoot('VerificationPage');
-        });
-      })
-      .catch((error) => {
+  register() {
+
+    if (!this.registerForm.valid || this.registerForm.value['password'] != this.registerForm.value['confirmPassword']) {
+      this.hasError = true;
+      this.registerText = this.translate.get('auth.form.error.mismatch');
+    } else {
+      this.loadingProvider.show();
+      this.authProvider.registerWithEmail(this.registerForm.value['email'], this.registerForm.value['password']).then(res => {
         this.loadingProvider.hide();
-        this.explain_join='회원가입에 실패하였습니다.';
-        // let code = error["code"];
-        // this.alertProvider.showErrorMessage(code);
+        this.navCtrl.setRoot('LoaderPage');
+        this.loadingProvider.hide();
+      }).catch(err => {
+        this.toastProvider.show(this.translate.get(err.code));
+        this.loadingProvider.hide();
       });
+    }
+    // this.loadingProvider.show();
+    // this.authProvider.registerWithEmail(this.registerForm.value["email"], this.registerForm.value["password"])
+    //   .then((success) => {
+    //     this.loadingProvider.hide();
+    //     this.navCtrl.setRoot('LoaderPage');
+    //   })
+    //   .catch((error) => {
+    //     this.loadingProvider.hide();
+    //     this.explain_join='회원가입에 실패하였습니다.';
+    //     // let code = error["code"];
+    //     // this.alertProvider.showErrorMessage(code);
+    //   });
   }
 
   // // Call loginProvider and send a password reset email.
