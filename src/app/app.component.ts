@@ -19,7 +19,6 @@ export class MyApp {
   rootPage: any;
 
   private user : any;
-  showSplash = true;
 
   constructor(
     private platform: Platform, 
@@ -58,7 +57,6 @@ export class MyApp {
       // }
      
       mobileAccessibility.usePreferredTextZoom(false);
-      timer(3000).subscribe(() => this.showSplash = false)
       
       this.translateService.setDefaultLang('en');
       this.translateService.use('en');
