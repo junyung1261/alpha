@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, App } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { LogoutProvider, LoadingProvider, AlertProvider } from '../../providers';
+import { AuthProvider, AlertProvider, LoadingProvider } from '../../providers';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Validator } from '../../validator';
 import * as firebase from 'firebase';
@@ -30,10 +30,10 @@ export class VerificationPage {
   private isLoggingOut;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, public navParams: NavParams, public app: App,
-    public logoutProvider: LogoutProvider, public loadingProvider: LoadingProvider,
+    public authProvider: AuthProvider, public loadingProvider: LoadingProvider,
     public angularfireDatabase: AngularFireDatabase, public alertProvider: AlertProvider, public afAuth: AngularFireAuth, public afDB: AngularFireDatabase) {
     // Hook our logout provider with the app.
-    this.logoutProvider.setApp(this.app);
+    
   }
 
   ionViewDidLoad() {
@@ -50,14 +50,15 @@ export class VerificationPage {
       firebase.auth().currentUser.reload();
 
       // if ( firebase.auth().currentUser.emailVerified) {
-        if(true) {
+        if(firebase.auth().currentUser.emailVerified) {
 
         clearInterval(that.checkVerified);
         that.emailVerified = true;
         that.alertProvider.showEmailVerifiedMessageAndRedirect(that.navCtrl);
-        that.createUserData();
+        
+        // that.createUserData();
       }
-    }, 1000);
+    }, 1000); 
   }
 
   ionViewCanLeave(): boolean {
@@ -176,7 +177,7 @@ export class VerificationPage {
                     let code = error["code"];
                     this.alertProvider.showErrorMessage(code);
                     if (code == 'auth/requires-recent-login') {
-                      this.logoutProvider.logout();
+                      this.authProvider.logout();
                     }
                   });
               } else {
@@ -206,52 +207,54 @@ export class VerificationPage {
             // Set our routeGuard to true, to enable changing views.
             this.isLoggingOut = true;
             // Log the user out.
-            this.logoutProvider.logout();
+            this.authProvider.logout();
           }
         }
       ]
     }).present();
   }
 
-  createUserData() {
-    firebase.database().ref('accounts/' + firebase.auth().currentUser.uid).once('value')
-      .then((account) => {
-        // No database data yet, create user data on database
-        if (!account.val()) {
-          this.loadingProvider.show();
-          let user = firebase.auth().currentUser;
-          var userId, name, provider, img, email;
-          let providerData = user.providerData[0];
+  // createUserData() {
+  //   firebase.database().ref('accounts/' + firebase.auth().currentUser.uid).once('value')
+  //     .then((account) => {
+  //       // No database data yet, create user data on database
+  //       if (!account.val()) {
+  //         this.loadingProvider.show();
+  //         let user = firebase.auth().currentUser;
+  //         var userId, name, provider, img, email;
+  //         let providerData = user.providerData[0];
 
-          userId = user.uid;
+  //         userId = user.uid;
 
-          // Get name from Firebase user.
-          if (user.displayName || providerData.displayName) {
-            name = user.displayName;
-            name = providerData.displayName;
-          } else {
-            name = "User";
-          }
+  //         // Get name from Firebase user.
+  //         if (user.displayName || providerData.displayName) {
+  //           name = user.displayName;
+  //           name = providerData.displayName;
+  //         } else {
+  //           name = "User";
+  //         }
          
-          // Get email from Firebase user.
-          email = user.email;
+  //         // Get email from Firebase user.
+  //         email = user.email;
 
           
          
-          this.angularfireDatabase.object('/accounts/' + userId).set({
-            username: name,
-            email: email,
-            dateCreated: new Date().toString()
-          }).then(() => {
-            this.loadingProvider.hide();
-          }).catch((error) => {
-            this.alertProvider.showErrorMessage('profile/error-update-profile');
-          });
+  //         this.angularfireDatabase.object('/accounts/' + userId).set({
+  //           notifications: true,
+  //           username: name,
+  //           email: email,
+  //           profileImg: "assets/imgs/noavatar.png",
+  //           dateCreated: new Date().toString()
+  //         }).then(() => {
+  //           this.loadingProvider.hide();
+  //         }).catch((error) => {
+  //           this.alertProvider.showErrorMessage('profile/error-update-profile');
+  //         });
 
           
-          // Insert data on our database using AngularFire.
+  //         // Insert data on our database using AngularFire.
           
-        }
-      });
-  }
+  //       }
+  //     });
+  // }
 }

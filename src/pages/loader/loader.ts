@@ -36,19 +36,30 @@ export class LoaderPage {
             this.splashScreen.hide();
           } else {
             // Check if userData is already created on Firestore.
+            if(!user["emailVerified"]){
+              this.zone.run(()=> {
+                this.navCtrl.setRoot('VerificationPage');
+              })
+            }
+            else{
+              this.afDB.database.ref('accounts/' + user.uid).once('value', account => {
+                if(!account.exists()){
+
+                  this.zone.run(()=> {
+                    this.navCtrl.setRoot('ProfileCreatePage');
+                  })
+                  this.splashScreen.hide();
+                }
+                else {
+                  
+                  this.zone.run(() => {
+                    this.navCtrl.setRoot('TabsPage');
+                  });
+                  this.splashScreen.hide();
+                }
+              }).catch(() => { });
+            }
             
-            this.afDB.database.ref('account/' + user.uid).once('value', account => {
-              if(!account.exists){
-                this.navCtrl.setRoot('CreateProfilePage');
-                this.splashScreen.hide();
-              }
-              else {
-                this.zone.run(() => {
-                  this.navCtrl.setRoot('TabsPage');
-                });
-                this.splashScreen.hide();
-              }
-            }).catch(() => { });
           }
         })
       } else {
@@ -60,4 +71,6 @@ export class LoaderPage {
     }).catch(() => { });
   }
 
+
+   
 }
