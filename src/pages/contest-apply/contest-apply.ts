@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { DataProvider } from '../../providers/data/data';
+import { DataProvider } from '../../providers';
 import * as firebase from 'firebase';
 import { ImageUploadContest } from "../../components/image-upload-contest/image-upload-contest";
 import { refCount } from 'rxjs/operators';
@@ -49,7 +49,7 @@ export class ContestApplyPage {
   insertApply(){
     
     
-    this.afDB.database.ref('/contests/' + this.lastContest.key + '/applicant').update({[this.user.key]: this.user.payload.val().gender})
+    this.afDB.database.ref('/contests/' + this.lastContest.key + '/applicant').update({[this.user.key]: this.user.gender})
     .then((success) => {
 
       var myContest = {

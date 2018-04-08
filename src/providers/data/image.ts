@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertProvider } from '../alert/alert';
-import { LoadingProvider } from '../loading/loading';
+import { LoadingProvider } from '../';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -29,7 +29,8 @@ export class ImageProvider {
       targetHeight: 384,
       destinationType: this.camera.DestinationType.DATA_URL,
       encodingType: this.camera.EncodingType.JPEG,
-      correctOrientation: true
+      correctOrientation: true,
+      allowEdit: true
     };
 
     this.photoMessageOptions = {
@@ -76,8 +77,9 @@ export class ImageProvider {
   // Set ProfilePhoto given the user and the cameraSourceType.
   // This function processes the imageURI returned and uploads the file on Firebase,
   // Finally the user data on the database is updated.
-  setProfilePhoto(user, sourceType) {
-    console.log(user);
+  setProfilePhoto(key, user, sourceType) {
+
+
     this.profilePhotoOptions.sourceType = sourceType;
     this.loadingProvider.show();
     // Get picture from camera or gallery.
@@ -88,7 +90,7 @@ export class ImageProvider {
         'contentType': imgBlob.type
       };
       // Generate filename and upload to Firebase Storage.
-      firebase.storage().ref().child('images/' + user.userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+      firebase.storage().ref().child('images/' + key + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
         // Delete previous profile photo on Storage if it exists.
         if(user.profileImg)this.deleteImageFile(user.profileImg);
         
@@ -104,16 +106,10 @@ export class ImageProvider {
         firebase.auth().currentUser.updateProfile(profile)
           .then((success) => {
             // Update User Data on Database.
-            this.angularfireDatabase.object('/accounts/' + user.userId).update({
+            this.angularfireDatabase.object('/accounts/' + key).update({
               profileImg: url
             }).then((success) => {
-              this.angularfireDatabase.list('/accounts/' + user.userId + '/feeds').snapshotChanges().subscribe(feeds=> {
-                feeds.forEach(feed => {
-                  this.angularfireDatabase.object('/feed/' + feed.key).update({
-                    profileImg: url
-                  })
-                })
-              })
+              
               this.loadingProvider.hide();
               this.alertProvider.showProfileUpdatedMessage();
             }).catch((error) => {

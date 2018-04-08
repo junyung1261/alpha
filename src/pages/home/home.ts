@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { DataProvider } from '../../providers/data/data';
+import { DataProvider } from '../../providers';
 
 @IonicPage()
 @Component({

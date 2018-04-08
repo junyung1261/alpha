@@ -68,6 +68,7 @@ exports.roundOne = functions.https.onRequest((req,res)=> {
     });
 });
 
+admin.messaging().sendToDevice();
     
 });
 
@@ -198,6 +199,28 @@ exports.roundFinal = functions.https.onRequest((req,res)=> {
 });
 
 });
+
+exports.notification = functions.https.onRequest((req, res)=> {
+    const payload = {
+        notification: {
+          title: `New message by fff`,
+          body: 'sdfsdfsdfsdfsdf',
+          click_action:"FCM_PLUGIN_ACTIVITY",
+        }
+      };
+       
+
+      admin.messaging().sendToTopic('test', payload).then( success => {
+        return res.status(200).json('pushed!');
+      }).catch(err => {
+        console.error(err);
+    });
+
+
+
+});
+
+
 
 
 // exports.translate = functions.https.onRequest((req, res) => {

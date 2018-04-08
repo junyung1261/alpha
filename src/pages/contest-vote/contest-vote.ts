@@ -3,7 +3,7 @@ import { IonicPage, NavParams, AlertController } from 'ionic-angular';
 import { ViewController } from 'ionic-angular/navigation/view-controller';
 import { AngularFireDatabase } from 'angularfire2/database';
 import * as firebase from 'firebase';
-import { DataProvider } from '../../providers/data/data';
+import { DataProvider } from '../../providers';
 
 @IonicPage()
 @Component({

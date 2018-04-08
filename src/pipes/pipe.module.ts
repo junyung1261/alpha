@@ -1,16 +1,21 @@
 import { NgModule } from '@angular/core';
-
+import { ChatsPipe } from './chats'
+import { UsersPipe } from './users'
 import { DateFormatPipe } from './date';
 
 @NgModule({
     declarations: [
-        DateFormatPipe
+        DateFormatPipe,
+        ChatsPipe,
+        UsersPipe
     ],
     imports: [
 
     ],
     exports: [
-        DateFormatPipe
+        DateFormatPipe,
+        ChatsPipe,
+        UsersPipe
     ]
     
 })

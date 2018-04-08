@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import 'rxjs/add/operator/map'; // you might need to import this, or not depends on your setup
 import 'rxjs/add/operator/take'
@@ -9,7 +9,8 @@ export class DataProvider {
   // Data Provider
   // This is the provider class for most of the Firebase observables in the app.
 
-  constructor(public angularfireDatabase: AngularFireDatabase) {
+  constructor(public angularfireDatabase: AngularFireDatabase,
+  ) {
     console.log("Initializing Data Provider");
   }
 
@@ -33,6 +34,10 @@ export class DataProvider {
     return this.angularfireDatabase.object('/accounts/' + userId);
   }
 
+  getUserFriends(userId){
+    return this.angularfireDatabase.list('/accounts/' +  userId + '/friends/');
+  }
+
   // Get requests given the userId.
   getRequests(userId) {
     return this.angularfireDatabase.object('/requests/' + userId);
@@ -42,6 +47,13 @@ export class DataProvider {
   getFriendRequests(userId) {
     return this.angularfireDatabase.list('/requests', ref => ref.orderByChild('receiver').equalTo(userId));
   }
+
+
+   // Get conversation given the conversationId.
+   getUserConversation(userId, partnerId) {
+    return this.angularfireDatabase.object('/accounts/' + userId + '/conversations/' + partnerId);
+  }
+
 
   // Get conversation given the conversationId.
   getConversation(conversationId) {
@@ -101,6 +113,11 @@ export class DataProvider {
     return this.angularfireDatabase.list(location, ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
   }
 
+  getLatestUsers(){
+   
+    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(20));
+  }
+
   getChatList(){
     return this.angularfireDatabase.list('/chat', ref => ref.orderByChild('lastUpdate'));
   }
@@ -121,8 +138,12 @@ export class DataProvider {
     return this.angularfireDatabase.list('/contests/' + contestId + '/applicant', ref => ref.orderByValue());
   }
 
-  getCandidate(contestId, gender){
-    return this.angularfireDatabase.list('/contests/'  + contestId + '/candidate' , ref => ref.orderByChild('gender').equalTo(gender));
+  getCandidate(contestId){
+    return this.angularfireDatabase.list('/contests/'  + contestId + '/candidate' , ref => ref.orderByChild('gender'));
+  }
+
+  getScores(contestId, candidateId){
+    return this.angularfireDatabase.object('/contests/' + contestId + '/candidate/' + candidateId + '/score');
   }
   
   getChampions(contestId) {
@@ -139,6 +160,31 @@ export class DataProvider {
   
   getNoteList(userKey){
     return this.angularfireDatabase.list('/note-link/'+userKey , ref => ref);
+  }
+
+
+
+  // Set the pushToken of the user given the userId.
+  public setPushToken(userId: string, token: string): void {
+    this.angularfireDatabase.object('accounts/' + userId).update({
+      pushToken: token
+    })
+    .catch(() => { });
+  }
+
+  // Remove the pushToken of the user given the userId.
+  public removePushToken(userId: string): void {
+    this.angularfireDatabase.object('accounts/' + userId).update({
+        pushToken: ''
+      })
+    .catch(() => { });
+  }
+
+  // Get an object from Firestore by its path. For eg: firestore.get('users/' + userId) to get a user object.
+  public get(path: string): Promise<AngularFireObject<{}>> {
+    return new Promise(resolve => {
+      resolve(this.angularfireDatabase.object(path));
+    });
   }
 
 }

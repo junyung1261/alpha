@@ -1,143 +1,42 @@
 page-login {
-
-    .no-scroll .scroll-content{
-        overflow:hidden;
+    ion-content {
+        background-color: map-get($colors,x-mint) !important;
     }
-.text-input::-moz-placeholder {
-    color: map-get($colors,x-white);
-}
-
-.text-input:-ms-input-placeholder {
-    color: map-get($colors,x-white);
-}
-
-.text-input::-webkit-input-placeholder {
-    text-indent: 0;
-    color: map-get($colors,x-white);
-}
-
-.x-login {
-    width:100vw;
-    height:100vh;
-    padding-top:20vw;
-    background-color:map-get($colors,x-mint);
-}
-.x-login-logo {
-    width:100vw;
-    height:fit-content;
-    
-    text-align: center;
-    img {
-        height:20vw;
+    .x-logo {
+        width:100vw;
+        padding:15vw 28vw 0vw 28vw;
+        margin:20vw 0 25vw 0;
     }
-}
-.x-login-content {
-    width:100vw;
-    height:fit-content;
-    padding:12vw;
-}
-.x-login-input-area {
-    width:76vw;
-    height:10vw;
-    margin-bottom:5vw;
-    font-size:4vw;
-    color:map-get($colors,x-gray-dark);
-}
-.x-login-input {
-    width:76vw;
-    height:10vw;
-    border-radius:3vw;
-    background-color:rgba(255,255,255,0.4);
-    padding:3vw 5vw 3vw 5vw;
-}
-.x-login-btn {
-    box-shadow:none;
-    width:76vw;
-    height:10vw;
-    border:1px solid map-get($colors,x-white);
-    border-radius:3vw;
-    background-color:map-get($colors,x-mint);
-    color:map-get($colors,x-white);
-    padding:3vw 5vw 3vw 5vw;
-    font-size:4vw;
-}
-.x-login-other {
-    width:76vw;
-    text-align: center;
-    height:10vw;
-    padding-top:3vw;
-    color:map-get($colors,x-white);
-    font-size:3.5vw;
-}
-
-
-
-
-
-
-.login-top {
-    width:100vw;
-    height:40vh;
-    background-color:map-get($colors,x-mint); 
-}
-.login-title {
-    align-items:center;
-    height:fit-content;
-    padding:30vw 30vw 6vw 30vw;
-    width:100vw;
-    color: map-get($colors,x-white);
-    font-size:12vw;
-}
-.login-subtitle {
-    align-items:center;
-    height:fit-content;
-    width:100vw;
-    color:map-get($colors,x-white);
-    font-size:4vw;
-    margin-bottom:10vw;
-}
-.login-middle {
-    width:100vw;
-    height:50vh;
-    background-color:map-get($colors,x-mint);
-}
-.login-email, .login-password, .login-nickname {
-    margin:0 10vw 5vw 10vw;
-    background-color:rgba(255,255,255,0.4);
-    width:80vw;
-    border-radius:3vw;
-    height:10vw;
-    padding:3vw 2vw 0 2vw;
-    color:map-get($colors,x-white);
-    font-size:4vw;
-}
-.login-btn {
-    border:1px solid map-get($colors,x-white);
-    border-radius:3vw;
-    width:80vw !important;
-    height:10vw !important;
-    background-color:map-get($colors,x-mint) !important;
-    box-shadow:none !important;
-}
-.login-key {
-    align-items:center;
-    height:fit-content;
-    width:100vw;
-    color:map-get($colors,x-white);
-    font-size:30vw;
-    padding:5vw ;
-}
-.login-bottom {
-    width:100vw;
-    height:fit-content;
-    background-color:map-get($colors,x-mint);
-}
-.login-register {
-    border-top:1px solid map-get($colors,x-white);
-    align-items:center;
-    height:10vh;
-    background-color:rgba(255,255,255,0.4);
-    color:map-get($colors,x-white);
-    font-size:4vw;
+    .x-btn-area {
+        width:100vw;
+        height:fit-content;
+        text-align: center;
+        margin-bottom:5vw;
+    } 
+    .x-btn {
+        box-shadow:none;
+        width:74vw;
+        height:10vw;
+        border-left:3px solid map-get($colors,x-white);
+        border-radius:0vw;
+        background-color:rgba(255,255,255,0.4);
+        color:map-get($colors,x-white);
+        padding:3vw 5vw 3vw 5vw;
+        font-size:4vw;
+    }
+    .x-main-footer {
+        position: absolute;
+        bottom:10vw;
+        height:10vw;
+        width:100vw;
+        color:map-get($colors,x-white);
+        font-size:3vw;
+        text-align:center;
+        background-color:rgba(255,255,255,0.4);
+        padding:3vw 0 3vw 0;
+    }
+    .button-md.activated {
+        background-color:rgba(255,255,255,0.8) !important;
+        box-shadow:none !important;
     }
 }

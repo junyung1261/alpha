@@ -1,0 +1,65 @@
+<ion-header>
+    <ion-navbar>
+      <ion-title><b>{{ 'auth.nav.title.create' | translate }}</b></ion-title>
+    </ion-navbar>
+  </ion-header>
+  <ion-content>
+    <div class="profile" text-center>
+        <img src="{{ photo }}" (click)="setPhoto()"> 
+      <!-- <img-loader [src]="photo" tappable (click)="setPhoto()"></img-loader> -->
+    </div>
+    <div class="form">
+      <form [formGroup]="profileForm">
+        <ion-list>
+          <ion-item no-lines margin-bottom>
+            <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</p>
+          <ion-item no-lines margin-bottom>
+            <ion-label>{{ translate.get('auth.form.gender') }}</ion-label>
+            <ion-select type="text" formControlName="gender" [placeholder]="translate.get('auth.form.gender.null')">
+                <ion-option value="female">Female</ion-option>
+                <ion-option value="male">Male</ion-option>
+            </ion-select>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.gender.hasError('required') || !profileForm.controls.gender.valid) && hasError">{{ 'auth.form.error.gender' | translate }}</p>
+          <ion-item no-lines margin-bottom>
+            <ion-label>Date</ion-label>
+            <ion-datetime displayFormat="MM/DD/YYYY" formControlName="birth" [placeholder]="translate.get('auth.form.birth.null')" ></ion-datetime>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.birth.hasError('required') || !profileForm.controls.birth.valid) && hasError">{{ 'auth.form.error.birth' | translate }}</p>
+          <!-- <p text-center *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</p> -->
+          <ion-item no-lines margin-bottom>
+            <ion-label>{{ translate.get('auth.form.address') }}</ion-label>
+            <ion-select type="text" formControlName="address"  [placeholder]="translate.get('auth.form.address.null')">
+                <ion-option value="seoul">{{ translate.get('auth.form.address.seoul') }}</ion-option>
+                <ion-option value="incheon">{{ translate.get('auth.form.address.incheon') }}</ion-option>
+                <ion-option value="gyeonggi-do">{{ translate.get('auth.form.address.gyeonggi-do') }}</ion-option>
+                <ion-option value="busan">{{ translate.get('auth.form.address.busan') }}</ion-option>
+                <ion-option value="ulsan">{{ translate.get('auth.form.address.ulsan') }}</ion-option>
+                <ion-option value="daegu">{{ translate.get('auth.form.address.daegu') }}</ion-option>
+                <ion-option value="gwangju">{{ translate.get('auth.form.address.gwangju') }}</ion-option>
+                <ion-option value="gangwon-do">{{ translate.get('auth.form.address.gangwon-do') }}</ion-option>
+                <ion-option value="gyeongsangnam-do">{{ translate.get('auth.form.address.gyeongsangnam-do') }}</ion-option>
+                <ion-option value="gyeongsangbuk-do">{{ translate.get('auth.form.address.gyeongsangbuk-do') }}</ion-option>
+                <ion-option value="jeollanam-do">{{ translate.get('auth.form.address.jeollanam-do') }}</ion-option>
+                <ion-option value="jeollabuk-do">{{ translate.get('auth.form.address.jeollabuk-do') }}</ion-option>
+                <ion-option value="chungcheongnam-do">{{ translate.get('auth.form.address.chungcheongnam-do') }}</ion-option>
+                <ion-option value="chungcheongbuk-do">{{ translate.get('auth.form.address.chungcheongbuk-do') }}</ion-option>
+                <ion-option value="jeju-do">{{ translate.get('auth.form.address.jeju-do') }}</ion-option>
+            </ion-select>
+          </ion-item>
+          <p text-center *ngIf="(profileForm.controls.address.hasError('required') || !profileForm.controls.address.valid) && hasError">{{ 'auth.form.error.email' | translate }}</p>
+          <ion-item no-lines margin-bottom class="textarea">
+            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3"></ion-textarea>
+          </ion-item>
+          <p text-center *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</p>
+          <div class="button" text-center>
+            <button ion-button color="primary" (click)="createProfile()" ><b>{{ 'auth.button.create' | translate }}</b></button>
+          </div>
+        </ion-list>
+      </form>
+    </div>
+  </ion-content>
+
+  
