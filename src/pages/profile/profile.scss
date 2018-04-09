@@ -8,6 +8,13 @@ page-profile {
         }
       }
     }
+
+    .text-on-bottom > .button-inner {
+      flex-direction: column;
+    }
+    .heart-value {
+      font-size:2.5vw;
+    }
     .item-md.item-input.input-has-focus .item-inner {
       border-bottom-color: transparent !important;
       box-shadow: none !important;
@@ -45,6 +52,7 @@ page-profile {
       border-bottom-color: transparent !important;
       box-shadow: none !important;
     }
+    
     .profile-no-lines {
       border-bottom:none !important;
     }

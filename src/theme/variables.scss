@@ -39,7 +39,7 @@ $app-direction: ltr;
 @include makeIcon(flaticon-network, '\f143');   //CHAT3
 @include makeIcon(flaticon-arrow, '\f122');   //대화방입장
 @include makeIcon(flaticon-exclamation, '\f149');   //대화방 상단설명 // 공지사항
-
+@include makeIcon(flaticon-like-1, '\f13e');   //하트
 
 @include makeIcon(flaticon-hearts, '\f14d');   //토너먼트 상단 하트아이콘 //게시판 댓글 좋아요 아이콘
 @include makeIcon(flaticon-clock, '\f15d');   //토너먼트 후보모집 :: 후보대기  //게시글 작성시간 아이콘

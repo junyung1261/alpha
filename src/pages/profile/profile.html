@@ -2,8 +2,17 @@
 
   <ion-header no-border>
     <ion-navbar color="x-mint">
+      <ion-buttons left>
+        <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
+      </ion-buttons>
       <ion-title text-center>{{ 'auth.nav.title.profile' | translate }}</ion-title>
+      <ion-buttons end>
+        <button ion-button class="text-on-bottom">
+          <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value">1500</span>
+        </button>
+      </ion-buttons>
     </ion-navbar>
+    
   </ion-header>
 
   <ion-content [ngClass]="{'android': android}">
