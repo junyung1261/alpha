@@ -162,7 +162,7 @@ export class ChatPage {
           messages: this.conversation.messages
         }).then((success) => {
           if (this.partner.payload.val().pushToken) {
-            this.notification.sendPush(this.partner.payload.val().pushToken, this.user.payload.val().usernmae , text, { partnerId: this.user.key });
+            this.notification.sendPush(this.partner.payload.val().pushToken, this.user.payload.val().username , text, { partnerId: this.user.key });
           }
         });
         // Clear messagebox.

@@ -3,7 +3,7 @@
     <ion-buttons left>
       <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
     </ion-buttons>
-    <ion-title>{{menuName}}</ion-title>
+    <ion-title *ngIf="menu">{{menu.name}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="boardlistClose()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
@@ -11,8 +11,8 @@
 </ion-header>
 
 <ion-content no-padding #myContent>
-    <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menuName =='LIFE'" [(ngModel)]="specificName">
-      <ion-segment-button class="x-category-btn" *ngFor="let life of lifeMenu" value={{life.name}} (ionSelect)="selectedSegment(life.name)">{{life.name}}</ion-segment-button>
+    <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menu && menu.submenu.length > 1" [(ngModel)]="segment_category">
+      <ion-segment-button class="x-category-btn" *ngFor="let category of menu.submenu" value="{{category.name}}" (ionSelect)="test()"> {{category.name}}</ion-segment-button>
     </ion-segment>
 
   <div>
@@ -23,7 +23,7 @@
             <div class="x-search-left">
               <select class="x-search-select">
                 <ng-container *ngFor="let categories of categoryItem">
-                  <option *ngIf="categories.type == specificName">{{categories.name}}</option>
+                  <option *ngIf="categories.type == segment_category">{{categories.name}}</option>
                 </ng-container>
               </select>
             </div>
@@ -36,7 +36,7 @@
       </ion-row>
     </ion-grid>
 
-    <ion-grid class="x-list" no-padding *ngIf="menuName == 'BEAUTY' || menuName == 'STUDY' || (menuName == 'LIFE' && specificName == 'FREE')">
+    <ion-grid class="x-list" no-padding >
       <ion-row class="x-list-title">
         <ion-col col-12>인기글</ion-col>
       </ion-row>
@@ -62,13 +62,14 @@
         <ion-col col-3 text-center>댓글많은</ion-col>
       </ion-row>
     </ion-grid>
-  
-    <ion-grid class="x-list" no-padding *ngIf="menuName == 'BEAUTY' || menuName == 'STUDY' || (menuName == 'LIFE' && specificName == 'FREE')">
+  <div [ngSwitch]="segment_category">
+    <ion-grid class="x-list" no-padding *ngSwitchCase="'FREE'">
+     
       <ion-row class="x-list-title">
         <ion-col col-12>일반게시글</ion-col>
       </ion-row>
       <div *ngFor="let post of posts">
-        <ion-row class="x-list-row" *ngIf="post.payload.val().wr_category=='FREE'" (click)="boardView(menuName,post.payload.key)">
+        <ion-row class="x-list-row" *ngIf="post.payload.val().wr_category=='FREE'" (click)="boardView(menu ,post.payload.key)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().wr_category}}</span>&nbsp;&nbsp;{{post.payload.val().wr_title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.comment_count}}</span>
@@ -76,13 +77,18 @@
         </ion-row>
       </div>
     </ion-grid>
+
+
+    
+
+  
   
     <!-- 중고거래 & 집거래-->
-    <div class="x-photolist-container" *ngIf="menuName == 'LIFE' && (specificName == 'USED'||specificName == 'ESTATE')">
-      <div class="x-photolist-title" *ngIf="specificName=='USED'">중고거래 목록</div>
-      <div class="x-photolist-title" *ngIf="specificName=='ESTATE'">주거매매 목록</div>
+    <div class="x-photolist-container" *ngIf="menu == 'LIFE' && (category == 'USED'||category == 'ESTATE')">
+      <div class="x-photolist-title" *ngIf="category=='USED'">중고거래 목록</div>
+      <div class="x-photolist-title" *ngIf="category=='ESTATE'">주거매매 목록</div>
       <div *ngFor="let post of posts">
-        <div class="x-photolist" *ngIf="post.payload.val().wr_category==specificName" (click)="boardView(menuName,post.payload.key)">
+        <div class="x-photolist" *ngIf="post.payload.val().wr_category==category" (click)="boardView(menu,post.payload.key)">
           <div class="x-photolist-left"><img src="assets/imgs/user_001.jpg"></div>
           <div class="x-photolist-right">
             <div class="x-photolist-contents"><span class="x-photolist-category">{{post.payload.val().wr_inner}}&nbsp;&nbsp;</span>{{post.payload.val().wr_title}}</div>
@@ -95,12 +101,12 @@
     </div>
     
     <!-- 구인구직 -->
-    <ion-grid class="x-list" no-padding *ngIf="menuName == 'LIFE' && specificName == 'JOB'">
+    <ion-grid class="x-list" no-padding *ngIf="menu == 'LIFE' && category == 'JOB'">
       <ion-row class="x-list-title">
         <ion-col col-12>구인구직 목록</ion-col>
       </ion-row>
       <div *ngFor="let post of posts">
-        <ion-row class="x-list-row"  *ngIf="post.payload.val().wr_category=='JOB'" (click)="boardView(menuName,post.payload.key)">
+        <ion-row class="x-list-row"  *ngIf="post.payload.val().wr_category=='JOB'" (click)="boardView(menu,post.payload.key)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().wr_category}}</span>&nbsp;&nbsp;{{post.payload.val().wr_title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.comment_count}}</span>
@@ -110,19 +116,13 @@
     </ion-grid>
     
 
-    <ion-fab class="x-float-button" *ngIf="specificName == 'FREE'">
-        <button ion-fab color="x-mint" (click)="boardWrite('FREE');"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
-      </ion-fab>
-      <ion-fab class="x-float-button" *ngIf="specificName == 'USED'">
-        <button ion-fab color="x-mint" (click)="boardWrite('USED');"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
-      </ion-fab>
-      <ion-fab class="x-float-button" *ngIf="specificName == 'JOB'">
-        <button ion-fab color="x-mint" (click)="boardWrite('JOB');"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
-      </ion-fab>
-      <ion-fab class="x-float-button" *ngIf="specificName == 'ESTATE'">
-        <button ion-fab color="x-mint" (click)="boardWrite('ESTATE');"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
-      </ion-fab>
+  </div>
       
   </div>
+
+  <ion-fab class="x-float-button" >
+      <button ion-fab color="x-mint" (click)="boardWrite(menu.name);"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
+  </ion-fab>
+    
 </ion-content>
   

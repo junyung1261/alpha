@@ -12,7 +12,7 @@
             <div class="x-search-left">
               <select class="x-search-select">
                 <option>전체</option>
-                <option *ngFor="let menu of menus">{{menu.payload.val().name}}</option>
+                <option *ngFor="let menu of postMenu">{{menu.name}}</option>
               </select>
             </div>
             <div class="x-search-center">
@@ -29,28 +29,32 @@
     </ion-grid>
   
     <!-- 시작 -->
-    <ion-grid class="x-list" no-padding *ngFor="let menu of menus">
+    
+    <ion-grid class="x-list" no-padding *ngFor="let menu of postMenu">
+      
       <ion-row class="x-list-title">
-        <ion-col col-10>{{menu.payload.val().name}} 최신글</ion-col>
+        <ion-col col-10>{{menu.name}} 최신글</ion-col>
         <ion-col col-2 text-right>
           <span class="x-list-title-more">
-            <ion-icon name="flaticon-mark" (click)="openCommunity(menu.payload.val().name);"></ion-icon>
+            <ion-icon name="flaticon-mark" (click)="openPostListPage(menu, menu.submenu[0]);"></ion-icon>
           </span>
         </ion-col>
+        
       </ion-row>
+     
       <div *ngFor="let post of menu.posts">
-        <ion-row class="x-list-row" (click)="boardView(menu.payload.val().name,post.payload.key)">
+        <ion-row class="x-list-row" (click)="boardView(menu.name, post.key)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().wr_category}}</span>&nbsp;&nbsp;{{post.payload.val().wr_title}}&nbsp;
-            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.comment_count}}</span>
+            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comment_count}}</span>
           </ion-col>
         </ion-row>
       </div>
-  
-      <ion-row class="x-list-row x-list-ctg" *ngIf="menu.payload.val().submenu">
-        <!-- 자유주제, 중고거래, 주거정보, 구인구직 아직 공사중 -->
-        <ion-col col-3 text-center *ngFor="let submenu of menu.payload.val().submenu"(click)="openLifeCommunity(submenu.name);">{{submenu.name}}</ion-col>
+      <ion-row class="x-list-row x-list-ctg" *ngIf="menu.submenu && menu.name == 'LIFE'">
+          <!-- 자유주제, 중고거래, 주거정보, 구인구직 아직 공사중 -->
+          <ion-col col-3 text-center *ngFor="let category of menu.submenu"(click)="openPostListPage(menu, category);">{{category.name}}</ion-col>
       </ion-row>
-  
+     
+      
     </ion-grid>
   </ion-content>

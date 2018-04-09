@@ -52,7 +52,7 @@ export class BoardwritePage {
 
   addBoard(title: string, text: string, tags: string) {
     text = text.replace(/\n/g, '<br>');
-
+    
     this.boardRef.push({
       
       wr_category: this.categoryType,
@@ -64,15 +64,20 @@ export class BoardwritePage {
       wr_title: title,
       wr_views:0,
       wr_writer: firebase.auth().currentUser.uid,
+      wr_category_date: this.categoryType + '_' + new Date().getTime()
+      
       
       
     }).then((success) => {
+      success.update({
+      
+      })
       if (this.imageUpload.images.length > 0) {
         this.imageUpload.key = success.key;
         this.imageUpload.uploadImages('board/' + this.menuName);
       }
       this.accountRef.update({[success.key]: this.menuName });
-      this.viewCtrl.dismiss({ data: true });
+      this.viewCtrl.dismiss({ data: this.categoryType });
     })
 
   }
@@ -86,7 +91,7 @@ export class BoardwritePage {
   }
 
   boardwriteClose(){
-    this.viewCtrl.dismiss({ data: true });
+    this.viewCtrl.dismiss();
   }
 
 }
