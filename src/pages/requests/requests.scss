@@ -32,6 +32,9 @@ page-requests {
         border-bottom:1px solid map-get($colors,x-gray-light);
     }
     ion-content{
-        background-color: map-get($colors,x-gray-light) !important;
+        background-color: map-get($colors,x-gray-bg) !important;
+    }
+    ion-item-group{
+        background-color: map-get($colors,x-white) !important;
     }
 }

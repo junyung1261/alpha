@@ -57,7 +57,6 @@ export class MyApp {
       // }
      
       mobileAccessibility.usePreferredTextZoom(false);
-
       
       this.translateService.setDefaultLang('en');
       this.translateService.use('en');

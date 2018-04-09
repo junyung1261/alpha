@@ -78,8 +78,7 @@
     <ion-grid no-padding class="x-contest-contents" *ngSwitchCase="'round_1'">
       <ion-row class="x-contest-substage-content" *ngIf="candidatesByGender.round_1">
         <ion-col col-12>
-          <ion-slides >
-            
+          <ion-slides>
             <ion-slide *ngFor="let candidate of candidatesByGender.round_1; let i = index;" >
               <ion-grid no-padding >
                 <ion-row>

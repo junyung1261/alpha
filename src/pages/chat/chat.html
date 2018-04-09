@@ -16,39 +16,42 @@
         refreshingSpinner="circles"
         refreshingText=""></ion-refresher-content>
     </ion-refresher>
-    <div *ngIf="conversation" no-margin no-padding>
+    <div *ngIf="conversation" no-margin no-padding class="message_grid">
       <ion-row *ngFor="let message of conversation.messages | slice:from:conversation.messages.length; last as last; index as index" tappable>
-        <ion-col class="profile" col-2 text-center *ngIf="message.sender == partner.key" tappable (click)="viewProfile(partner.key); $event.stopPropagation();"><img src="{{ partner.payload.val().profileImg }}" ></ion-col>
-        <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
-            <p text-wrap float-center *ngIf="message.type == 'notice_start'">채팅이 시작되었습니다!</p>
-            
+        <ion-col class="profile" col-2 text-center *ngIf="message.sender == partner.key" tappable (click)="viewProfile(partner.key); $event.stopPropagation();"><img src="{{ partner.payload.val().profileImg }}" class="photo-round"></ion-col>
+        <ion-col class="message" col-12 *ngIf="message.sender == 'tianya'" text-center>
+          <div class="message-notice" *ngIf="message.type == 'notice_start'">채팅이 시작되었습니다!</div>
         </ion-col>
 
         <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
-            <p text-wrap float-center *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} 님께서 채팅방을 나갔습니다.</p>
-            
+          <div class="message-notice" *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} 님께서 채팅방을 나갔습니다.</div>
         </ion-col>
 
         <ion-col class="message" col-10 *ngIf="message.sender == partner.key">
-          <p text-wrap float-left *ngIf="message.type == 'text'">{{ message.message }}</p>
-          
+          <div class="message-bubble-left" *ngIf="message.type == 'text'">{{ message.message }}</div>
+          <div class="message-time-left" *ngIf="message.sender == partner.key">{{ message.date | DateFormat }}</div>
         </ion-col>
         <ion-col class="sender" *ngIf="message.sender ==  this.user.key">
-          <p text-wrap float-right *ngIf="message.type == 'text'">{{ message.message }}</p>
-         
+          <div  class="message-bubble-right" *ngIf="message.type == 'text'">{{ message.message }}</div>
+          <div class="message-time-right" *ngIf="message.sender != partner.key && message.sender != 'tianya'">{{ message.date | DateFormat }}</div>
         </ion-col>
         <ion-col col-12 class="date">
-          <p class="other" *ngIf="message.sender == partner.key" text-left>{{ message.date | DateFormat }}</p>
-          <p *ngIf="message.sender != partner.key && message.sender != 'tianya'" text-right>{{ message.date | DateFormat }}</p>
+          
+          
         </ion-col>
       </ion-row>
     </div>
   </ion-content>
   <ion-footer [ngClass]="{'iPhoneX': iPhoneX, 'android': android}">
-    <div>
-      <ion-textarea #messageBox id="messageBox" fz-elastic type="text" [placeholder]="translate.get('chats.message.write')" [(ngModel)]="message" rows="1" (keydown)="onType($event)" (ionBlur)="onBlur()" (ionFocus)="onFocus()"></ion-textarea>
-   
-      <button ion-button icon-only clear (click)="send()" *ngIf="message" ><ion-icon name="paper-plane"></ion-icon></button>
-    </div>
+    <ion-row>
+      <ion-col col-10>
+          <ion-textarea class="input_txt" #messageBox id="messageBox" fz-elastic type="text" [placeholder]="translate.get('chats.message.write')" [(ngModel)]="message" rows="1" (keydown)="onType($event)" (ionBlur)="onBlur()" (ionFocus)="onFocus()"></ion-textarea>
+      </ion-col>
+      <ion-col col-2 text-right>
+        <button ion-button icon-only clear (click)="send()" *ngIf="message" class="input_btn">
+          <ion-icon name="flaticon-edit"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
   </ion-footer>
   
