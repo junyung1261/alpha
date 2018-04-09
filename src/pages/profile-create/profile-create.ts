@@ -111,6 +111,7 @@ export class ProfileCreatePage {
         address: address,
         email: firebase.auth().currentUser.email,
         bio: bio,
+        heart: 0,
         notifications: true
         
       }).then(()=>{

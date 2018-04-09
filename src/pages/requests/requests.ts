@@ -105,6 +105,8 @@ export class RequestsPage {
  
   }
 
+
+
   ionViewWillLeave(){
     // if (this.subscriptions) {
     //   for (let i = 0; i < this.subscriptions.length; i++) {
@@ -113,6 +115,19 @@ export class RequestsPage {
     // }
     clearInterval(this.updateRef);
   }
+
+
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+
+    setTimeout(() => {
+      this.ionViewDidLoad();
+      console.log('Async operation has ended');
+      refresher.complete();
+    }, 2000);
+  }
+
+
 
      
    // Called when infinite scroll is triggered.

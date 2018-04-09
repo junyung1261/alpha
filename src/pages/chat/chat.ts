@@ -162,7 +162,7 @@ export class ChatPage {
           messages: this.conversation.messages
         }).then((success) => {
           if (this.partner.payload.val().pushToken) {
-            this.notification.sendPush(this.partner.payload.val().pushToken, this.user.payload.val().usernmae , text, { partnerId: this.user.key });
+            this.notification.sendPush(this.partner.payload.val().pushToken, this.user.payload.val().username , text, { partnerId: this.user.key });
           }
         });
         // Clear messagebox.
@@ -193,7 +193,7 @@ export class ChatPage {
     }
   }
 // Scroll to bottom of the view.
-private scrollBottom(): void {
+  scrollBottom(): void {
   let self = this;
   setTimeout(function() {
     if(self.content._scroll) self.content.scrollToBottom();

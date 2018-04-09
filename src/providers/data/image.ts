@@ -81,7 +81,7 @@ export class ImageProvider {
 
 
     this.profilePhotoOptions.sourceType = sourceType;
-    this.loadingProvider.show();
+    
     // Get picture from camera or gallery.
     this.camera.getPicture(this.profilePhotoOptions).then((imageData) => {
       // Process the returned imageURI.
@@ -90,6 +90,7 @@ export class ImageProvider {
         'contentType': imgBlob.type
       };
       // Generate filename and upload to Firebase Storage.
+     
       firebase.storage().ref().child('images/' + key + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
         // Delete previous profile photo on Storage if it exists.
         if(user.profileImg)this.deleteImageFile(user.profileImg);
@@ -101,7 +102,7 @@ export class ImageProvider {
           displayName: user.username,
           photoURL: url
         };
-        
+        this.loadingProvider.show();
         // Update Firebase User.
         firebase.auth().currentUser.updateProfile(profile)
           .then((success) => {
