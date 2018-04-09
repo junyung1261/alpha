@@ -10,7 +10,7 @@
       <ion-col col-12><div class="x-contest-time">2月 19日 9時 ~ 2月 19日 18時</div></ion-col>
     </ion-row>
     <ion-row text-center [hidden]="currentProgress == 'join'">
-      <ion-segment class="x-contest-stage" mode="md" [(ngModel)]="currentGender">
+      <ion-segment class="x-contest-stage" mode="md" [(ngModel)]="currentGender" *ngIf="currentStage != 'join'">
         <ion-segment-button value="female" (click) = "changeGender('female')" >남성</ion-segment-button>
         <ion-segment-button value="male"(click) = "changeGender('male')" >여성</ion-segment-button>
       </ion-segment>

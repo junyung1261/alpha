@@ -63,65 +63,78 @@ export class ContestPage {
     
     
     this.loadingProvider.show();
-    this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
+    this.dataProvider.getCurrentUser().valueChanges().subscribe((user: any) => {
+      
       this.user = user;
-      this.currentGender = user.payload.val().gender;
+      this.user.key = firebase.auth().currentUser.uid;
+      this.currentGender = user.gender;
       
     })
     this.dataProvider.getLastContest().snapshotChanges().take(1).subscribe( snapshot => {
-
+      
+      if(snapshot.length != 0){
+        
+        this.lastContest = snapshot[0];
+        firebase.database().ref('/contests/' + this.lastContest.key +'/stage').on('value', snapshot => {
+  
           
-      this.lastContest = snapshot[0];
-      firebase.database().ref('/contests/' + this.lastContest.key +'/stage').on('value', snapshot => {
-        this.currentStage = snapshot.val();
-        this.contestProgress = snapshot.val();
-       
-                  
-        if( snapshot.val()  == 'join' ){
-          
-
-          this.dataProvider.getApplicant(this.lastContest.key).snapshotChanges().subscribe(applicants => {
-            this.applicants = applicants;
-          }); 
-          this.loadingProvider.hide();
-        }
-        else if (snapshot.val() != 'join'){
-          
-          
-            this.dataProvider.getCandidate(this.lastContest.key).snapshotChanges().take(1).subscribe(candidates => {
-              candidates.forEach((candidate, i) => {
-                this.dataProvider.getUser(candidate.key).valueChanges().take(1).subscribe((user : any) => {
-                  user.key = candidate.key;
-                  user.index = user.gender == 'female'? i : i-8;
-                  this.dataProvider.getScores(this.lastContest.key, candidate.key).valueChanges().subscribe((score: any) => {                  
-                    user.round_1 = score.round_1;
-                    user.total = user.round_1;
-                    if(score.round_2 >= 0){
-                      user.round_2 = score.round_2;
-                      user.total += user.round_2
-                    }
-                    if(score.round_3 >= 0){
-                      user.round_3 = score.round_3;
-                      user.total += user.round_3
-                    }
-                    if(user.gender == 'male') this.addOrUpdateMaleCandidate(user);
-                    else this.addOrUpdateFemaleCandidate(user);
+          this.currentStage = snapshot.val();
+          this.contestProgress = snapshot.val();
+         
+                    
+          if( snapshot.val()  == 'join' ){
+            
+  
+            this.dataProvider.getApplicant(this.lastContest.key).snapshotChanges().subscribe(applicants => {
+              this.applicants = applicants;
+            }); 
+            this.loadingProvider.hide();
+          }
+          else if (snapshot.val() != 'join'){
+            
+            
+              this.dataProvider.getCandidate(this.lastContest.key).snapshotChanges().take(1).subscribe(candidates => {
+                candidates.forEach((candidate, i) => {
+                  this.dataProvider.getUser(candidate.key).valueChanges().take(1).subscribe((user : any) => {
+                    user.key = candidate.key;
+                    user.index = user.gender == 'female'? i : i-8;
+                    this.dataProvider.getScores(this.lastContest.key, candidate.key).valueChanges().subscribe((score: any) => {                  
+                      user.round_1 = score.round_1;
+                      user.total = user.round_1;
+                      if(score.round_2 >= 0){
+                        user.round_2 = score.round_2;
+                        user.total += user.round_2
+                      }
+                      if(score.round_3 >= 0){
+                        user.round_3 = score.round_3;
+                        user.total += user.round_3
+                      }
+                      if(user.gender == 'male') this.addOrUpdateMaleCandidate(user);
+                      else this.addOrUpdateFemaleCandidate(user);
+                    });
+                   
                   });
-                 
                 });
               });
+             
+          }
+          if(snapshot.val() =='final'){
+            
+            this.dataProvider.getChampions(this.lastContest.key).snapshotChanges().take(1).subscribe(champions => {
+              champions.forEach(champ => {
+                this.champions.push(champ.key);
+              })           
             });
-           
-        }
-        if(snapshot.val() =='final'){
-          
-          this.dataProvider.getChampions(this.lastContest.key).snapshotChanges().take(1).subscribe(champions => {
-            champions.forEach(champ => {
-              this.champions.push(champ.key);
-            })           
-          });
-        }
-      });
+          }
+        });
+
+      }
+      else{
+
+        console.log('없다')
+        this.loadingProvider.hide();
+      }
+      
     });
   }
 
@@ -271,7 +284,7 @@ export class ContestPage {
     let applyModal = this.modalCtrl.create('ContestApplyPage',{lastContest: this.lastContest, user: this.user},this.opts)
     applyModal.onDidDismiss(data => {
       if(data){
-        if(this.user.payload.val().gender == 'male') {
+        if(this.user.gender == 'male') {
           this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfMale').transaction(function(currentCount){
             return currentCount+1;
           })
@@ -314,7 +327,7 @@ export class ContestPage {
             .then((success) => {
 
               this.dataProvider.getCurrentUser().update({contest: null});
-              if(this.user.payload.val().gender == 'male') {
+              if(this.user.gender == 'male') {
                 this.afDB.database.ref('/contests/' + this.lastContest.key).child('numOfMale').transaction(function(currentCount){
                   return currentCount-1;
                 })

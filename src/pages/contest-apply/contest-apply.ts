@@ -49,7 +49,7 @@ export class ContestApplyPage {
   insertApply(){
     
     
-    this.afDB.database.ref('/contests/' + this.lastContest.key + '/applicant').update({[this.user.key]: this.user.payload.val().gender})
+    this.afDB.database.ref('/contests/' + this.lastContest.key + '/applicant').update({[this.user.key]: this.user.gender})
     .then((success) => {
 
       var myContest = {

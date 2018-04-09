@@ -16,14 +16,14 @@
     <ion-row class="x-contest-apply-title">
       <ion-col col-12 text-center>후보자 프로필</ion-col>
     </ion-row>
-    <ion-row class="x-contest-apply-center">
+    <ion-row class="x-contest-apply-center" *ngIf="user">
       <ion-col col-4 text-center>
         <span class="x-contest-apply-introduce-label">닉네임</span><br>
-        <span class="x-contest-apply-introduce">진세연</span>
+        <span class="x-contest-apply-introduce">{{ user.username }}</span>
       </ion-col>
       <ion-col col-4 text-center>
         <span class="x-contest-apply-introduce-label">생년월일</span><br>
-        <span class="x-contest-apply-introduce">1994.02.15</span>
+        <span class="x-contest-apply-introduce">{{ user.birth }}</span>
       </ion-col>
       <ion-col col-4 text-center>
         <span class="x-contest-apply-introduce-label">거주지역</span><br>

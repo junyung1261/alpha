@@ -57,6 +57,7 @@ export class MyApp {
       // }
      
       mobileAccessibility.usePreferredTextZoom(false);
+
       
       this.translateService.setDefaultLang('en');
       this.translateService.use('en');
@@ -91,6 +92,13 @@ export class MyApp {
       //   }
   
       // });
+    }).catch(()=> {
+      this.translateService.setDefaultLang('en');
+      this.translateService.use('en');
+      this.translateService.getTranslation('en').subscribe(translations => {
+        this.translate.setTranslations(translations);
+        this.rootPage = 'LoaderPage';
+      })
     });
     
   }

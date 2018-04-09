@@ -88,7 +88,7 @@ export class AlertProvider {
       buttons: [{
         text: 'OK',
         handler: () => {
-          navCtrl.setRoot('TabsPage');
+          navCtrl.setRoot('LoaderPage');
         }
       }]
     }).present();
@@ -354,5 +354,46 @@ export class AlertProvider {
         }).present();
         break;
     }
+  }
+
+  showAlert(title: string, subTitle: string, button: string): Promise<any> {
+    return new Promise(resolve => {
+      this.alert = this.alertCtrl.create({
+        title: title,
+        subTitle: subTitle,
+        buttons: [{
+          text: button,
+          role: 'cancel',
+          handler: () => {
+            resolve();
+          }
+        }]
+      });
+      this.alert.present();
+    });
+  }
+
+  showConfirm(title: string, subTitle: string, cancelButton: string, okButton: string): Promise<boolean> {
+    return new Promise(resolve => {
+      this.alert = this.alertCtrl.create({
+        title: title,
+        subTitle: subTitle,
+        buttons: [
+          {
+            text: cancelButton,
+            role: 'cancel',
+            handler: () => {
+              resolve(false);
+            },
+          },
+          {
+            text: okButton,
+            handler: () => {
+              resolve(true);
+            },
+          }]
+      });
+      this.alert.present();
+    });
   }
 }

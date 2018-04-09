@@ -1,8 +1,6 @@
 export { AlertProvider } from './alert/alert';
 export { LoadingProvider } from './loading/loading';
 export { AuthProvider } from './auth/auth';
-export { LoginProvider } from './login/login';
-export { LogoutProvider } from './logout/logout';
 export { DataProvider } from './data/data';
 export { ImageProvider } from './data/image';
 export { RequestProvider } from './data/request';
