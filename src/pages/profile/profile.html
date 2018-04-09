@@ -13,7 +13,10 @@
     </div>
     <div class="form">
       <form [formGroup]="profileForm">
-        <ion-list>
+        <ion-list no-lines>
+          <ion-list-header>
+            <b>User Profiles</b>
+          </ion-list-header>
           <ion-item no-lines margin-bottom>
             <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
           </ion-item>
@@ -55,7 +58,7 @@
             </ion-select>
           </ion-item>
           <ion-item no-lines margin-bottom class="textarea">
-            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3"></ion-textarea>
+            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3" class="profile-bio"></ion-textarea>
           </ion-item>
           <p text-center *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</p>
           
@@ -71,7 +74,7 @@
           <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
           <ion-toggle [(ngModel)]="hasPushToken" color="x-gray-category"></ion-toggle>
         </ion-item>
-        <div text-center>
+        <div text-center class="btns">
           <button ion-button (click)="updateProfile()" class="profile_save_btn"><b>{{ 'auth.button.save' | translate }}</b></button>
           <button ion-button (click)="logout()" class="profile_logout_btn"><b>{{ 'auth.button.logout' | translate }}</b></button>
         </div>

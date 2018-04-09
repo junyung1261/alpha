@@ -1,6 +1,7 @@
 $font-path: "../assets/fonts";
 $app-direction: ltr;
 
+
 @import "ionic.globals";
 @import "Flaticon";
 
@@ -28,7 +29,7 @@ $app-direction: ltr;
 
 @include makeIcon(flaticon-medical, '\f161');   // BOARD-VIEWS
 @include makeIcon(flaticon-interface, '\f181');   // BOARD-COMMENTS
-
+@include makeIcon(flaticon-interface-7, '\f129');   // 휴지통
 @include makeIcon(flaticon-layers-1, '\f12f');   // BOARD-MENU1-BBS-TITLE//
 
 @include makeIcon(flaticon-shapes-1, '\f13f');   //게시판 댓글 싫어요 아이콘
@@ -45,6 +46,7 @@ $app-direction: ltr;
 
 @include makeIcon(flaticon-settings, '\f130');   //프로필::기본정보보기//프로필::환경설정
 @include makeIcon(flaticon-round, '\f148');   //프로필::고객센터
+@include makeIcon(flaticon-left-arrow, '\f197');   // 왼쪽화살표
 
 // Named Color Variables
 $colors: (
