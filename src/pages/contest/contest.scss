@@ -4,6 +4,7 @@ page-contest {
     }  
     .x-contest-top {
         background-color:map-get($colors,x-mint);
+        padding-top:4vw !important;
     }
     .x-contest-icon {
         color:map-get($colors,x-white);
@@ -12,6 +13,7 @@ page-contest {
     }
     .x-contest-status {
         margin:0 auto;
+        margin-top:4vw !important;
         padding:1vw;
         color:map-get($colors,x-white);
         width:fit-content;

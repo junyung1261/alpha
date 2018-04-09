@@ -19,12 +19,17 @@
             <ion-avatar item-start *ngIf="partners.get(conversation.conversationId)">
                 <img src="{{ partners.get(conversation.conversationId).payload.val().profileImg }}" >
             </ion-avatar>
-            <h2 text-uppercase *ngIf="partners.get(conversation.conversationId)"><span>{{ partners.get(conversation.conversationId).payload.val().username }}</span><span text-lowercase>{{ getLastMessageDate(conversation.messages)  | DateFormat }}</span></h2>
+            <h2 text-uppercase *ngIf="partners.get(conversation.conversationId)">
+              <span>{{ partners.get(conversation.conversationId).payload.val().username }}</span>
+              <span text-lowercase class="message-time">{{ getLastMessageDate(conversation.messages)  | DateFormat }}</span></h2>
             <p text-wrap *ngIf="partners.get(conversation.conversationId)">{{ getLastMessage(conversation.messages) }}</p>
+
           </ion-item>
           
-          <ion-item-options side="right">
-            <button ion-button  color="danger" (click)="delete(conversation)">Unread</button>
+          <ion-item-options side="right" text-center>
+            <button ion-button icon-only color="x-yellow" (click)="delete(conversation)">
+              <ion-icon name="flaticon-interface-7" color="x-white"></ion-icon>
+            </button>
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>

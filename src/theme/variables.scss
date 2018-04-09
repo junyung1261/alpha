@@ -1,6 +1,7 @@
 $font-path: "../assets/fonts";
 $app-direction: ltr;
 
+
 @import "ionic.globals";
 @import "Flaticon";
 
@@ -28,7 +29,7 @@ $app-direction: ltr;
 
 @include makeIcon(flaticon-medical, '\f161');   // BOARD-VIEWS
 @include makeIcon(flaticon-interface, '\f181');   // BOARD-COMMENTS
-
+@include makeIcon(flaticon-interface-7, '\f129');   // 휴지통
 @include makeIcon(flaticon-layers-1, '\f12f');   // BOARD-MENU1-BBS-TITLE//
 
 @include makeIcon(flaticon-shapes-1, '\f13f');   //게시판 댓글 싫어요 아이콘
@@ -38,13 +39,16 @@ $app-direction: ltr;
 @include makeIcon(flaticon-network, '\f143');   //CHAT3
 @include makeIcon(flaticon-arrow, '\f122');   //대화방입장
 @include makeIcon(flaticon-exclamation, '\f149');   //대화방 상단설명 // 공지사항
-
+@include makeIcon(flaticon-like-1, '\f13e');   //하트
 
 @include makeIcon(flaticon-hearts, '\f14d');   //토너먼트 상단 하트아이콘 //게시판 댓글 좋아요 아이콘
 @include makeIcon(flaticon-clock, '\f15d');   //토너먼트 후보모집 :: 후보대기  //게시글 작성시간 아이콘
 
 @include makeIcon(flaticon-settings, '\f130');   //프로필::기본정보보기//프로필::환경설정
 @include makeIcon(flaticon-round, '\f148');   //프로필::고객센터
+@include makeIcon(flaticon-left-arrow, '\f197');   // 왼쪽화살표
+
+@include makeIcon(flaticon-user, '\f175');   //회원가입
 
 // Named Color Variables
 $colors: (
