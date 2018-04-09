@@ -48,6 +48,8 @@ $app-direction: ltr;
 @include makeIcon(flaticon-round, '\f148');   //프로필::고객센터
 @include makeIcon(flaticon-left-arrow, '\f197');   // 왼쪽화살표
 
+@include makeIcon(flaticon-user, '\f175');   //회원가입
+
 // Named Color Variables
 $colors: (
   x-blue:     #0798f5,
