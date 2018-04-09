@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { BoardwritePage } from './boardwrite';
+import { CommunityWritePage } from './community-write';
 import { ImageUploadModule } from "../../components/image-upload/image-upload.module";
 
 @NgModule({
   declarations: [
-    BoardwritePage
+    CommunityWritePage
   ],
   imports: [
-    IonicPageModule.forChild(BoardwritePage),
+    IonicPageModule.forChild(CommunityWritePage),
     ImageUploadModule,
   ],
 })

@@ -193,7 +193,7 @@ export class ChatPage {
     }
   }
 // Scroll to bottom of the view.
-private scrollBottom(): void {
+  scrollBottom(): void {
   let self = this;
   setTimeout(function() {
     if(self.content._scroll) self.content.scrollToBottom();

@@ -1,19 +1,14 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { BoardviewPage } from './boardview';
+import { CommunityPage } from './community';
 import { PipeModule } from '../../pipes/pipe.module';
-
 @NgModule({
   declarations: [
-    BoardviewPage
-    
+    CommunityPage,
   ],
   imports: [
-    IonicPageModule.forChild(BoardviewPage),
+    IonicPageModule.forChild(CommunityPage),
     PipeModule
   ],
-  exports: [
-    BoardviewPage
-  ]
 })
-export class BoardviewPageModule {}
+export class CommunityPageModule {}

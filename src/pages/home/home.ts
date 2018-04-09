@@ -22,26 +22,21 @@ export class HomePage {
       this.postMenu = menu;
       this.postMenu.forEach(menu=>{
         this.dataProvider.getLatestPosts(menu.name).snapshotChanges().take(1).subscribe(posts => {
-        
+          console.log(posts);
           menu.posts = posts.reverse();
-          menu.posts.forEach(post=>{
-           
-            this.afDB.database.ref('/comments/' + post.key).on('value', comments=>{
-              post.comment_count = comments.numChildren();
-            });
-          });
+          
         });
       });
     });
   }
 
-  openPostListPage(menu, category) {
-
-    this.navCtrl.push('BoardlistPage', { menu: menu, category: category});
+  openCommunityPage(menu, index) {
+    
+    this.navCtrl.push('CommunityPage', { menu: menu, index: index});
   }
 
-  openPostPage(category,key){
-    this.navCtrl.push('BoardviewPage',{ postCategory:category, postKey : key });
+  openPost(category,key){
+    this.navCtrl.push('CommunityPostPage',{ category:category, postKey : key });
   }
 
 }

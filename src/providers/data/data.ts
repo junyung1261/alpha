@@ -50,7 +50,7 @@ export class DataProvider {
 
 
    // Get conversation given the conversationId.
-   getUserConversation(userId, partnerId) {
+  getUserConversation(userId, partnerId) {
     return this.angularfireDatabase.object('/accounts/' + userId + '/conversations/' + partnerId);
   }
 
@@ -91,19 +91,23 @@ export class DataProvider {
 
   // HOME 최신글 가져오기 5개씩 //
   getLatestPosts(menu) {
-    return this.angularfireDatabase.list('/board/'+ menu, ref => ref.orderByChild('wr_date').limitToLast(5));
+    return this.angularfireDatabase.list('/community/'+ menu, ref => ref.orderByChild('date').limitToLast(5));
+  }
+
+  getPost(category, postId){
+    return this.angularfireDatabase.object('/community/'+ category + '/' + postId);
   }
 
   getPosts(child, category) {
-    return this.angularfireDatabase.list('/board/'+child, ref => ref.orderByChild('wr_category_date').equalTo(category).limitToLast(5));
+    return this.angularfireDatabase.list('/community/'+ child, ref => ref.orderByChild('category_date').startAt(category).endAt(category+"\uf8ff").limitToLast(5));
   }
 
-  getPostLike(postKey){
-    return this.angularfireDatabase.list('/like/'+postKey, ref => ref);
+  getPostLikes(category, postId){
+    return this.angularfireDatabase.list('/community/' + category + '/' + postId + '/likes', ref => ref.orderByValue());
   }
 
-  getComments(postKey) {
-    return this.angularfireDatabase.list('/comments/'+postKey, ref=> ref);
+  getComments(postId) {
+    return this.angularfireDatabase.list('/comments/' + postId , ref=> ref);
   }
   
   getFeeds(batch, lastKey?) {
