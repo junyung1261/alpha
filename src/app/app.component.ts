@@ -1,14 +1,13 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { Platform, Nav, Config, Tabs, App } from 'ionic-angular';
+import { Platform, Nav, Config, AlertController, IonicApp, ToastController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TranslateService } from '@ngx-translate/core';
-import * as firebase from 'firebase';
-import { FCM } from '@ionic-native/fcm';
 import { TranslateProvider } from '../providers';
-import { timer } from 'rxjs/observable/timer';
+import { ImageLoaderConfig } from 'ionic-image-loader';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @Component({
   templateUrl: 'app.html'
@@ -19,6 +18,7 @@ export class MyApp {
   rootPage: any;
 
   private user : any;
+  private alertShown:boolean = false;
 
   constructor(
     private platform: Platform, 
@@ -28,14 +28,21 @@ export class MyApp {
     private afAuth:AngularFireAuth,
     private translateService: TranslateService,
     private translate: TranslateProvider,
-    private config: Config,
-    private fcm: FCM,
-    private zone: NgZone,
-    private app: App) {
+    private keyboard: Keyboard,
+    private toastCtrl: ToastController,
+    private app: App,
+    private ionicApp: IonicApp,
+    private imageLoader: ImageLoaderConfig
+  
+    ) {
 
     platform.ready().then(() => {
       statusBar.styleDefault();
       splashScreen.hide();
+      this.imageLoader.spinnerEnabled = false;
+      this.imageLoader.fallbackAsPlaceholder = true;
+      this.imageLoader.useImg = true;
+      this.imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
 
       // if(platform.is('cordova')){
       //   fcm.subscribeToTopic('test');
@@ -55,15 +62,45 @@ export class MyApp {
       //   });
         
       // }
-     
+      keyboard.disableScroll(true);
       mobileAccessibility.usePreferredTextZoom(false);
       
       this.translateService.setDefaultLang('en');
       this.translateService.use('en');
       this.translateService.getTranslation('en').subscribe(translations => {
-        this.translate.setTranslations(translations);
-        this.rootPage = 'LoaderPage';
+      this.translate.setTranslations(translations);
+      this.rootPage = 'LoaderPage';
       })
+
+
+      let lastTimeBackPress = 0;
+      let timePeriodToExit = 2000;
+
+      platform.registerBackButtonAction(() => {
+        let activePortal = this.ionicApp._loadingPortal.getActive() || // Close If Any Loader Active
+        this.ionicApp._modalPortal.getActive() ||  // Close If Any Modal Active
+        this.ionicApp._overlayPortal.getActive(); // Close If Any Overlay Active
+
+        let nav = app.getActiveNavs()[0];   
+        if (activePortal) {
+            activePortal.dismiss();
+        }
+        else if(nav.canGoBack()){
+          nav.pop();
+        }else{
+            //Double check to exit app
+            if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
+                this.platform.exitApp(); //Exit from app
+            } else {
+              this.toastCtrl.create({
+                message: "Press back button again to exit",
+                duration: 2000,
+                position: 'bottom'
+              }).present();
+              lastTimeBackPress = new Date().getTime();
+            }
+        }            
+      });
       
       
 
@@ -101,6 +138,8 @@ export class MyApp {
     });
     
   }
+
+  
 
   // initTranslate() {
   //   // Set the default language for translation strings, and the current language.

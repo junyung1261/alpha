@@ -5,6 +5,8 @@ import { MyApp } from './app.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { IonicImageLoader } from 'ionic-image-loader';
+import { File } from '@ionic-native/file';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
@@ -18,10 +20,13 @@ import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
-import { LoadingProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, TranslateProvider, Settings  } from '../providers';
+import { LoadingProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, TranslateProvider, KeyboardProvider, Settings  } from '../providers';
  
 
 import { Camera } from '@ionic-native/camera';
+import { Keyboard } from '@ionic-native/keyboard';
+import * as ionicGalleryModal from 'ionic-gallery-modal';
+import { HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -50,7 +55,9 @@ export function provideSettings(storage: Storage) {
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollAssist: false,
+    }),
     AngularFireModule.initializeApp(Environment.firebase),
     AngularFireAuthModule,
     AngularFireDatabaseModule,
@@ -62,7 +69,9 @@ export function provideSettings(storage: Storage) {
         deps: [HttpClient]
       }
     }),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    IonicImageLoader.forRoot(),
+    ionicGalleryModal.GalleryModalModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -74,6 +83,8 @@ export function provideSettings(storage: Storage) {
     MobileAccessibility,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     FCM,
+    File,
+    Keyboard,
     LoadingProvider,
     AlertProvider,
     DataProvider,
@@ -83,8 +94,13 @@ export function provideSettings(storage: Storage) {
     NotificationProvider,
     ToastProvider,
     TranslateProvider,
+    KeyboardProvider,
     AngularFireDatabase,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+    {
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: ionicGalleryModal.GalleryModalHammerConfig,
+    },
 
     Camera
   ]

@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, Content } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider } from '../../providers';
+import { Subscription } from 'rxjs';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
 @Component({
@@ -9,20 +11,31 @@ import { DataProvider } from '../../providers';
   templateUrl: 'community.html',
 })
 export class CommunityPage {
-  
+  @ViewChild("content") contentHandle: Content;
+
+  private contentBox;
+  private tabBarHeight;
   private menu;
   private index;
   private category;
   private segmentsPerRow: number;
   private posts: Map<string, any>;
+  private subscriptions: Subscription[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public modalCtrl:ModalController, public afDB: AngularFireDatabase, public dataProvider : DataProvider) {
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams, 
+              public modalCtrl:ModalController, 
+              public afDB: AngularFireDatabase, 
+              public dataProvider : DataProvider,
+              public keyboard: Keyboard) {
     
   }
   ionViewDidLoad() {
     console.log('ionViewDidLoad CommunityPage');
   
-    
+    this.contentBox=document.querySelector(".community .scroll-content")['style'];
+    this.tabBarHeight = this.contentBox.marginBottom;
+
     this.posts = new Map<string, any>();
     this.menu = this.navParams.get('menu');
     this.index = this.navParams.get('index');
@@ -30,6 +43,38 @@ export class CommunityPage {
     this.getCategory(this.index)
     this.getPost();
     
+  }
+
+  
+  ionViewDidEnter(){
+    this.subscriptions = [];
+
+    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
+      
+    document.querySelector(".tabbar")['style'].display = 'none';
+    this.contentBox.marginBottom = 0;
+    this.contentHandle.resize();
+    })
+
+    let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
+     
+    document.querySelector(".tabbar")['style'].display = 'flex';
+    this.contentBox.marginBottom = this.tabBarHeight;
+    this.contentHandle.resize();
+    })
+
+    this.subscriptions.push(subscription);
+    this.subscriptions.push(subscription_)
+  }
+ 
+  ionViewWillLeave() {
+    // Unsubscribe to Subscription.
+    if (this.subscriptions){
+        this.subscriptions.forEach(subscription => {
+          subscription.unsubscribe();
+        })
+    }
+      
   }
 
   getCategory(index){
@@ -57,7 +102,7 @@ export class CommunityPage {
   }
 
   openPost(category, key){
-    this.navCtrl.push('CommunityPostPage',{category: category, postKey : key});
+    this.navCtrl.push('CommunityPostPage',{category: category, postId : key});
   }
 
   writePost(){

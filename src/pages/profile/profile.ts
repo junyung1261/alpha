@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController, ActionSheetController, App, Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, MenuController, AlertController, ActionSheetController, App, Platform, Content } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { AuthProvider, AlertProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider } from '../../providers';
-// import { Keyboard } from '@ionic-native/keyboard'
+
 import { Camera } from '@ionic-native/camera';
 import { Subscription } from 'rxjs/Subscription';
 import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { Keyboard } from '@ionic-native/keyboard';
+import { ModalController } from 'ionic-angular';
+import { GalleryModal } from 'ionic-gallery-modal';
 
 @IonicPage()
 @Component({
@@ -14,6 +17,11 @@ import { AngularFireAuth } from 'angularfire2/auth';
   templateUrl: 'profile.html',
 })
 export class ProfilePage {
+
+  @ViewChild("content") contentHandle: Content;
+
+  private contentBox;
+  private tabBarHeight;
   private android: boolean;
   private profileForm: FormGroup;
   private user: any;
@@ -21,7 +29,7 @@ export class ProfilePage {
   private hasError: boolean;
   private hasPassword: boolean;
   private hasPushToken: boolean;
-  private subscription: Subscription;
+  private subscriptions: Subscription [];
   private uniqueUsername: boolean;
   private nameValidator: ValidatorFn = Validators.compose([
     Validators.required
@@ -58,7 +66,9 @@ export class ProfilePage {
     private toast: ToastProvider,
     private notification: NotificationProvider,
     private camera: Camera,
-    private platform: Platform) {
+    private platform: Platform,
+    private modalCtrl: ModalController,
+    private keyboard: Keyboard) {
     this.profileForm = formBuilder.group({
      
       birth: ['', this.bioValidator],
@@ -90,7 +100,18 @@ export class ProfilePage {
     // }
   }
 
+  
+  openGalleryModal(photos){
+    let modal = this.modalCtrl.create(GalleryModal, {
+      photos: photos,
+    });
+    modal.present();
+  }
+
   ionViewDidLoad() {
+    this.contentBox = document.querySelector(".profile .scroll-content")['style'];
+    this.tabBarHeight = this.contentBox.marginBottom;
+
     // this.platform.ready().then(() => {
     //   // Check if device is running on android and adjust the scss accordingly.
     //   if (this.device.platform == 'Android') {
@@ -121,12 +142,38 @@ export class ProfilePage {
           });
         });
   }
- 
 
-  ionViewWillUnload() {
+  ionViewDidEnter(){
+    this.subscriptions = [];
+
+    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
+      
+    document.querySelector(".tabbar")['style'].display = 'none';
+    this.contentBox.marginBottom = 0;
+    this.contentHandle.resize();
+    })
+
+    let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
+     
+    document.querySelector(".tabbar")['style'].display = 'flex';
+    this.contentBox.marginBottom = this.tabBarHeight;
+    this.contentHandle.resize();
+    })
+
+    this.subscriptions.push(subscription);
+    this.subscriptions.push(subscription_)
+  }
+ 
+  ionViewWillLeave() {
+    
     // Unsubscribe to Subscription.
-    if (this.subscription)
-      this.subscription.unsubscribe();
+    if (this.subscriptions){
+      
+        this.subscriptions.forEach(subscription => {
+          subscription.unsubscribe();
+        })
+    }
+      
     // Delete the photo uploaded from storage to preserve Firebase storage space since it's no longer going to be used.
     // if (this.auth.getUserData().photo != this.user.photo)
     //   this.storage.delete(this.user.userId, this.user.photo);
@@ -134,12 +181,20 @@ export class ProfilePage {
 
   
 
-  private setPhoto(): void {
+  private setPhoto(photo): void {
     // Allow user to upload and set their profile photo using their camera or photo gallery.
     if (true) {
       this.actionSheetCtrl.create({
         title: this.translate.get('auth.profile.photo.title'),
         buttons: [
+          {
+            text: this.translate.get('auth.profile.photo.take'),
+           
+            handler: () => {
+              this.openGalleryModal([{url: photo}]);
+              
+            }
+          },
           {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',

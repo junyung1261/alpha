@@ -9,3 +9,4 @@ export { Settings } from './settings/settings';
 export { ToastProvider } from './toast/toast';
 export { FirebaseProvider } from './data/firebase'
 export { TranslateProvider } from './translate/translate'
+export { KeyboardProvider } from './keyboard/keyboard'

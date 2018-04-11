@@ -20,6 +20,7 @@ page-community-post {
     .x-boardview-comment-ico {font-size:3.5vw;}
     .x-boardview-comment-title {color:map-get($colors,x-gray-dark);font-size:4vw;}
     .x-boardview-comment-like {float:right;width:fit-content;height:fit-content;font-size:3vw;color:map-get($colors,x-gray-count);text-align:right;margin-top:1.5vw;}
+    .x-boardview-comment-like-on {float:right;width:fit-content;height:fit-content;font-size:3vw;color:map-get($colors,x-mint);text-align:right;margin-top:1.5vw;}
     .x-boardview-comment-description {
         float:right;
         width:79vw;
@@ -80,7 +81,7 @@ page-community-post {
         width: 96vw;
     }
     .swiper-container {
-        margin: 4vw 0 4vw 0;
+        margin: 2vw 2vw 2vw 2vw;
     }
     .swiper-slide {
         background-size: cover !important;

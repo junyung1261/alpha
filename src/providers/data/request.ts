@@ -61,7 +61,7 @@ export class RequestProvider {
   // Send friend request to userId.
   sendFriendRequest(from: string, to: string): Promise<any> {
     
-    //this.loadingProvider.show();
+    this.loadingProvider.show();
     return new Promise((resolve, reject)=>{
       var requestsSent;
       // Use take(1) so that subscription will only trigger once.
@@ -112,7 +112,9 @@ export class RequestProvider {
   }
 
   // Cancel friend request sent to userId.
-  cancelFriendRequest(from: string, to: string) {
+  cancelFriendRequest(from: string, to: string){
+
+    
     
     this.loadingProvider.show();
 
@@ -147,43 +149,46 @@ export class RequestProvider {
 
   
   // Accept friend request.
-  acceptFriendRequest(from: string, to: string) {
+  acceptFriendRequest(from: string, to: string): Promise<any> {
    
-    // Delete friend request.
-    this.cancelFriendRequest(from, to);
-    this.cancelFriendRequest(to, from);
-    this.loadingProvider.show();
-    this.getUser(from).snapshotChanges().take(1).subscribe((account) => {
-      var friends = account.payload.val().friends;
-      if (!friends) {
-        friends = [to];
-      } else {
-        if(friends.indexOf(to) == -1)
-        friends.push(to);
-      }
-      // Add both users as friends.
-      this.getUser(from).update({
-        friends: friends
-      }).then((success) => {
-        this.getUser(to).snapshotChanges().take(1).subscribe((account) => {
-          var friends = account.payload.val().friends;
-          if (!friends) {
-            friends = [from];
-          } else {
-            if(friends.indexOf(from) == -1)
-            friends.push(from);
-          }
-          this.getUser(to).update({
-            friends: friends
-          }).then((success) => {
-            this.loadingProvider.hide();
-          }).catch((error) => {
-            this.loadingProvider.hide();
+    return new Promise((resolve, reject) => {
+      this.cancelFriendRequest(from, to);
+      this.cancelFriendRequest(to, from);
+      
+      this.getUser(from).snapshotChanges().take(1).subscribe((account) => {
+        var friends = account.payload.val().friends;
+        if (!friends) {
+          friends = [to];
+        } else {
+          if(friends.indexOf(to) == -1)
+          friends.push(to);
+        }
+        // Add both users as friends.
+        this.getUser(from).update({
+          friends: friends
+        }).then((success) => {
+          this.getUser(to).snapshotChanges().take(1).subscribe((account) => {
+            var friends = account.payload.val().friends;
+            if (!friends) {
+              friends = [from];
+            } else {
+              if(friends.indexOf(from) == -1)
+              friends.push(from);
+            }
+            this.getUser(to).update({
+              friends: friends
+            }).then((success) => {
+            resolve();
+            }).catch((error) => {
+            reject();
+            });
           });
+        }).catch((error) => {
+          
         });
-      }).catch((error) => {
-        this.loadingProvider.hide();
       });
-    });
+    })
+    // Delete friend request.
+    
   }
 }

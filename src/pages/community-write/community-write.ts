@@ -73,7 +73,7 @@ export class CommunityWritePage {
       views:0,
       writer: firebase.auth().currentUser.uid,
       category_date: this.category.name + '_' + new Date().getTime(),
-      likes: 0,
+      
       comments: 0
       
       

@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ChatPage } from './chat';
+import { ProfileUserPage } from './profile-user';
 import { TranslateModule } from '@ngx-translate/core';
-import { PipeModule } from '../../pipes/pipe.module';
 import { IonicImageLoader } from 'ionic-image-loader';
+
 @NgModule({
   declarations: [
-    ChatPage,
+    ProfileUserPage,
   ],
   imports: [
-    IonicPageModule.forChild(ChatPage),
+    IonicPageModule.forChild(ProfileUserPage),
     TranslateModule.forChild(),
-    IonicImageLoader,
-    PipeModule
+    IonicImageLoader
   ],
 })
-export class ChatPageModule {}
+export class ProfileUserPageModule {}

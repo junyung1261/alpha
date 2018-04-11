@@ -30,6 +30,7 @@ export class ChatListPage {
     private afDB: AngularFireDatabase,
     private dataProvider: DataProvider,
     private translate: TranslateProvider,
+    private modalCtrl: ModalController,
     private app: App
   ) {
   }
@@ -57,7 +58,7 @@ export class ChatListPage {
           if(conversation){
             if(conversation.users.indexOf(this.afAuth.auth.currentUser.uid) > -1){
               this.addOrUpdateConversation(conversation);
-              console.log(this.conversations);
+             
             }else {
               this.deleteConversationById(conversationId);
               this.userConversations.delete(conversationId);
@@ -176,8 +177,12 @@ export class ChatListPage {
 
   // Open the chat with the user given the conversationId.
   chat(conversationId: string): void {
-    if (true)
-      this.app.getRootNavs()[0].push('ChatPage', { userId: this.partners.get(conversationId).key });
+    if (true){
+      let modalCtrl = this.modalCtrl.create('ChatPage', { userId: this.partners.get(conversationId).key });
+
+      modalCtrl.present();
+    }
+
   }
 
   delete(conversation){
