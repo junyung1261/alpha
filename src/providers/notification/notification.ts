@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Platform, App } from 'ionic-angular';
+import { Platform, App, ModalController } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
 import { DataProvider } from '../';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -15,6 +15,7 @@ export class NotificationProvider {
   constructor(private platform: Platform,
     private fcm: FCM,
     private dataProvider: DataProvider,
+    private modalCtrl: ModalController,
     
     private http: HttpClient) { }
 
@@ -44,7 +45,8 @@ export class NotificationProvider {
               // Open the conversation
               this.app.getActiveNavs()[0].popToRoot().then(() => {
                 this.app.getActiveNavs()[0].parent.select(2);
-                this.app.getRootNavs()[0].push('ChatPage', { userId: data.partnerId });
+                let modalCtrl = this.modalCtrl.create('ChatPage', { userId: data.partnerId });
+                modalCtrl.present();
               });
             }
             if (data.groupId) {

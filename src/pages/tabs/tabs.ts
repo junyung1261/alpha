@@ -14,11 +14,13 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class TabsPage {
   @ViewChild("tabs") tabs: Tabs;
+
   tab1Root = 'HomePage';
   tab2Root = 'RequestsPage';
   tab3Root = 'ChatListPage';
   tab4Root = 'ContestPage';
   tab5Root = 'ProfilePage';
+  
   
   private user: User;
   private subscriptions: Subscription[];
@@ -35,9 +37,13 @@ export class TabsPage {
   ) {
     this.selectedIndex = navParams.data.tabIndex || 0;
 
+   
   }
 
   ionViewDidLoad() {
+    
+
+
     this.userConversations = new Map<string, any>();
     
     this.subscriptions = [];

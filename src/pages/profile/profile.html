@@ -15,10 +15,9 @@
     
   </ion-header>
 
-  <ion-content [ngClass]="{'android': android}">
+  <ion-content #content class="profile" [ngClass]="{'android': android}">
     <div class="profile" *ngIf="user" text-center>
-      <img src="{{ user.profileImg }}" (click)="setPhoto()"> 
-      <!-- <img-loader [src]="user.photo" tappable (click)="setPhoto()" *ngIf="user"></img-loader> -->
+      <img-loader src=" {{user.profileImg}}" tappable (click)="setPhoto(user.profileImg)"></img-loader>
     </div>
     <div class="form">
       <form [formGroup]="profileForm">

@@ -103,7 +103,11 @@ export class DataProvider {
   }
 
   getPostLikes(category, postId){
-    return this.angularfireDatabase.list('/community/' + category + '/' + postId + '/likes', ref => ref.orderByValue());
+    return this.angularfireDatabase.list('/community/' + category + '/' + postId + '/likes');
+  }
+
+  getCommentLikes(postId){
+    return this.angularfireDatabase.list('/comment/' + postId + '/likes');
   }
 
   getComments(postId) {

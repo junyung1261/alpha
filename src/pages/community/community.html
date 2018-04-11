@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content no-padding #myContent>
+<ion-content no-padding #content class="community">
     <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menu && menu.category.length > 1" [(ngModel)]="category.name">
       <ion-segment-button class="x-category-btn" *ngFor="let category of menu.category; let i = index" value="{{category.name}}" (ionSelect)="getCategory(i)"> {{category.name}}</ion-segment-button>
     </ion-segment>

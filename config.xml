@@ -84,11 +84,12 @@
     <plugin name="cordova-plugin-device" spec="^2.0.1" />
     <plugin name="cordova-plugin-splashscreen" spec="^5.0.2" />
     <plugin name="cordova-plugin-ionic-webview" spec="^1.1.16" />
-    <plugin name="cordova-plugin-ionic-keyboard" spec="^2.0.5" />
     <plugin name="phonegap-plugin-mobile-accessibility" spec="^1.0.5" />
     <plugin name="cordova-plugin-camera" spec="^4.0.2" />
     <plugin name="cordova-plugin-shake" spec="^0.6.0" />
     <plugin name="cordova-plugin-vibration" spec="^3.0.1" />
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
-    <engine name="android" spec="6.4.0" />
+    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <engine name="android" spec="~6.4.0" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
 </widget>

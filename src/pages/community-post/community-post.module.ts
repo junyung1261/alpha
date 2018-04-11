@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CommunityPostPage } from './community-post';
 import { PipeModule } from '../../pipes/pipe.module';
-
+import { IonicImageLoader } from 'ionic-image-loader';
 @NgModule({
   declarations: [
     CommunityPostPage
@@ -10,7 +10,8 @@ import { PipeModule } from '../../pipes/pipe.module';
   ],
   imports: [
     IonicPageModule.forChild(CommunityPostPage),
-    PipeModule
+    PipeModule,
+    IonicImageLoader
   ],
   exports: [
     CommunityPostPage

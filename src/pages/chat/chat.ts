@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Content, Keyboard } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Content } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ImageProvider, RequestProvider, TranslateProvider, NotificationProvider } from '../../providers';
@@ -7,6 +7,7 @@ import { Camera } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Subscription } from 'rxjs/Subscription';
+import { Keyboard } from '@ionic-native/keyboard';
 
 /**
  * Generated class for the ChatRoomPage page.
@@ -70,12 +71,12 @@ export class ChatPage {
     this.subscriptions = [];
 
     this.partnerId = this.navParams.get('userId');
-    let subscription = this.dataProvider.getUser(this.partnerId).snapshotChanges().subscribe((user) => {
+    let subscription = this.dataProvider.getUser(this.partnerId).snapshotChanges().take(1).subscribe((user) => {
       this.partner = user;
       this.subscriptions.push(subscription);
     });
 
-    let subscription_ = this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().subscribe((user) => {
+    let subscription_ = this.dataProvider.getUser(this.afAuth.auth.currentUser.uid).snapshotChanges().take(1).subscribe((user) => {
       this.user = user;
       let subscription = this.dataProvider.getUserConversation(this.user.key, this.partnerId).snapshotChanges().subscribe((userConversation) => {
         if (userConversation) {
@@ -140,10 +141,10 @@ export class ChatPage {
       let text = this.message;
     
       // Collapse the expanded text area.
-      let element = this.messageBox['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
-      element.style.height = this.collapsed;
-      this.collapsed = null;
-      this.expanded = null;
+      // let element = this.messageBox['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
+      // element.style.height = this.collapsed;
+      // this.collapsed = null;
+      // this.expanded = null;
 
       // User entered a text on messagebox
       if (this.conversationId) {
@@ -153,7 +154,7 @@ export class ChatPage {
         
         this.conversation.messages.push({
           date: new Date().toString(),
-          sender: firebase.auth().currentUser.uid,
+          sender: this.user.key,
           type: 'text',
           message: this.message
         });
@@ -166,7 +167,9 @@ export class ChatPage {
           }
         });
         // Clear messagebox.
+        
         this.message = '';
+        
       } else {
        
       }
@@ -178,7 +181,7 @@ export class ChatPage {
 
    // Check if the user is the sender of the message.
    isSender(message) {
-    if (message.sender == firebase.auth().currentUser.uid) {
+    if (message.sender == this.user.key) {
       return true;
     } else {
       return false;
@@ -209,8 +212,9 @@ export class ChatPage {
     }, 300);
   }
 
-  onType(keyCode) {
-    if (keyCode == 13) {
+  keyDownFunction(event) {
+    //User pressed return on the keyboard, send the text message.
+    if (event.keyCode == 13) {
       
       this.send();
     }
