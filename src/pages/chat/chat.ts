@@ -139,7 +139,7 @@ export class ChatPage {
     
     if (this.message && this.message.length > 0) {
       let text = this.message;
-    
+      this.message = '';
       // Collapse the expanded text area.
       // let element = this.messageBox['_elementRef'].nativeElement.getElementsByClassName("text-input")[0];
       // element.style.height = this.collapsed;
@@ -156,7 +156,7 @@ export class ChatPage {
           date: new Date().toString(),
           sender: this.user.key,
           type: 'text',
-          message: this.message
+          message: text
         });
         // Update conversation on database.
         this.requestProvider.getConversation(this.conversationId).update({
@@ -168,7 +168,7 @@ export class ChatPage {
         });
         // Clear messagebox.
         
-        this.message = '';
+        
         
       } else {
        

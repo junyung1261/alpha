@@ -32,7 +32,7 @@ export class ContestPage {
   chuncked_round2 = {female:[], male: []};
   chuncked_round3 = {female:[], male: []};
   champions = [];
-  applicants: any;
+  applicants: any [];
   user: any;
 
   constructor(
@@ -44,16 +44,7 @@ export class ContestPage {
     public loadingProvider: LoadingProvider,
     public dataProvider: DataProvider) {
 
-    // let loading = this.loadingCtrl.create({
-    //   content: 'Fuck you...'
-    // });
-    // console.log("constructor")
-    // loading.present();
-    // setTimeout(() => {
-    //   loading.dismiss();
-    //   this.pageFlag = true;
-    // }, 3000);
-    
+  
 
   }
 

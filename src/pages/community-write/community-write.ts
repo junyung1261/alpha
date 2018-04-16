@@ -4,6 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { ImageUpload } from "../../components/image-upload/image-upload";
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Rx';
+import { ImageProvider } from '../../providers';
 
 
 @IonicPage()
@@ -18,7 +19,11 @@ export class CommunityWritePage {
   private selectedOption;
   private segmentsPerRow: number;
   private options;
+  private post_modify;
+  private nav_title;
   
+  public navTitle;
+  public submit;
 
   communityRef: any;
   accountRef : any;
@@ -31,7 +36,8 @@ export class CommunityWritePage {
     public navCtrl: NavController, 
     public navParams: NavParams, 
     public viewCtrl: ViewController,
-    public afDB: AngularFireDatabase) { 
+    public afDB: AngularFireDatabase,
+    public imageProvider: ImageProvider) { 
 
     // life, beauty, study
   
@@ -44,27 +50,46 @@ export class CommunityWritePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CommunityWritePage');
-
- 
-    this.category = this.navParams.get('category');
-    console.log(this.category);
     this.segmentsPerRow = 3;
     this.selectedOption = null;
+ 
+    this.category = this.navParams.get('category');
+    this.post_modify = this.navParams.get('post');
+    this.navTitle = '게시글 작성';
+    
+    
+    
     if(this.category.option) this.options = this.category.option.slice(1,this.category.option.length);
 
+    if(this.post_modify) {
+      this.navTitle = '게시글 수정';
+      this.imageUpload.key = this.post_modify.key;
+      this.title = this.post_modify.title,
+      this.text = this.post_modify.description,
+      this.tags = this.post_modify.tags,
+      this.selectedOption = this.post_modify.option
+      if(this.post_modify.images) {
+       
+       this.imageUpload.imageURL = this.post_modify.images.slice();
+       
+      }
+      
+    }
+
     
-    this.communityRef = this.afDB.list('/community/' + this.category.parent);
-    this.accountRef = this.afDB.object('/accounts/' +firebase.auth().currentUser.uid + '/post');
+    this.communityRef = this.afDB.database.ref('/community/' + this.category.parent);
+    this.accountRef = this.afDB.database.ref('/accounts/' +firebase.auth().currentUser.uid + '/post');
     
   }
 
   write(title: string, text: string, tags: string) {
     text = text.replace(/\n/g, '<br>');
-    
+    let date =  new Date().getTime();
+
     this.communityRef.push({
       
       category: this.category.name,
-      date: firebase.database['ServerValue'].TIMESTAMP,
+      date: date,
       description: text,
       option: this.selectedOption,
       menu: this.category.parent,
@@ -72,7 +97,7 @@ export class CommunityWritePage {
       title: title,
       views:0,
       writer: firebase.auth().currentUser.uid,
-      category_date: this.category.name + '_' + new Date().getTime(),
+      category_date: this.category.name + '_' + date,
       
       comments: 0
       
@@ -84,12 +109,45 @@ export class CommunityWritePage {
       })
       if (this.imageUpload.images.length > 0) {
         this.imageUpload.key = success.key;
-        this.imageUpload.uploadImages('community/' + this.category.parent);
+        this.imageUpload.uploadPostImages(this.category.parent);
       }
       this.accountRef.update({[success.key]: this.category.parent });
       this.viewCtrl.dismiss({ data: true});
     })
 
+  }
+
+  modify(title: string, text: string, tags: string){
+
+    
+
+    this.communityRef.child(this.post_modify.key).update({
+      
+      title: title,
+      description: text,
+      tags: tags,
+      modified_data: firebase.database['ServerValue'].TIMESTAMP
+    }).then((success) => {
+      if (this.imageUpload.images.length > 0) {
+        
+        this.imageUpload.uploadPostImages(this.category.parent).then(() => {
+          this.viewCtrl.dismiss({ data: true});
+        });
+      }
+
+      else if(this.imageUpload.removeImages.length > 0 && this.imageUpload.images.length == 0){
+       
+        this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
+        this.imageProvider.updatePostUrl(this.post_modify.key, this.imageUpload.imageURL, this.category.parent).then(() => {
+          this.viewCtrl.dismiss({ data: true});
+        });
+
+       
+      }
+      
+      
+    });
+   
   }
 
   checkTrim() {

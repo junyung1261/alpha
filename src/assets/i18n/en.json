@@ -133,7 +133,7 @@
   "auth.form.confirm": "Confirm password",
   "auth.form.error.confirm": "Please re-enter your password",
   "auth.form.error.mismatch": "The passwords you entered do not match",
-  "auth.button.login": "LET'S START",
+  "auth.button.login": "SING IN WITH EMAIL",
   "auth.button.facebook": "SIGN IN WITH FACEBOOK",
   "auth.button.google": "SIGN IN WITH GOOGLE",
   "auth.button.twitter": "SIGN IN WITH TWITTER",
@@ -266,7 +266,13 @@
   "push.requests.sent": "has sent you a chat request.",
   "push.requests.accpet": "has accpeted you a chat request.",
   "push.contact.accepted": "has accepted your contact request.",
-  "push.message.photo": "has sent you a photo message."
+  "push.message.photo": "has sent you a photo message.",
+
+  "post.menu.modify" : "modify",
+  "post.menu.delete" : "delete",
+  "post.menu.delete.title" : "Confirm delete?",
+  "post.menu.delete.text" : "Are you sure you want to delete it?"
+  
 
 
 }

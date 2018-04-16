@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { DataProvider, RequestProvider, NotificationProvider } from '../../providers';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -378,6 +378,11 @@ isFriends(userId) {
 message(user) {
   this.modalCtrl.create('ChatRoomPage', {userId: user.$key}).present();
   
+}
+
+openUserProfile(user){
+  let modal = this.modalCtrl.create('ProfileUserPage', {userId: user.key, from: 1})
+  modal.present();
 }
 
 

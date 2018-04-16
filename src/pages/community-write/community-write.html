@@ -3,7 +3,7 @@
     <ion-buttons left>
       <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
     </ion-buttons>
-    <ion-title>게시글작성</ion-title>
+    <ion-title>{{ navTitle }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="viewCtrl.dismiss()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
@@ -38,7 +38,8 @@
     <ion-input type="text" class="x-boardwrite-tags-input" placeholder="태그를 입력하세요.  ex)#정치 #사회 #문화" [(ngModel)]="tags"></ion-input>
   </div>
   <div class="x-boardwrite-btn">
-    <button ion-button class="x-boardwrite-submit" [disabled]="checkTrim(text, title)" (click)="write(title, text, tags)">작성완료</button>
+    <button ion-button class="x-boardwrite-submit" *ngIf="!post_modify" [disabled]="checkTrim(text, title)" (click)="write(title, text, tags)">작성</button>
+    <button ion-button class="x-boardwrite-submit" *ngIf="post_modify" [disabled]="checkTrim(text, title)" (click)="modify(title, text, tags)">수정</button>
   </div>
   
 

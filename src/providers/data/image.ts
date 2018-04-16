@@ -204,6 +204,14 @@ export class ImageProvider {
     firebase.storage().ref().child('images/' + groupId + '/' + fileName).delete().then(() => { }).catch((error) => { });
   }
 
+  deletePostImageFile(postId, photos){
+    photos.forEach(photo => {
+      let userId = firebase.auth().currentUser.uid;
+      let fileName = photo.url.substring(photo.url.lastIndexOf('%2F') + 3, photo.url.lastIndexOf('?'));
+      firebase.storage().ref().child('images/' + postId + '/' + fileName ).delete().then(() => {}).catch((error)=> { });
+    })
+  }
+
   // Upload photo message and return the url as promise.
   uploadPhotoMessage(conversationId, sourceType): Promise<any> {
     return new Promise(resolve => {
@@ -259,6 +267,8 @@ export class ImageProvider {
       });
     });
   }
+
+ 
 
   uploadPhoto(Id, imageData): Promise<any> {
     return new Promise(resolve => {
@@ -319,15 +329,21 @@ export class ImageProvider {
         this.alertProvider.showErrorMessage('profile/error-change-photo');
       });
     }
-    sendBoardPhoto(boardId, imageURL, location) {
-      this.angularfireDatabase.object('/'+location+ '/' + boardId ).update({ images: imageURL
-      }).then((success) => {
-        this.loadingProvider.hide();
-        //this.alertProvider.showProfileUpdatedMessage();
-      }).catch((error) => {
-        this.loadingProvider.hide();
-        this.alertProvider.showErrorMessage('profile/error-change-photo');
-      });
+
+    updatePostUrl(postId, imageURL, category): Promise<any> {
+
+      return new Promise((resolve, reject) => {
+        this.angularfireDatabase.object('/community/' + category + '/' + postId ).update({ images: imageURL
+        }).then((success) => {
+          resolve();
+          this.loadingProvider.hide();
+          //this.alertProvider.showProfileUpdatedMessage();
+        }).catch((error) => {
+          this.loadingProvider.hide();
+          reject();
+        });
+     })
     }
+  
 
 }

@@ -45,10 +45,10 @@
       <ion-col col-12>
         <ion-segment class="x-contest-stage" mode="md" [(ngModel)]="contestProgress">
           <ion-segment-button value="join" [hidden]="currentStage != 'join'">후보모집</ion-segment-button>
-          <ion-segment-button value="round_1" >1라운드</ion-segment-button>
-          <ion-segment-button value="round_2" >2라운드</ion-segment-button>
-          <ion-segment-button value="round_3" >3라운드</ion-segment-button>
-          <ion-segment-button value="final" >최종결과</ion-segment-button>
+          <ion-segment-button value="round_1" [hidden]="candidatesByGender.round_1.length == 0">1라운드</ion-segment-button>
+          <ion-segment-button value="round_2" [hidden]="candidatesByGender.round_2.length == 0">2라운드</ion-segment-button>
+          <ion-segment-button value="round_3" [hidden]="candidatesByGender.round_3.length == 0">3라운드</ion-segment-button>
+          <ion-segment-button value="final" [hidden]="currentStage != 'final'">최종결과</ion-segment-button>
         </ion-segment>
       </ion-col>
     </ion-row>

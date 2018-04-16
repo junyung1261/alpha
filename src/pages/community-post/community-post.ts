@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { DataProvider, LoadingProvider } from '../../providers';
+import { DataProvider, LoadingProvider, TranslateProvider, AlertProvider } from '../../providers';
 import * as firebase from 'firebase';
 import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -21,11 +21,12 @@ export class CommunityPostPage {
   private contentBox;
   private tabBarHeight;
   private postId : any;
-  private category : any;
+  private menu : any;
   private post;
   private writer;
   private comment = '';
   private subscriptions: Subscription[];
+  private callback;
 
   constructor(public navCtrl: NavController, 
               public navParams : NavParams, 
@@ -33,9 +34,9 @@ export class CommunityPostPage {
               public dataProvider : DataProvider,
               public loadingProvider: LoadingProvider,
               public modalCtrl: ModalController,
+              public translate: TranslateProvider,
+              public alertProvider: AlertProvider,
               public keyboard: Keyboard) {
-    
-    
     
   }
 
@@ -44,58 +45,12 @@ export class CommunityPostPage {
     this.tabBarHeight = this.contentBox.marginBottom;
     this.userId = firebase.auth().currentUser.uid;
     this.postId = this.navParams.get('postId');
-    this.category = this.navParams.get('category');
-   
+    this.menu = this.navParams.get('menu');
+    this.callback = this.navParams.get("callback")
+
     this.subscriptions = [];
-    
-    this.afDB.database.ref('/community/' + this.category.name + '/' + this.postId).child('views').transaction(function(currentCount){
-      return currentCount+1;
-    }).then(() => {
-      this.dataProvider.getPost(this.category.name, this.postId).valueChanges().take(1).subscribe(post => {
-        this.post = post;
-        this.dataProvider.getUser(this.post.writer).valueChanges().take(1).subscribe(user => {
-          this.writer = user;
-        });
-
-       
-         let subscription = this.dataProvider.getComments(this.postId).valueChanges().subscribe(comments => {
-
-            comments.forEach((comment:any) => {
-              this.dataProvider.getUser(comment.writer).valueChanges().take(1).subscribe((user:any) => {
-                
-                comment.username = user.username;
-                comment.profileImg = user.profileImg;
-              });
-              
-            })
-            this.post.comment = comments;
-            this.subscriptions.push(subscription);
-          });
-
-          let subscription_ = this.dataProvider.getPostLikes(this.category.name, this.postId).snapshotChanges().subscribe(likes => {
-            this.post.likes = likes;
-            this.subscriptions.push(subscription_);
-          })
-        
-       
-      });
-    });
-
-  }
 
 
-
-  openGalleryModal(photos, index){
-    
-    let modal = this.modalCtrl.create(GalleryModal, {
-      photos: photos,
-      initialSlide: index
-    });
-    modal.present();
-  }
-
-  
-  ionViewDidEnter(){
     this.subscriptions = [];
 
     let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
@@ -114,8 +69,64 @@ export class CommunityPostPage {
 
     this.subscriptions.push(subscription);
     this.subscriptions.push(subscription_)
-  }
+
+
+    this.dataProvider.getPost(this.menu.name, this.postId).valueChanges().take(1).subscribe(post => {
+      this.post = post;
+
+      if(this.post && this.post.title){
+        this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('views').transaction(function(currentCount){
+          return currentCount+1;
+        });
+
+
+        this.dataProvider.getUser(this.post.writer).valueChanges().take(1).subscribe(user => {
+          this.writer = user;
+        });
+  
+        let subscription = this.dataProvider.getComments(this.postId).valueChanges().subscribe(comments => {
+  
+          comments.forEach((comment:any) => {
+            this.dataProvider.getUser(comment.writer).valueChanges().take(1).subscribe((user:any) => {
+              
+              comment.username = user.username;
+              comment.profileImg = user.profileImg;
+            });
+            
+          })
+          this.post.comment = comments;
+          this.subscriptions.push(subscription);
+        });
+  
+        let subscription_ = this.dataProvider.getPostLikes(this.menu.name, this.postId).snapshotChanges().subscribe(likes => {
+          this.post.likes = likes;
+          this.subscriptions.push(subscription_);
+        })
+      }
+
+    });
  
+
+  }
+
+
+  openUserProfile(userId){
+    let modal = this.modalCtrl.create('ProfileUserPage', {userId: userId, from: 0})
+    modal.present();
+  }
+  
+
+
+  openGalleryModal(photos, index){
+    
+    let modal = this.modalCtrl.create(GalleryModal, {
+      photos: photos,
+      initialSlide: index
+    });
+    modal.present();
+  }
+
+  
   ionViewWillLeave() {
     // Unsubscribe to Subscription.
     if (this.subscriptions){
@@ -128,7 +139,7 @@ export class CommunityPostPage {
   
   // 게시글 좋아요 누르기 //
   likePost(key){
-    this.afDB.database.ref('/community/'+ this.category.name + '/' + key + '/likes').push({
+    this.afDB.database.ref('/community/'+ this.menu.name + '/' + key + '/likes').push({
       uid: this.userId,
       date: firebase.database['ServerValue'].TIMESTAMP
     });
@@ -151,7 +162,7 @@ export class CommunityPostPage {
       });
     }
 
-    this.afDB.database.ref('/community/' + this.category.name + '/'  + key + '/likes/' + likeKey[0].key).remove();
+    this.afDB.database.ref('/community/' + this.menu.name + '/'  + key + '/likes/' + likeKey[0].key).remove();
   }
 
   // dislikeComment(key, target){
@@ -184,9 +195,65 @@ export class CommunityPostPage {
 
 
   //댓글 쓰기 //
-  commentWrite(){
+ 
+  modifyPost(post){
+    post.key = this.postId;
+    let category = this.menu.category.filter((e) => {
+      return e.name == post.category;
+    })[0];
+
+    console.log(category)
+    let modal = this.modalCtrl.create('CommunityWritePage', {post: post, category: category});
+    modal.onDidDismiss(data => {
+      if(data){
+        this.ionViewWillLeave();
+        this.ionViewDidLoad();
+      }
+    })
+    modal.present();
+
+  }
+
+  deletePost(post){
+
+    
+    this.alertProvider.showConfirm(this.translate.get('post.menu.delete.title'), this.translate.get('post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+      if (confirm) {
+        this.loadingProvider.show();
+        let postRef = this.dataProvider.getPost(this.menu.name, this.postId)
+          postRef.remove().then(()=>{
+      
+            let commentRef = this.dataProvider.getComments(this.postId);
+            commentRef.valueChanges().take(1).subscribe((comments:any)=> {
+              comments.forEach(comment=> {
+                this.afDB.database.ref('/accounts/' + comment.writer + '/comments/' + comment.key).remove();
+              })
+            })
+            this.afDB.database.ref('/accounts/' + this.userId + '/post/' + this.postId).remove().then(()=> {
+              commentRef.remove();
+            });
+          this.loadingProvider.hide();
+          this.callback(true).then(()=> {
+            this.navCtrl.pop();
+          })
+        })  
+        
+      }
+    }).catch(() => { });
+
+
+
+
+
+
+   
+  
+  }
+
+  writeComment(){
     this.loadingProvider.show();
     let commentRef = this.afDB.database.ref('/comments/' + this.postId)
+    
     commentRef.push({
       writer : this.userId,
       description : this.comment,
@@ -194,7 +261,7 @@ export class CommunityPostPage {
     }).then((success) => {
       commentRef.child(success.key).update({key: success.key});
       this.afDB.database.ref('/accounts/'+this.userId+'/comments/').update({[success.key]: this.postId }).then(() => {
-        this.afDB.database.ref('/community/' + this.category.name + '/' + this.postId).child('comments').transaction(function(currentCount){
+        this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('comments').transaction(function(currentCount){
           return currentCount+1;
         })
       })
@@ -203,6 +270,27 @@ export class CommunityPostPage {
       this.scrollBottom();
     });
   }
+
+  deleteComment(comment){
+    
+    this.alertProvider.showConfirm(this.translate.get('post.menu.delete.title'), this.translate.get('post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+      if (confirm) {
+        this.loadingProvider.show();
+        this.afDB.object('/comments/' + this.postId + '/' + comment.key).remove().then(() => {
+          this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('comments').transaction(function(currentCount){
+            return currentCount-1;
+          })
+          this.afDB.object('/accounts/' + this.userId + '/comments/' + comment.key).remove();
+          
+          this.loadingProvider.hide();
+        })
+        
+      }
+    }).catch(() => { });
+
+  }
+
+
   
   scrollBottom(): void {
     let self = this;
