@@ -42,6 +42,40 @@ image-upload {
             transform: translate(-50%, -50%);
             top: 50%;
             left: 50%;
+            color: white;
+          }
+          .progress-bar {
+            height: 6px;
+            width: 100%;
+            position: absolute;
+            bottom: 0px;
+            overflow: hidden;
+            .progress {
+              background: map_get($colors, 'primary');
+              height: 100%;
+            }
+          }
+        }
+
+        .image_modify {
+          position: relative;
+          height: 23vw;
+          overflow: hidden;
+          img {
+            object-fit: cover;
+            width: auto;
+            margin: auto;
+            
+            &.uploading {
+              background: rgba(0, 0, 0, 0.20);
+            }
+          }
+          ion-icon {
+            font-size: 50px;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 50%;
+            left: 50%;
             color: map-get($colors,x-input-line);
           }
           .progress-bar {
@@ -58,7 +92,7 @@ image-upload {
         }
   
         &.add-image-btn .image {
-          background: map-get($colors,x-white);
+          background: #DDD;
           border:1px solid map-get($colors,x-input-line);
         }
       }

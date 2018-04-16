@@ -11,26 +11,31 @@ import { ImageProvider } from "../../providers/data/image"
 })
 
 export class ImageUpload {
-   
+   te: WindowBase64
 
     public isUploading = false;
     public uploadingProgress = {};
     public uploadingHandler = {};
     public images: any = [];
     public imageURL: any = [];
+    public removeImages: any = [];
     protected imagesValue: Array<any>;
-    public user;
     public key;
 
-    constructor(private sanitization: DomSanitizer, private actionSheetCtrl: ActionSheetController, private camera: Camera, private alertCtrl: AlertController, private toastCtrl: ToastController,
-                private imageProvider: ImageProvider) {
+    constructor(private sanitization: DomSanitizer, 
+                private actionSheetCtrl: ActionSheetController, 
+                private camera: Camera, 
+                private alertCtrl: AlertController, 
+                private toastCtrl: ToastController,
+                private imageProvider: ImageProvider,
+            ) {
 
-                         
+                     
     }
 
 
 
-    public uploadImages(location : string): Promise<Array<any>> {
+    public uploadPostImages(category): Promise<Array<any>> {
         
         return new Promise((resolve, reject) => {
             this.isUploading = true;
@@ -38,7 +43,7 @@ export class ImageUpload {
                 return this.uploadImage(image);
             }))
                 .then(resolve => {
-                    this.imageProvider.sendBoardPhoto(this.key, this.imageURL, location);
+                    this.imageProvider.updatePostUrl(this.key, this.imageURL, category);
                     
                 })
                 .catch(reason => {
@@ -51,6 +56,29 @@ export class ImageUpload {
 
         });
     }
+
+    // public uploadImages(location : string): Promise<Array<any>> {
+        
+    //     return new Promise((resolve, reject) => {
+    //         this.isUploading = true;
+    //         Promise.all(this.images.map(image => {
+    //             return this.uploadImage(image);
+    //         }))
+    //             .then(resolve => {
+    //                 this.imageProvider.sendBoardPhoto(this.key, this.imageURL, location);
+                    
+    //             })
+    //             .catch(reason => {
+    //                 this.isUploading = false;
+    //                 this.uploadingProgress = {};
+    //                 this.uploadingHandler = {};
+    //                 this.imageURL = [];
+    //                 reject(reason);
+    //             });
+
+    //     });
+    // }
+
 
     public abort() {
         if (!this.isUploading)
@@ -67,9 +95,17 @@ export class ImageUpload {
         if (this.isUploading)
             return;
         this.util.confirm("Are you sure to remove it?").then(value => {
+            console.log(image);
+            console.log(this.imageURL);
             if (value) {
-                this.util.removeFromArray(this.imagesValue, image);
-                this.util.removeFromArray(this.images, image.url);
+                if(this.imagesValue)this.util.removeFromArray(this.imagesValue, image);
+                if(this.images) this.util.removeFromArray(this.images, image.url);
+                if(this.imageURL) {
+                    this.removeImages.push(image);
+                    this.util.removeFromArray(this.imageURL, image);
+                    
+                }
+                
             }
         });
     }
@@ -125,6 +161,7 @@ export class ImageUpload {
                     correctOrientation: true
                 };
                 this.camera.getPicture(options).then((imagePath) => {
+                    
                     this.images.push(imagePath);
                     this.util.trustImages();
                 });
@@ -134,14 +171,17 @@ export class ImageUpload {
     }
 
 
+
+
     private uploadImage(targetPath) {
         return new Promise((resolve, reject) => {
             this.uploadingProgress[targetPath] = 0;
 
             if (window['cordova']) {
               console.log('cordova');
-              
+
               this.imageProvider.uploadPhoto(this.key, targetPath).then((url)=>{
+                  
                   resolve(this.imageURL.push({url: url}));
                   
               }).catch(() => {

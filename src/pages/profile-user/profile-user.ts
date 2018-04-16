@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Loading, ModalController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { AuthProvider, LoadingProvider, NotificationProvider, TranslateProvider, DataProvider, RequestProvider } from '../../providers';
+import firebase from 'firebase';
+import { GalleryModal } from 'ionic-gallery-modal';
 
 /**
  * Generated class for the ProfileUserPage page.
@@ -32,7 +34,8 @@ export class ProfileUserPage {
               public dataProvider: DataProvider,
               public requestProvider: RequestProvider,
               public translate: TranslateProvider,
-              public notificationProvider: NotificationProvider
+              public notificationProvider: NotificationProvider,
+              public modalCtrl: ModalController
             
             ) {
   }
@@ -56,7 +59,16 @@ export class ProfileUserPage {
       this.user = user;
       
     })
+    this.loadingProvider.hide();
+  }
 
+  openGalleryModal(user){
+    let photo = [{url: user.profileImg}]
+
+    let modal = this.modalCtrl.create(GalleryModal, {
+      photos: photo,
+    });
+    modal.present();
   }
 
   setUser(userId: string): void {

@@ -90,6 +90,9 @@
     <plugin name="cordova-plugin-vibration" spec="^3.0.1" />
     <plugin name="cordova-plugin-fcm" spec="^2.1.2" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <engine name="android" spec="~6.4.0" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="cc.fovea.cordova.purchase" spec="^7.1.3">
+        <variable name="BILLING_KEY" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAloWfu5wVHA/hWQKsgWX3y+S8NbWv5w0lO5HoaLv5SWJlNFL3CitT4RfpkktDAkmNOyNOFlklu/o2+kbixooLGcaqFeDa3zNSjx+0JVNV1Tu6aqXznyfGSrP1LVwuSgP4IfXXRVtrCxNluDSZPP5NM0IZz2VOVam4XxZuIjffPU3mAEhlK48YEnnkCP4HuwBjetdlguR3SfaX941FtPDWmesYHvAWcKJ3TbYOG7bsfa1K/kHWOABGMmT4ynGA9TA80R58hbWcLnxfGe6vNKPo/7PrV8c0d50LBgTXOgqPOGM+iiZ2kWk/NVVlDY1mNCZ5hM+HbqG/XMKEGIsqvaBtiQIDAQAB" />
+    </plugin>
+    <engine name="android" spec="6.4.0" />
 </widget>

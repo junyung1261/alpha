@@ -4,6 +4,7 @@ import { RequestsPage } from './requests';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipeModule } from '../../pipes/pipe.module';
 
+import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { PipeModule } from '../../pipes/pipe.module';
   imports: [
     IonicPageModule.forChild(RequestsPage),
     TranslateModule.forChild(),
+    IonicImageLoader,
     PipeModule
   ],
   

@@ -94,6 +94,10 @@ export class DataProvider {
     return this.angularfireDatabase.list('/community/'+ menu, ref => ref.orderByChild('date').limitToLast(5));
   }
 
+  getUserPost(userId){
+    return this.angularfireDatabase.list('/accounts/' + userId + '/post', ref => ref.orderByKey());
+  }
+
   getPost(category, postId){
     return this.angularfireDatabase.object('/community/'+ category + '/' + postId);
   }
@@ -168,6 +172,10 @@ export class DataProvider {
   
   getNoteList(userKey){
     return this.angularfireDatabase.list('/note-link/'+userKey , ref => ref);
+  }
+
+  getProducts(){
+    return this.angularfireDatabase.list('/purchase/products');
   }
 
 

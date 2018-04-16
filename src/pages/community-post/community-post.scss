@@ -3,6 +3,7 @@ page-community-post {
     .x-boardview-row {padding:2vw 3vw 2vw 3vw;height:fit-content;width:100vw;background-color:map-get($colors,x-white);border-bottom:1px solid map-get($colors,x-gray-bg);}
     .x-boardview-row-no-border {padding:2vw 3vw 2vw 3vw;height:fit-content;width:100vw;background-color:map-get($colors,x-white);border-bottom:none;}
     .x-boardview-category{font-size:4vw;color:map-get($colors,x-mint);}
+    .x-boardview-modify{font-size:4vw;color:map-get($colors,x-mint); float: right; margin-left:2vw; margin-right: 3vw;}
     .x-boardview-title {font-size:4vw;color:map-get($colors,x-gray-dark);}
     .x-boardview-info {width:94vw;height:fit-content;}
     .x-boardview-writer {float:left;width:fit-content;height:fit-content; img {width:13vw;height:13vw;border-radius:6.5vw;} margin-right:2vw;}

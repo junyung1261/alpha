@@ -23,8 +23,7 @@
         <ion-item-divider color="light">대화요청</ion-item-divider>
         <ion-item *ngFor="let request of requestsReceived" tappable>
             <ion-avatar item-left>
-                <img src="{{ request.payload.val().profileImg }}" [hidden]="!request.payload.val().profileImg">
-                <img src="assets/imgs/noavatar.png" [hidden]="request.payload.val().profileImg"/>
+                <img-loader src=" {{request.payload.val().profileImg}}" tappable ></img-loader>
             </ion-avatar>
 
             <span class="nickname">{{ request.payload.val().username }}</span>
@@ -40,8 +39,8 @@
         <ion-item-divider color="light">사용자 대화방 <button item-right>대화중</button></ion-item-divider>
         <ion-item *ngFor="let lastestUser of users | slice:0:usersToShow" tappable [hidden]="excludedIds.indexOf(lastestUser.key) != -1">
             <ion-avatar item-left>
-                <img src="{{ lastestUser.payload.val().profileImg }}" *ngIf="lastestUser.payload.val().profileImg">
-                <img src="assets/imgs/noavatar.png"  *ngIf="!lastestUser.payload.val().profileImg"/>
+                <img-loader src=" {{lastestUser.payload.val().profileImg}}" tappable ></img-loader>
+               
             </ion-avatar>
 
             <span class="nickname">{{ lastestUser.payload.val().username }}</span>

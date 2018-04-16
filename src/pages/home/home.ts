@@ -88,9 +88,9 @@ export class HomePage {
     this.navCtrl.push('CommunityPage', { menu: menu, index: index});
   }
 
-  openPost(category,key){
-    console.log(key);
-    this.navCtrl.push('CommunityPostPage',{ category:category, postId : key });
+  openPost(menu,key){
+    
+    this.navCtrl.push('CommunityPostPage',{ menu:menu, postId : key });
   }
 
 }
