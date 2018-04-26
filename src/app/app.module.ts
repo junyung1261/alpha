@@ -21,9 +21,9 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireDatabase } from 'angularfire2/database-deprecated';
 
 
-import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
 import { LoadingProvider, AlertProvider, DataProvider, ImageProvider, RequestProvider, AuthProvider, NotificationProvider, ToastProvider, TranslateProvider, KeyboardProvider, Settings  } from '../providers';
- 
+
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2';
 
 import { Camera } from '@ionic-native/camera';
 import { Keyboard } from '@ionic-native/keyboard';
@@ -103,8 +103,9 @@ export function provideSettings(storage: Storage) {
       provide: HAMMER_GESTURE_CONFIG,
       useClass: ionicGalleryModal.GalleryModalHammerConfig,
     },
-    InAppPurchase2,
-    Camera
+    Camera,
+ 
+    InAppPurchase2
   ]
 })
 export class AppModule {}

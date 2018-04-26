@@ -125,4 +125,16 @@ export class CommunityPage {
      });
 }
 
+
+doRefresh(refresher) {
+  console.log('Begin async operation', refresher);
+
+  setTimeout(() => {
+    this. getPost();
+    console.log('Async operation has ended');
+    refresher.complete();
+  }, 2000);
+}
+
+
 }

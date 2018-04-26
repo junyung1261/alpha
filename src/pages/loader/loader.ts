@@ -27,7 +27,7 @@ export class LoaderPage {
     this.splashScreen.show();
     this.storage.get('introShown').then((introShown: boolean) => {
       // Check if user is loading the app for the very first time and show the IntroPage.
-      if (introShown) {
+      // if (introShown) {
         // Check if user is authenticated on Firebase or not.
         this.afAuth.authState.subscribe((user) => {
           if (!user) {
@@ -62,12 +62,12 @@ export class LoaderPage {
             
           }
         })
-      } else {
-        // User is loading the app for the very first time, show IntroPage.
-        this.navCtrl.setRoot('IntroPage');
-        this.splashScreen.hide();
-        this.storage.set('introShown', true);
-      }
+      // } else {
+      //   // User is loading the app for the very first time, show IntroPage.
+      //   this.navCtrl.setRoot('IntroPage');
+      //   this.splashScreen.hide();
+      //   this.storage.set('introShown', true);
+      // }
     }).catch(() => { });
   }
 
