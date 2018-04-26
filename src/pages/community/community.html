@@ -11,9 +11,22 @@
 </ion-header>
 
 <ion-content no-padding #content class="community">
-    <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menu && menu.category.length > 1" [(ngModel)]="category.name">
-      <ion-segment-button class="x-category-btn" *ngFor="let category of menu.category; let i = index" value="{{category.name}}" (ionSelect)="getCategory(i)"> {{category.name}}</ion-segment-button>
-    </ion-segment>
+
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content
+          pullingIcon="arrow-dropdown"
+          pullingText="Pull to refresh"
+          refreshingSpinner="circles"
+          refreshingText="Refreshing...">
+      </ion-refresher-content>
+  </ion-refresher>
+
+
+
+  <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menu && menu.category.length > 1" [(ngModel)]="category.name">
+    <ion-segment-button class="x-category-btn" *ngFor="let category of menu.category; let i = index" value="{{category.name}}" (ionSelect)="getCategory(i)"> {{category.name}}</ion-segment-button>
+  </ion-segment>
 
   <div *ngIf="menu">
     <ion-grid no-padding>
@@ -42,7 +55,7 @@
    
   <div [ngSwitch]="category.type">
     <ion-grid class="x-list" no-padding *ngSwitchCase="'normal'" >
-      <ion-grid no-padding *ngIf="category.name == 'FREE'" >
+      <!-- <ion-grid no-padding *ngIf="category.name == 'FREE'" >
         <ion-row class="x-list-title">
           <ion-col col-12>인기글</ion-col>
         </ion-row>
@@ -67,7 +80,7 @@
           <ion-col col-3 text-center>조회많은</ion-col>
           <ion-col col-3 text-center>댓글많은</ion-col>
         </ion-row>
-      </ion-grid>
+      </ion-grid> -->
      
       <ion-row class="x-list-title">
         <ion-col col-12>{{ category.name }}</ion-col>
