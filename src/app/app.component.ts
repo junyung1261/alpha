@@ -60,6 +60,9 @@ export class MyApp {
       imageLoader.spinnerEnabled = false;
       imageLoader.fallbackAsPlaceholder = true;
       imageLoader.useImg = true;
+      imageLoader.enableDebugMode();
+      imageLoader.enableFallbackAsPlaceholder(true);
+      imageLoader.setFallbackUrl('assets/imgs/logo.png')
       imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
       
       keyboard.disableScroll(true);

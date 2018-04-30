@@ -27,19 +27,19 @@
           <div class="profile-error" *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</div>
           <div class="profile-error" *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</div>
           <ion-item no-lines>
-            <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
+            <ion-label>{{ translate.get('auth.form.username') }}</ion-label>
+            <ion-input type="text" formControlName="username"  text-right [placeholder]="translate.get('auth.form.username')"></ion-input>
           </ion-item>
           <!--이메일 :: 수정불가-->
           <ion-item no-lines>
-            <ion-input type="text" formControlName="email" readonly [placeholder]="translate.get('auth.form.email')"></ion-input>
+              <ion-label>{{ translate.get('auth.form.email') }}</ion-label>
+            <ion-input type="text" formControlName="email" text-right readonly [placeholder]="translate.get('auth.form.email')"></ion-input>
           </ion-item>
           <!--성별 :: 수정불가-->
           <ion-item no-lines>
             <ion-label>{{ translate.get('auth.form.gender') }}</ion-label>
-            <ion-select type="text" formControlName="gender" disabled [placeholder]="translate.get('auth.form.gender.null')">
-                <ion-option value="female">Female</ion-option>
-                <ion-option value="male">Male</ion-option>
-            </ion-select>
+            <ion-input type="text" formControlName="gender" text-right readonly [placeholder]="translate.get('auth.form.gender')"></ion-input>
+            
           </ion-item>
           <!--생년월일-->
           <ion-item no-lines>
@@ -69,7 +69,8 @@
           <!--자기소개-->
           <div class="profile-error" *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</div>
           <ion-item no-lines class="textarea">
-            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3" class="profile-bio"></ion-textarea>
+            <ion-label stacked>{{ translate.get('auth.form.bio') }}</ion-label>
+            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio.null')" fz-elastic rows="3" class="profile-bio"></ion-textarea>
           </ion-item>
         </ion-list>
       </form>

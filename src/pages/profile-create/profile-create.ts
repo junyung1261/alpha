@@ -23,7 +23,7 @@ import firebase from 'firebase';
 export class ProfileCreatePage {
   private profileForm: FormGroup;
   
-  private photo: string = 'assets/imgs/noavatar';
+  private photo: string = 'assets/imgs/noavatar.png';
   private userId: string;
   private user : any;
   private hasError: boolean;

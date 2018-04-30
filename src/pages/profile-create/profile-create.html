@@ -17,7 +17,8 @@
           <!--닉네임-->
           <div class="profile-error" *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">* {{ 'auth.form.error.username' | translate }}</div>
           <ion-item no-lines>
-            <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
+            <ion-label>{{ translate.get('auth.form.username') }}</ion-label>
+            <ion-input type="text" formControlName="username" text-right [placeholder]="translate.get('auth.form.username')"></ion-input>
           </ion-item>
           <!--성별-->
           <div class="profile-error"  *ngIf="(profileForm.controls.gender.hasError('required') || !profileForm.controls.gender.valid) && hasError">* {{ 'auth.form.error.gender' | translate }}</div>
@@ -59,7 +60,8 @@
           <!--자기소개-->
           <div class="profile-error"  *ngIf="profileForm.controls.bio.hasError('required') && hasError">* {{ 'auth.form.error.bio' | translate }}</div>
           <ion-item no-lines>
-            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3"></ion-textarea>
+            <ion-label stacked>{{ translate.get('auth.form.bio') }}</ion-label>
+            <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio.null')" fz-elastic rows="3"></ion-textarea>
           </ion-item>
         </ion-list>
       </form>
