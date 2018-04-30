@@ -180,7 +180,7 @@ export class ImageUpload {
             if (window['cordova']) {
               console.log('cordova');
 
-              this.imageProvider.uploadPhoto(this.key, targetPath).then((url)=>{
+              this.imageProvider.imageUpload(this.key, targetPath).then((url)=>{
                   
                   resolve(this.imageURL.push({url: url}));
                   

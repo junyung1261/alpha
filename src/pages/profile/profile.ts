@@ -60,7 +60,6 @@ export class ProfilePage {
     private alertProvider: AlertProvider,
     private translate: TranslateProvider,
     private dataProvider: DataProvider,
-    private imageProvider: ImageProvider,
     private authProvider: AuthProvider,
     private loadingProvider: LoadingProvider,
     private toast: ToastProvider,
@@ -199,14 +198,13 @@ export class ProfilePage {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.afAuth.auth.currentUser.uid, this.user, this.camera.PictureSourceType.CAMERA);
               
             }
           },
           {
             text: this.translate.get('auth.profile.photo.gallery'),
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.afAuth.auth.currentUser.uid, this.user, this.camera.PictureSourceType.PHOTOLIBRARY);
+             
             }
           },
           {
