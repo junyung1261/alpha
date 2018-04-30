@@ -1,5 +1,6 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
 import { Platform, Nav, Config, AlertController, IonicApp, ToastController, App } from 'ionic-angular';
+import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
@@ -32,18 +33,22 @@ export class MyApp {
     private toastCtrl: ToastController,
     private app: App,
     private ionicApp: IonicApp,
-    private imageLoader: ImageLoaderConfig
+    private imageLoader: ImageLoaderConfig,
+    private screenOrientation : ScreenOrientation
   
     ) {
 
     platform.ready().then(() => {
+      if (this.platform.is('cordova')) { 
+        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);  
+       }
       statusBar.styleDefault();
       splashScreen.hide();
-      this.imageLoader.spinnerEnabled = false;
-      this.imageLoader.fallbackAsPlaceholder = true;
-      this.imageLoader.useImg = true;
-      this.imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
-
+      imageLoader.spinnerEnabled = false;
+      imageLoader.fallbackAsPlaceholder = true;
+      imageLoader.useImg = true;
+      imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
+      
       // if(platform.is('cordova')){
       //   fcm.subscribeToTopic('test');
       //   fcm.getToken().then(token => {
@@ -65,21 +70,21 @@ export class MyApp {
       keyboard.disableScroll(true);
       mobileAccessibility.usePreferredTextZoom(false);
       
-      this.translateService.setDefaultLang('en');
-      this.translateService.use('en');
-      this.translateService.getTranslation('en').subscribe(translations => {
-      this.translate.setTranslations(translations);
+      translateService.setDefaultLang('en');
+      translateService.use('en');
+      translateService.getTranslation('en').subscribe(translations => {
+      translate.setTranslations(translations);
       this.rootPage = 'LoaderPage';
       })
-
+         
 
       let lastTimeBackPress = 0;
       let timePeriodToExit = 2000;
 
       platform.registerBackButtonAction(() => {
         let activePortal = this.ionicApp._loadingPortal.getActive() || // Close If Any Loader Active
-        this.ionicApp._modalPortal.getActive() ||  // Close If Any Modal Active
-        this.ionicApp._overlayPortal.getActive(); // Close If Any Overlay Active
+        ionicApp._modalPortal.getActive() ||  // Close If Any Modal Active
+        ionicApp._overlayPortal.getActive(); // Close If Any Overlay Active
 
         let nav = app.getActiveNavs()[0];   
         if (activePortal) {
@@ -90,9 +95,9 @@ export class MyApp {
         }else{
             //Double check to exit app
             if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-                this.platform.exitApp(); //Exit from app
+              platform.exitApp(); //Exit from app
             } else {
-              this.toastCtrl.create({
+              toastCtrl.create({
                 message: "Press back button again to exit",
                 duration: 2000,
                 position: 'bottom'
@@ -129,11 +134,11 @@ export class MyApp {
   
       // });
     }).catch(()=> {
-      this.translateService.setDefaultLang('en');
-      this.translateService.use('en');
-      this.translateService.getTranslation('en').subscribe(translations => {
-        this.translate.setTranslations(translations);
-        this.rootPage = 'LoaderPage';
+      translateService.setDefaultLang('en');
+      translateService.use('en');
+      translateService.getTranslation('en').subscribe(translations => {
+      translate.setTranslations(translations);
+      this.rootPage = 'LoaderPage';
       })
     });
     

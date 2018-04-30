@@ -7,7 +7,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicImageLoader } from 'ionic-image-loader';
 import { File } from '@ionic-native/file';
-
+import { ScreenOrientation } from '@ionic-native/screen-orientation'
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { Environment } from "../environments/environment"
@@ -104,7 +104,7 @@ export function provideSettings(storage: Storage) {
       useClass: ionicGalleryModal.GalleryModalHammerConfig,
     },
     Camera,
- 
+    ScreenOrientation,
     InAppPurchase2
   ]
 })
