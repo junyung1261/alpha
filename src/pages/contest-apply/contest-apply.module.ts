@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ContestApplyPage } from './contest-apply';
-import { ImageUploadContestModule } from '../../components/image-upload-contest/image-upload-contest.module';
+import { ImageUploadModule } from '../../components/image-upload/image-upload.module';
 
 
 
@@ -11,7 +11,7 @@ import { ImageUploadContestModule } from '../../components/image-upload-contest/
   ],
   imports: [
     IonicPageModule.forChild(ContestApplyPage),
-    ImageUploadContestModule
+    ImageUploadModule
   ]
   
 })

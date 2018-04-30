@@ -20,7 +20,6 @@ export class ImageProvider {
   // All files to be uploaded on Firebase must have DATA_URL as the destination type.
   // This will return the imageURI which can then be processed and uploaded to Firebase.
   // For the list of cameraOptions, please refer to: https://github.com/apache/cordova-plugin-camera#module_camera.CameraOptions
-
   constructor(public angularfireDatabase: AngularFireDatabase, public alertProvider: AlertProvider, public loadingProvider: LoadingProvider, public camera: Camera) {
     console.log("Initializing Image Provider");
     this.profilePhotoOptions = {
@@ -77,59 +76,82 @@ export class ImageProvider {
   // Set ProfilePhoto given the user and the cameraSourceType.
   // This function processes the imageURI returned and uploads the file on Firebase,
   // Finally the user data on the database is updated.
-  setProfilePhoto(key, user, sourceType) {
-
-
+  setProfilePhoto(userId, sourceType): Promise<any> {
     this.profilePhotoOptions.sourceType = sourceType;
-    
-    // Get picture from camera or gallery.
-    this.camera.getPicture(this.profilePhotoOptions).then((imageData) => {
-      // Process the returned imageURI.
-      let imgBlob = this.imgURItoBlob("data:image/jpeg;base64," + imageData);
-      let metadata = {
-        'contentType': imgBlob.type
-      };
-      // Generate filename and upload to Firebase Storage.
-     
-      firebase.storage().ref().child('images/' + key + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
-        // Delete previous profile photo on Storage if it exists.
-        if(user.profileImg)this.deleteImageFile(user.profileImg);
-        
-        // URL of the uploaded image!
-        let url = snapshot.metadata.downloadURLs[0];
-        
-        let profile = {
-          displayName: user.username,
-          photoURL: url
-        };
+    return new Promise((resolve, reject) => {
+      this.camera.getPicture(this.profilePhotoOptions).then((imageData) => {
         this.loadingProvider.show();
-        // Update Firebase User.
-        firebase.auth().currentUser.updateProfile(profile)
-          .then((success) => {
-            // Update User Data on Database.
-            this.angularfireDatabase.object('/accounts/' + key).update({
-              profileImg: url
-            }).then((success) => {
-              
+        // Process the returned imageURI.
+        let imgBlob = this.imgURItoBlob("data:image/jpeg;base64," + imageData);
+        let metadata = {
+          'contentType': imgBlob.type
+        };
+        // Generate filename and upload to Firebase Storage.
+       
+        firebase.storage().ref().child('images/' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+          // Delete previous profile photo on Storage if it exists.
+          // URL of the uploaded image!
+          let url = snapshot.metadata.downloadURLs[0];
+              // Update User Data on Database.
+              this.angularfireDatabase.object('/accounts/' + userId).update({
+                profileImg: url
+              }).then((success) => {
+                
+                this.loadingProvider.hide();
+                resolve(url);
+              }).catch((error) => {
+                this.loadingProvider.hide();
+                reject();
+              });
+            })
+            .catch((error) => {
               this.loadingProvider.hide();
-              this.alertProvider.showProfileUpdatedMessage();
-            }).catch((error) => {
-              this.loadingProvider.hide();
-              this.alertProvider.showErrorMessage('profile/error-change-photo');
+              reject();
             });
-          })
-          .catch((error) => {
-            this.loadingProvider.hide();
-            this.alertProvider.showErrorMessage('profile/error-change-photo');
-          });
-      }).catch((error) => {
-        this.loadingProvider.hide();
-        this.alertProvider.showErrorMessage('image/error-image-upload');
-      });
-    }).catch((error) => {
-      this.loadingProvider.hide();
-    });
+        }).catch((error) => {
+          this.loadingProvider.hide();
+          reject();
+        });
+    })
   }
+
+  uploadProfilePhoto(userId, sourceType): Promise<any> {
+    this.profilePhotoOptions.sourceType = sourceType;
+    return new Promise((resolve, reject) => {
+      //this.photoMessageOptions.sourceType = sourceType;
+     
+      // Get picture from camera or gallery.
+      this.camera.getPicture(this.profilePhotoOptions).then((imageData) => {
+        this.loadingProvider.show();
+        // Process the returned imageURI.
+        let imgBlob = this.imgURItoBlob("data:image/jpeg;base64," + imageData);
+        let metadata = {
+          'contentType': imgBlob.type
+        };
+        firebase.storage().ref().child('images/' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+          // Delete previous profile photo on Storage if it exists.
+          // URL of the uploaded image!
+          let url = snapshot.metadata.downloadURLs[0];
+          this.loadingProvider.hide();
+          resolve(url);
+        }).catch((err) => {
+          console.log("ERROR STORAGE: " + JSON.stringify(err));
+          this.loadingProvider.hide();  
+          reject();
+          // this.toast.show(this.translate.get('storage.upload.error'));
+        });
+
+       }).catch(err => {
+        console.log("ERROR CAMERA: " + JSON.stringify(err));
+        reject();
+        // this.toast.show(this.translate.get('storage.upload.error'));
+       });
+      })
+    }
+
+
+
+  
 
   // Upload and set the group object's image.
   setGroupPhoto(group, sourceType) {
