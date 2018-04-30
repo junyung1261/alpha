@@ -27,8 +27,8 @@
             </ion-avatar>
 
             <span class="nickname">{{ request.payload.val().username }}</span>
-        <span class="distance">[122km]</span><br>
-        <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
+        <span class="distance">{{ request.payload.val().lastLogin | DateFormat }}</span><br>
+        <span class="introduce">{{ request.payload.val().bio }}</span>
         <span class="conversation"  item-right><ion-icon name="flaticon-chat" color="x-mint" (click)="acceptFriendRequest(request)"></ion-icon></span>
         </ion-item>
         
@@ -43,9 +43,9 @@
                
             </ion-avatar>
 
-            <span class="nickname">{{ lastestUser.payload.val().username }}</span>
-        <span class="distance">{{ lastestUser.payload.val().lastLogin | DateFormat }}</span><br>
-        <span class="introduce">안녕하세요 물뜨는미어캣입니다.</span>
+        <span class="nickname">{{ lastestUser.payload.val().username }}</span>
+        <span class="distance">{{ lastestUser.payload.val().lastLogin | DateFormat }}</span>
+        <span class="introduce">{{ lastestUser.payload.val().bio }}</span>
       
         <span class="memo" item-right><ion-icon name="flaticon-note-1" color="x-pink" (click)="presentAlert(0)"></ion-icon></span>
         <span class="conversation"  item-right *ngIf="getRequestStatus(lastestUser) == 0" ><ion-icon name="flaticon-chat" color="x-mint"  (click)="presentAlert(1, lastestUser)"></ion-icon></span>
