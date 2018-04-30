@@ -276,7 +276,7 @@ acceptFriendRequest(user) {
   this.alert = this.alertCtrl.create({
     
     title: 'Confirm Friend Request',
-    message: 'Do you want to accept <b>' + user.payload.val().name + '</b> as your friend?',
+    message: 'Do you want to accept <b>' + user.payload.val().username + '</b> as your friend?',
     buttons: [
       {
         text: 'Cancel',

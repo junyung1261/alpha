@@ -72,7 +72,7 @@ export class ProfileCreatePage {
     console.log('ionViewDidLoad ProfileCreatePage');
     
       this.userId = firebase.auth().currentUser.uid;
-      
+      console.log(this.userId);
      
       let username = '';
       
@@ -92,8 +92,10 @@ export class ProfileCreatePage {
   ionViewWillUnload() {
     // Check if userData exists on Firestore. If no userData exists yet, delete the photo uploaded to save Firebase storage space.
     firebase.database().ref('accounts/' + this.userId).once('value', user => {
+      console.log(user)
       if (!user.exists()) {
-        this.imageProvider.delete(this.userId, this.photo);
+       
+        this.imageProvider.deleteImageFile(this.photo);
       }
     }).catch(() => { });
   }
@@ -103,7 +105,7 @@ export class ProfileCreatePage {
     if (!this.profileForm.valid) {
       this.hasError = true;
     } else {
-      console.log(this.userId);
+      
    
       let username = this.profileForm.value['username'];
       let gender = this.profileForm.value['gender'];
@@ -141,8 +143,8 @@ export class ProfileCreatePage {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',
             handler: () => {
-              this.imageProvider.imageUpload(this.userId, this.camera.PictureSourceType.CAMERA).then((url: string) => {
-                this.imageProvider.delete(this.userId, this.photo);
+              this.imageProvider.uploadProfilePhoto(this.userId, this.camera.PictureSourceType.CAMERA).then((url: string) => {
+                this.imageProvider.deleteImageFile(this.photo);
                 this.photo = url;
               }).catch(()=> { });
             }
@@ -150,8 +152,8 @@ export class ProfileCreatePage {
           {
             text: this.translate.get('auth.profile.photo.gallery'),
             handler: () => {
-              this.imageProvider.imageUpload(this.userId, this.camera.PictureSourceType.PHOTOLIBRARY).then((url: string) => {
-                this.imageProvider.delete(this.userId, this.photo);
+              this.imageProvider.uploadProfilePhoto(this.userId,  this.camera.PictureSourceType.PHOTOLIBRARY).then((url: string) => {
+                this.imageProvider.deleteImageFile(this.photo);
                 this.photo = url;
               }).catch(()=> { });
             }

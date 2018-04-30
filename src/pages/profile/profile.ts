@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, MenuController, AlertController, ActionSheetController, App, Platform, Content } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, ActionSheetController, Content, App } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { AuthProvider, AlertProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider } from '../../providers';
+import { AuthProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider, AlertProvider } from '../../providers';
 
 import { Camera } from '@ionic-native/camera';
 import { Subscription } from 'rxjs/Subscription';
@@ -51,13 +51,12 @@ export class ProfilePage {
 
   constructor(private navCtrl: NavController,
     private app: App,
-    private navParams: NavParams,
-    private menuCtrl: MenuController,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     private afAuth: AngularFireAuth,
     private alertProvider: AlertProvider,
+    private imageProvider: ImageProvider,
     private translate: TranslateProvider,
     private dataProvider: DataProvider,
     private authProvider: AuthProvider,
@@ -65,7 +64,6 @@ export class ProfilePage {
     private toast: ToastProvider,
     private notification: NotificationProvider,
     private camera: Camera,
-    private platform: Platform,
     private modalCtrl: ModalController,
     private keyboard: Keyboard) {
     this.profileForm = formBuilder.group({
@@ -198,13 +196,20 @@ export class ProfilePage {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',
             handler: () => {
-              
+              let beforeImg = this.user.profileImg;
+              this.imageProvider.setProfilePhoto(this.userId, this.camera.PictureSourceType.CAMERA).then((url: string) => {
+                this.imageProvider.deleteImageFile(beforeImg);
+                
+              }).catch(()=> { });
             }
           },
           {
             text: this.translate.get('auth.profile.photo.gallery'),
             handler: () => {
-             
+              let beforeImg = this.user.profileImg;
+              this.imageProvider.setProfilePhoto(this.userId, this.camera.PictureSourceType.PHOTOLIBRARY).then((url: string) => {
+                this.imageProvider.deleteImageFile(beforeImg);
+              }).catch(()=> { });
             }
           },
           {
@@ -260,7 +265,7 @@ export class ProfilePage {
     this.alertProvider.showConfirm(this.translate.get('auth.menu.logout.title'), this.translate.get('auth.menu.logout.text'), this.translate.get('auth.menu.logout.button.cancel'), this.translate.get('auth.menu.logout.button.logout')).then(confirm => {
       if (confirm) {
         this.authProvider.logout().then(() => {
-          this.menuCtrl.close();
+        
           this.notification.destroy();
           this.app.getRootNavs()[0].setRoot('LoginPage');
         }).catch(() => { });
