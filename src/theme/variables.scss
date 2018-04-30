@@ -82,7 +82,19 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222
 );
+$alert-md-title-font-size:4vw;
 
+$alert-md-radio-label-text-color:rgba(140,157,164,1);
+$alert-md-radio-label-text-color-checked:rgba(0,184,208,1);
+$alert-ios-radio-label-text-color:rgba(140,157,164,1);
+$alert-ios-radio-label-text-color-checked:rgba(0,184,208,1);
+
+$alert-md-radio-border-color-on:rgba(0,184,208,1);
+$alert-md-radio-border-color-off:rgba(140,157,164,1);
+
+$alert-md-button-text-color:rgba(0,184,208,1);
+$alert-ios-button-text-color:rgba(0,184,208,1);
+$alert-ios-button-font-size:4vw;
 
 // App iOS Variables
 // --------------------------------------------------

@@ -94,6 +94,10 @@
     <plugin name="cc.fovea.cordova.purchase" spec="^7.1.3">
         <variable name="BILLING_KEY" value="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcD1X2/9U6NWSYiT/9tZQASSBvs/UrLShlTd5rZkRFfew/22t1Nu2zy1aqC21yHdTWOiY3STnfDgHcusklv04omDIU9qoVdR4SiJS8rwXXDXtgbUlfUYgyVSA565f7FM7pvW3gEe/uvVDqgOR8bP9zGFqi+co882YJEhhwEXpC2vsCLpjsrPILBKTBo0+twPSjw+fCS5ZvepwsUcIlzMiyao14ZVIXW/iBcV/EtxFIzaE6ftN5fvgZooK3v20d/ZVX8nsfovarQAs84yzdVVbpvHwzy3qWircmr8TJSicsQU1WlGI40jX04rnzSCKeGf81pyZxOxQByqdJlUn/sQ2QIDAQAB" />
     </plugin>
+<<<<<<< HEAD
     <engine name="android" spec="6.4.0" />
     <plugin name="cordova-plugin-screen-orientation" spec="^3.0.1" />
+=======
+    <engine name="android" spec="~6.4.0" />
+>>>>>>> master
 </widget>
