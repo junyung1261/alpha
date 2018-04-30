@@ -22,6 +22,7 @@ import firebase from 'firebase';
 })
 export class ProfileCreatePage {
   private profileForm: FormGroup;
+  
   private photo: string = 'assets/imgs/noavatar.png';
   private userId: string;
   private user : any;
@@ -106,12 +107,17 @@ export class ProfileCreatePage {
       this.hasError = true;
     } else {
       
+      
    
       let username = this.profileForm.value['username'];
       let gender = this.profileForm.value['gender'];
       let birth = this.profileForm.value['birth'];
       let address = this.profileForm.value['address'];
       let bio = this.profileForm.value['bio'];
+
+      if(this.photo.startsWith('assets')){
+        this.photo =  'assets/imgs/noavatar_' + gender + '.png'; 
+      }
       this.dataProvider.getUser(this.userId).set({
         // Formatting the first and last names to capitalized.
         profileImg: this.photo,

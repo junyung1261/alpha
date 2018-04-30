@@ -60,26 +60,11 @@ export class MyApp {
       imageLoader.spinnerEnabled = false;
       imageLoader.fallbackAsPlaceholder = true;
       imageLoader.useImg = true;
+      imageLoader.enableDebugMode();
+      imageLoader.enableFallbackAsPlaceholder(true);
+      imageLoader.setFallbackUrl('assets/imgs/logo.png')
       imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
       
-      // if(platform.is('cordova')){
-      //   fcm.subscribeToTopic('test');
-      //   fcm.getToken().then(token => {
-      //     console.log(token)
-      //   })
-      //   fcm.onNotification().subscribe(data=>{
-      //     if(data.wasTapped){
-      //       this.nav.setRoot('TabsPage', { animate: false, tabIndex: 3 });   
-      //       console.log("Received in background");
-      //     } else {
-      //       console.log("Received in foreground");
-      //     };
-      //   })
-      //   fcm.onTokenRefresh().subscribe(token=>{
-      //     console.log(token);
-      //   });
-        
-      // }
       keyboard.disableScroll(true);
       mobileAccessibility.usePreferredTextZoom(false);
       
@@ -126,32 +111,6 @@ export class MyApp {
         }            
       });
       
-      
-
-
-      // this.afAuth.authState.subscribe(user => {
-      //   if (!user) {
-      //     this.nav.setRoot('LoginPage');
-      //   }
-      //   else {
-      //     if (true) {
-      //       if (true) {
-      //         //user["emailVerified"]
-      //         //Goto Home Page.
-      //         this.zone.run(()=> {
-      //           this.nav.setRoot('TabsPage', { animate: false });    
-      //         })
-                      
-              
-      //      } //else {
-      //       //   //Goto Verification Page.
-              
-      //       //   this.nav.setRoot('VerificationPage', { animate: false });
-      //       // }
-      //     }
-      //   }
-  
-      // });
     }).catch(()=> {
       translateService.setDefaultLang('en');
       translateService.use('en');
@@ -162,33 +121,4 @@ export class MyApp {
     });
     
   }
-
-  
-
-  // initTranslate() {
-  //   // Set the default language for translation strings, and the current language.
-  //   this.translate.setDefaultLang('en');
-  //   const browserLang = this.translate.getBrowserLang();
-
-  //   if (browserLang) {
-  //     if (browserLang === 'zh') {
-  //       const browserCultureLang = this.translate.getBrowserCultureLang();
-
-  //       if (browserCultureLang.match(/-CN|CHS|Hans/i)) {
-  //         this.translate.use('zh-cmn-Hans');
-  //       } else if (browserCultureLang.match(/-TW|CHT|Hant/i)) {
-  //         this.translate.use('zh-cmn-Hant');
-  //       }
-  //     } else {
-  //       this.translate.use(this.translate.getBrowserLang());
-  //     }
-  //   } else {
-  //     this.translate.use('en'); // Set your language here
-  //   }
-
-  //   this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
-  //     this.config.set('ios', 'backButtonText', values.BACK_BUTTON_TEXT);
-  //   });
-  // }
-
 }

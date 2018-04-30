@@ -86,9 +86,9 @@
         <ion-col col-12>{{ category.name }}</ion-col>
       </ion-row>
       
-      <ion-segment class="x-list-row x-list-ctg" color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="ttt" >
+      <ion-segment class="x-list-row x-list-ctg" color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="category.selectedOption" >
           <ng-container *ngFor="let option of category.option  | slice:(i*segmentsPerRow):(i+1)*segmentsPerRow">
-          <ion-segment-button class="x-category-btn" value="{{option}}" > {{option}}</ion-segment-button>
+          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{option}}</ion-segment-button>
           </ng-container>
       </ion-segment>
     
@@ -106,16 +106,16 @@
     <div class="x-photolist-container" *ngSwitchCase="'trade'">
         
       <div class="x-photolist-title" >{{ category.name }}</div>
-      <ion-segment  color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="ttt" >
+      <ion-segment  color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="category.selectedOption" >
           <ng-container *ngFor="let option of category.option  | slice:(i*segmentsPerRow):(i+1)*segmentsPerRow">
-          <ion-segment-button class="x-category-btn" value="{{option}}" > {{option}}</ion-segment-button>
+          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{option}}</ion-segment-button>
           </ng-container>
       </ion-segment>
       <div *ngFor="let post of posts.get(category.name)">
         <div class="x-photolist"  (click)="openPost(menu, post.key)">
           <div class="x-photolist-left"><img src="assets/imgs/user_001.jpg"></div>
           <div class="x-photolist-right">
-            <div class="x-photolist-contents"><span class="x-photolist-category">{{post.payload.val().category}}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
+            <div class="x-photolist-contents"><span class="x-photolist-category">{{post.payload.val().option}}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
             <div class="x-photolist-info-date"><ion-icon name="flaticon-clock" class="x-photolist-info-icon"></ion-icon>&nbsp;{{ post.payload.val().date | DateFormat }}</div>
             <div class="x-photolist-info-comment"><ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.payload.val().comments}}</div>
             <div class="x-photolist-info-view"><ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.payload.val().views}}</div>

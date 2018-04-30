@@ -82,18 +82,26 @@ export class CommunityPage {
     if(this.menu){
       this.category = this.menu.category[index];
       if(this.category.option){
-        
+        if(!this.category.selectedOption) this.category.selectedOption = 'total';
         this.segmentsPerRow = 3;
         this.category.rows = Array.from(Array(Math.ceil(this.category.option.length / this.segmentsPerRow)).keys());
+        
       }
     
+    }
+  }
+
+  setCategoryOption(category, option){
+    if(category){
+      
+      category.selectedOption = option;
     }
   }
 
   getPost(){
     this.menu.category.forEach(category => {
       
-      this.dataProvider.getPosts(this.menu.name, category.name).snapshotChanges().subscribe(post => {
+      this.dataProvider.getPosts(this.menu.name, category.name).snapshotChanges().take(1).subscribe(post => {
           
         this.posts.set(category.name, post.reverse());
         
@@ -106,7 +114,7 @@ export class CommunityPage {
   }
 
   writePost(){
-    console.log(this.category);
+    
     let modalCtrl = this.modalCtrl.create('CommunityWritePage',{ category: this.category });
     modalCtrl.onDidDismiss(data => {
       if(data){
@@ -130,7 +138,7 @@ doRefresh(refresher) {
   console.log('Begin async operation', refresher);
 
   setTimeout(() => {
-    this. getPost();
+    this.getPost();
     console.log('Async operation has ended');
     refresher.complete();
   }, 2000);

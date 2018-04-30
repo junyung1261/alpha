@@ -46,10 +46,6 @@ export class RequestsPage {
   
   
 
-  closeChatList(){
-    this.navCtrl.pop();
-  }
-
   ionViewWillEnter(){
    
     this.updateLogin();
@@ -87,7 +83,7 @@ export class RequestsPage {
       if(this.user.payload.val().requestsReceived){
         this.user.payload.val().requestsReceived.forEach(request => {
           
-          let subscription = this.dataProvider.getUser(request).snapshotChanges().subscribe(user => {
+          let subscription = this.dataProvider.getUser(request).snapshotChanges().take(1).subscribe(user => {
             if (this.user.payload.val().requestsReceived && this.user.payload.val().requestsReceived.indexOf(user.key) > -1) {
               this.addOrUpdateReceived(user);
               
