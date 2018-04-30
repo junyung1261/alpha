@@ -12,40 +12,41 @@
         </button>
       </ion-buttons>
     </ion-navbar>
-    
   </ion-header>
 
-  <ion-content #content class="profile" [ngClass]="{'android': android}">
+  <ion-content class="profile-content" [ngClass]="{'android': android}">
     <div class="profile" *ngIf="user" text-center>
       <img-loader src=" {{user.profileImg}}" tappable (click)="setPhoto(user.profileImg)"></img-loader>
     </div>
     <div class="form">
       <form [formGroup]="profileForm">
         <ion-list no-lines>
-          <ion-list-header>
-            <b>User Profiles</b>
-          </ion-list-header>
-          <ion-item no-lines margin-bottom>
+          <!--기본정보 헤더-->
+          <div class="profile-header">User Profiles</div>          
+          <!--닉네임-->
+          <div class="profile-error" *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</div>
+          <div class="profile-error" *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</div>
+          <ion-item no-lines>
             <ion-input type="text" formControlName="username" [placeholder]="translate.get('auth.form.username')"></ion-input>
           </ion-item>
-          <p text-center *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</p>
-          <p text-center *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</p>
-          <ion-item no-lines margin-bottom>
-            <ion-input type="text"  formControlName="email" readonly [placeholder]="translate.get('auth.form.email')"></ion-input>
+          <!--이메일 :: 수정불가-->
+          <ion-item no-lines>
+            <ion-input type="text" formControlName="email" readonly [placeholder]="translate.get('auth.form.email')"></ion-input>
           </ion-item>
-
-          <ion-item no-lines margin-bottom>
+          <!--성별 :: 수정불가-->
+          <ion-item no-lines>
             <ion-label>{{ translate.get('auth.form.gender') }}</ion-label>
             <ion-select type="text" formControlName="gender" disabled [placeholder]="translate.get('auth.form.gender.null')">
                 <ion-option value="female">Female</ion-option>
                 <ion-option value="male">Male</ion-option>
             </ion-select>
           </ion-item>
-          <ion-item no-lines margin-bottom>
-            <ion-label>Date</ion-label>
+          <!--생년월일-->
+          <ion-item no-lines>
+            <ion-label>Birth</ion-label>
             <ion-datetime displayFormat="MM/DD/YYYY" formControlName="birth" [placeholder]="translate.get('auth.form.birth.null')" ></ion-datetime>
           </ion-item>
-          <ion-item no-lines margin-bottom>
+          <ion-item no-lines>
             <ion-label>{{ translate.get('auth.form.address') }}</ion-label>
             <ion-select type="text" formControlName="address"  [placeholder]="translate.get('auth.form.address.null')">
                 <ion-option value="seoul">{{ translate.get('auth.form.address.seoul') }}</ion-option>
@@ -65,28 +66,27 @@
                 <ion-option value="jeju-do">{{ translate.get('auth.form.address.jeju-do') }}</ion-option>
             </ion-select>
           </ion-item>
-          <ion-item no-lines margin-bottom class="textarea">
+          <!--자기소개-->
+          <div class="profile-error" *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</div>
+          <ion-item no-lines class="textarea">
             <ion-textarea type="text" formControlName="bio" [placeholder]="translate.get('auth.form.bio')" fz-elastic rows="3" class="profile-bio"></ion-textarea>
           </ion-item>
-          <p text-center *ngIf="profileForm.controls.bio.hasError('required') && hasError">{{ 'auth.form.error.bio' | translate }}</p>
-          
         </ion-list>
       </form>
     </div>
     <div class="toggle">
       <ion-list>
-        <ion-list-header>
-          <b>{{ 'auth.profile.notifications' | translate }}</b>
-        </ion-list-header>
+        <!--부가정보 헤더-->
+        <div class="profile-header">{{ 'auth.profile.notifications' | translate }}</div>
         <ion-item no-lines>
           <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
           <ion-toggle [(ngModel)]="hasPushToken" color="x-gray-category"></ion-toggle>
         </ion-item>
-        <div text-center class="btns">
-          <button ion-button (click)="updateProfile()" class="profile_save_btn"><b>{{ 'auth.button.save' | translate }}</b></button>
-          <button ion-button (click)="logout()" class="profile_logout_btn"><b>{{ 'auth.button.logout' | translate }}</b></button>
-        </div>
       </ion-list>
+    </div>
+    <div text-center class="profile-submit">
+      <button ion-button (click)="updateProfile()"><b>{{ 'auth.button.save' | translate }}</b></button>
+      <button ion-button (click)="logout()" class="profile-logout"><b>{{ 'auth.button.logout' | translate }}</b></button>
     </div>
   </ion-content>
   

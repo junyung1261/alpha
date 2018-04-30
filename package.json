@@ -45,7 +45,7 @@
     "cordova-plugin-device-motion": "^2.0.1",
     "cordova-plugin-fcm": "^2.1.2",
     "cordova-plugin-file": "^6.0.1",
-    "cordova-plugin-ionic-webview": "^1.2.0",
+    "cordova-plugin-ionic-webview": "^1.2.1",
     "cordova-plugin-network-information": "git+https://github.com/apache/cordova-plugin-network-information.git",
     "cordova-plugin-shake": "^0.6.0",
     "cordova-plugin-splashscreen": "^5.0.2",
