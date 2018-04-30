@@ -52,7 +52,6 @@ export class ProfileCreatePage {
               public authProvider: AuthProvider,
               public dataProvider: DataProvider,
               public translate: TranslateProvider,
-              public loadingProvider: LoadingProvider,
               public notificationProvider: NotificationProvider,
               public imageProvider: ImageProvider,
               public actionSheetCtrl: ActionSheetController,
@@ -73,7 +72,7 @@ export class ProfileCreatePage {
     console.log('ionViewDidLoad ProfileCreatePage');
     
       this.userId = firebase.auth().currentUser.uid;
-      
+      console.log(this.userId);
      
       let username = '';
       
@@ -90,13 +89,24 @@ export class ProfileCreatePage {
     
   }
 
+  ionViewWillUnload() {
+    // Check if userData exists on Firestore. If no userData exists yet, delete the photo uploaded to save Firebase storage space.
+    firebase.database().ref('accounts/' + this.userId).once('value', user => {
+      console.log(user)
+      if (!user.exists()) {
+       
+        this.imageProvider.deleteImageFile(this.photo);
+      }
+    }).catch(() => { });
+  }
+
   createProfile(): void {
     // Check if profileForm is valid and username is unique and proceed with creating the profile.
     if (!this.profileForm.valid) {
       this.hasError = true;
     } else {
-      console.log(this.userId);
-      this.loadingProvider.show();
+      
+   
       let username = this.profileForm.value['username'];
       let gender = this.profileForm.value['gender'];
       let birth = this.profileForm.value['birth'];
@@ -116,7 +126,7 @@ export class ProfileCreatePage {
         
       }).then(()=>{
         this.notificationProvider.init();
-        this.loadingProvider.hide();
+       
         this.navCtrl.setRoot('LoaderPage');
       }).catch(() => { });
     }
@@ -133,14 +143,19 @@ export class ProfileCreatePage {
             text: this.translate.get('auth.profile.photo.take'),
             role: 'destructive',
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.userId, null, this.camera.PictureSourceType.CAMERA);
-              
+              this.imageProvider.uploadProfilePhoto(this.userId, this.camera.PictureSourceType.CAMERA).then((url: string) => {
+                this.imageProvider.deleteImageFile(this.photo);
+                this.photo = url;
+              }).catch(()=> { });
             }
           },
           {
             text: this.translate.get('auth.profile.photo.gallery'),
             handler: () => {
-              this.imageProvider.setProfilePhoto(this.userId, null, this.camera.PictureSourceType.PHOTOLIBRARY);
+              this.imageProvider.uploadProfilePhoto(this.userId,  this.camera.PictureSourceType.PHOTOLIBRARY).then((url: string) => {
+                this.imageProvider.deleteImageFile(this.photo);
+                this.photo = url;
+              }).catch(()=> { });
             }
           },
           {

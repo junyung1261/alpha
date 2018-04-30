@@ -46,7 +46,7 @@ export class VerificationPage {
     this.sendEmailVerification();
     // Create the emailVerification checker.
     var that = this;
-    that.checkVerified = setInterval(function() {
+    that.checkVerified = setInterval(() => {
       firebase.auth().currentUser.reload();
 
       // if ( firebase.auth().currentUser.emailVerified) {

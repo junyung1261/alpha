@@ -8,8 +8,8 @@
 
   <ion-content>
     <div class="profile" text-center>
-        <img src="{{ photo }}" (click)="setPhoto()"> 
-      <!-- <img-loader [src]="photo" tappable (click)="setPhoto()"></img-loader> -->
+        <!-- <img src="{{ photo }}" (click)="setPhoto()">  -->
+      <img-loader [src]="photo" tappable (click)="setPhoto()"></img-loader>
     </div>
     <div class="form">
       <form [formGroup]="profileForm">

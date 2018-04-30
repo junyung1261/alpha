@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Content } from 'ionic-angular';
 import { DataProvider } from '../../providers/data/data';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { ImageProvider, RequestProvider, TranslateProvider, NotificationProvider } from '../../providers';
+import { RequestProvider, TranslateProvider, NotificationProvider } from '../../providers';
 import { Camera } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';

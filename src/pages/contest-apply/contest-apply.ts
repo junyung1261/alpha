@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider } from '../../providers';
 import * as firebase from 'firebase';
-import { ImageUploadContest } from "../../components/image-upload-contest/image-upload-contest";
 import { refCount } from 'rxjs/operators';
+import { ImageUpload } from '../../components/image-upload/image-upload';
 
 @IonicPage()
 @Component({
@@ -12,7 +12,7 @@ import { refCount } from 'rxjs/operators';
   templateUrl: 'contest-apply.html',
 })
 export class ContestApplyPage {
-  @ViewChild(ImageUploadContest) imageUploadContest : ImageUploadContest;
+  @ViewChild(ImageUpload) imageUpload : ImageUpload;
 
   private user;
   private lastContest: any;
@@ -62,7 +62,7 @@ export class ContestApplyPage {
 
 
       this.dataProvider.getCurrentUser().update({contest: myContest }).then((success) => {
-        if(this.imageUploadContest.images.length > 0) this.imageUploadContest.uploadImages();
+        // if(this.imageUpload.images.length > 0) this.imageUpload.uploadImages();
       });
 
     this.viewCtrl.dismiss( {data : true } );
