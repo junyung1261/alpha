@@ -109,7 +109,7 @@ export class ProfilePage {
   }
 
   ionViewDidLoad() {
-    this.contentBox = document.querySelector(".profile .scroll-content")['style'];
+    this.contentBox = document.querySelector(".profile-content .scroll-content")['style'];
     this.tabBarHeight = this.contentBox.marginBottom;
 
     // this.platform.ready().then(() => {
