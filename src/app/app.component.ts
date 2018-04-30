@@ -9,6 +9,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { TranslateProvider } from '../providers';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { Keyboard } from '@ionic-native/keyboard';
+import { AngularFireDatabase } from 'angularfire2/database';
+import firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -34,14 +36,25 @@ export class MyApp {
     private app: App,
     private ionicApp: IonicApp,
     private imageLoader: ImageLoaderConfig,
+    private afDB: AngularFireDatabase,
     private screenOrientation : ScreenOrientation
+
   
     ) {
 
     platform.ready().then(() => {
+
+//       this.platform.pause.subscribe(() => {
+//         this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+//           lastLogin: firebase.database['ServerValue'].TIMESTAMP
+//         })
+//       });
+     
+
       if (this.platform.is('cordova')) { 
         this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);  
        }
+
       statusBar.styleDefault();
       splashScreen.hide();
       imageLoader.spinnerEnabled = false;
@@ -95,7 +108,13 @@ export class MyApp {
         }else{
             //Double check to exit app
             if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
-              platform.exitApp(); //Exit from app
+
+              
+                this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+                  connection:'disconnected'
+                })
+                platform.exitApp(); //Exit from app
+
             } else {
               toastCtrl.create({
                 message: "Press back button again to exit",

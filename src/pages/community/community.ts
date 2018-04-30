@@ -93,7 +93,7 @@ export class CommunityPage {
   getPost(){
     this.menu.category.forEach(category => {
       
-      this.dataProvider.getPosts(this.menu.name, category.name).snapshotChanges().take(1).subscribe(post => {
+      this.dataProvider.getPosts(this.menu.name, category.name).snapshotChanges().subscribe(post => {
           
         this.posts.set(category.name, post.reverse());
         

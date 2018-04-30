@@ -4,6 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider } from '../../providers';
 import { Keyboard } from '@ionic-native/keyboard';
 import { Subscription } from 'rxjs';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @IonicPage()
 @Component({
@@ -23,16 +24,19 @@ export class HomePage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
+    public afAuth: AngularFireAuth,
     public afDB: AngularFireDatabase, 
     public dataProvider:DataProvider,
-    public keyboard: Keyboard
+    public keyboard: Keyboard,
    ) {
      
    }
   ionViewDidLoad() {
     
     console.log('ionViewDidLoad HomePage');
-
+    this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+      connection:'connected'
+    });
     this.contentBox=document.querySelector(".home .scroll-content")['style'];
     this.tabBarHeight = this.contentBox.marginBottom;
     

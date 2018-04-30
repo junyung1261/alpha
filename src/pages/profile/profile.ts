@@ -10,6 +10,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ModalController } from 'ionic-angular';
 import { GalleryModal } from 'ionic-gallery-modal';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @IonicPage()
 @Component({
@@ -55,6 +56,7 @@ export class ProfilePage {
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
     private afAuth: AngularFireAuth,
+    private afDB:AngularFireDatabase,
     private alertProvider: AlertProvider,
     private imageProvider: ImageProvider,
     private translate: TranslateProvider,
@@ -264,8 +266,10 @@ export class ProfilePage {
   logout(): void {
     this.alertProvider.showConfirm(this.translate.get('auth.menu.logout.title'), this.translate.get('auth.menu.logout.text'), this.translate.get('auth.menu.logout.button.cancel'), this.translate.get('auth.menu.logout.button.logout')).then(confirm => {
       if (confirm) {
+        this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+          lastLogin: firebase.database['ServerValue'].TIMESTAMP
+        })
         this.authProvider.logout().then(() => {
-        
           this.notification.destroy();
           this.app.getRootNavs()[0].setRoot('LoginPage');
         }).catch(() => { });

@@ -2,6 +2,25 @@ page-contest {
     ion-content {
         background-color:map-get($colors,x-gray-bg) !important;
     }  
+    .contest-ad{
+        width:100vw;
+        height:fit-content;
+
+    }
+    .contest-ad-btn{
+        text-align:center; 
+        background-color:map-get($colors,x-gray-bg);
+        width:100vw;
+        padding:10vw;
+    }
+    .contest-ad-btn button{
+        background-color:map-get($colors,x-mint);
+        box-shadow:none;
+        color:map-get($colors,x-white);
+        font-size:4vw;
+        text-shadow:none;
+        border-radius:0;
+    }
     .x-contest-top {
         background-color:map-get($colors,x-mint);
         padding-top:4vw !important;
