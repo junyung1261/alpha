@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage } from 'ionic-angular/navigation/ionic-page';
-import { DataProvider, NotificationProvider } from '../../providers';
+import { DataProvider, NotificationProvider, AuthProvider } from '../../providers';
 import * as firebase from 'firebase';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '../../models';
 import { App, NavParams, Tabs } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @IonicPage()
@@ -16,7 +15,7 @@ export class TabsPage {
   @ViewChild("tabs") tabs: Tabs;
 
   tab1Root = 'HomePage';
-  tab2Root = 'RequestsPage';
+  tab2Root = 'UserListPage';
   tab3Root = 'ChatListPage';
   tab4Root = 'ContestPage';
   tab5Root = 'ProfilePage';
@@ -29,8 +28,8 @@ export class TabsPage {
   private userConversations: Map<string, any>;
 
   constructor(
-    private afAuth: AngularFireAuth,
     private dataProvider: DataProvider,
+    private authProvider: AuthProvider,
     private notification: NotificationProvider,
     private navParams: NavParams,
     private app: App
@@ -48,7 +47,7 @@ export class TabsPage {
     
     this.subscriptions = [];
     // Subscribe to current user data on Firestore and sync.
-    this.dataProvider.get('/accounts/' + this.afAuth.auth.currentUser.uid).then(ref => {
+    this.dataProvider.get('/accounts/' + this.authProvider.getUserData().userId).then(ref => {
       
     
       let subscription = ref.valueChanges().subscribe((user: User) => {
@@ -71,13 +70,13 @@ export class TabsPage {
       conversations.forEach(conversation => {
         let partnerId = conversation.key;
         let conversationId = conversation.payload.val().conversationId;
-        let subscription  = this.dataProvider.getUserConversation(this.afAuth.auth.currentUser.uid, partnerId).valueChanges().subscribe(userConversation => {
+        let subscription  = this.dataProvider.getUserConversation(this.authProvider.getUserData().userId, partnerId).valueChanges().subscribe(userConversation => {
           this.userConversations.set(conversationId, userConversation);
         })
         this.subscriptions.push(subscription);
         let subscription_ = this.dataProvider.getConversation(conversationId).valueChanges().subscribe((conversation: any) => {
           if(conversation){
-            if(conversation.users.indexOf(this.afAuth.auth.currentUser.uid) > -1){
+            if(conversation.users.indexOf(this.authProvider.getUserData().userId) > -1){
               this.addOrUpdateConversation(conversation);
             }else {
               this.deleteConversationById(conversationId);

@@ -3,7 +3,7 @@
     <ion-buttons left>
       <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
     </ion-buttons>
-    <ion-title *ngIf="menu">{{menu.name}}</ion-title>
+    <ion-title *ngIf="menu">{{ menu.name | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="navCtrl.pop()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
@@ -25,7 +25,7 @@
 
 
   <ion-segment class="x-category" color="x-white" mode="md" *ngIf="menu && menu.category.length > 1" [(ngModel)]="category.name">
-    <ion-segment-button class="x-category-btn" *ngFor="let category of menu.category; let i = index" value="{{category.name}}" (ionSelect)="getCategory(i)"> {{category.name}}</ion-segment-button>
+    <ion-segment-button class="x-category-btn" *ngFor="let category of menu.category; let i = index" value="{{category.name}}" (ionSelect)="getCategory(i)"> {{ category.name |translate}}</ion-segment-button>
   </ion-segment>
 
   <div *ngIf="menu">
@@ -36,10 +36,9 @@
             <div class="x-search-left">
               <select class="x-search-select">
                 <ng-container >
-                  <option >전체</option>
-                  <option >제목</option>
-                  <option >내용</option>
-                  <option >작성자</option>
+                  <option >{{ 'community.search.title' | translate }}</option>
+                  <option >{{ 'community.search.content' | translate }}</option>
+                  <option >{{ 'community.search.writer' | translate }}</option>
                 </ng-container>
               </select>
             </div>
@@ -83,19 +82,19 @@
       </ion-grid> -->
      
       <ion-row class="x-list-title">
-        <ion-col col-12>{{ category.name }}</ion-col>
+        <ion-col col-12>{{ category.name | translate }}</ion-col>
       </ion-row>
       
       <ion-segment class="x-list-row x-list-ctg" color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="category.selectedOption" >
           <ng-container *ngFor="let option of category.option  | slice:(i*segmentsPerRow):(i+1)*segmentsPerRow">
-          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{option}}</ion-segment-button>
+          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{ option | translate }}</ion-segment-button>
           </ng-container>
       </ion-segment>
     
       <div *ngFor="let post of posts.get(category.name)">
         <ion-row class="x-list-row"  (click)="openPost(menu, post.key)">
           <ion-col col-12 class="x-list-col">
-            <span class="x-list-label">{{post.payload.val().category}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
+            <span class="x-list-label">{{ post.payload.val().category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
           </ion-col>
         </ion-row>
@@ -105,17 +104,17 @@
     
     <div class="x-photolist-container" *ngSwitchCase="'trade'">
         
-      <div class="x-photolist-title" >{{ category.name }}</div>
+      <div class="x-photolist-title" >{{ category.name | translate }}</div>
       <ion-segment  color="dark" mode="md"  *ngFor="let i of category.rows" [(ngModel)]="category.selectedOption" >
           <ng-container *ngFor="let option of category.option  | slice:(i*segmentsPerRow):(i+1)*segmentsPerRow">
-          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{option}}</ion-segment-button>
+          <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{ option | translate }}</ion-segment-button>
           </ng-container>
       </ion-segment>
       <div *ngFor="let post of posts.get(category.name)">
         <div class="x-photolist"  (click)="openPost(menu, post.key)">
-          <div class="x-photolist-left"><img src="assets/imgs/user_001.jpg"></div>
+          <div class="x-photolist-left" *ngIf="post.payload.val().images"><img src="{{post.payload.val().images[0]}}"></div>
           <div class="x-photolist-right">
-            <div class="x-photolist-contents"><span class="x-photolist-category">{{post.payload.val().option}}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
+            <div class="x-photolist-contents"><span class="x-photolist-category">{{ post.payload.val().option | translate }}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
             <div class="x-photolist-info-date"><ion-icon name="flaticon-clock" class="x-photolist-info-icon"></ion-icon>&nbsp;{{ post.payload.val().date | DateFormat }}</div>
             <div class="x-photolist-info-comment"><ion-icon name="flaticon-interface" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.payload.val().comments}}</div>
             <div class="x-photolist-info-view"><ion-icon name="flaticon-medical" class="x-photolist-info-icon"></ion-icon>&nbsp;{{post.payload.val().views}}</div>

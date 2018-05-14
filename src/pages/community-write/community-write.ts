@@ -55,14 +55,14 @@ export class CommunityWritePage {
  
     this.category = this.navParams.get('category');
     this.post_modify = this.navParams.get('post');
-    this.navTitle = '게시글 작성';
+    this.navTitle = 'community.title.write';
     
     
     
     if(this.category.option) this.options = this.category.option.slice(1,this.category.option.length);
 
     if(this.post_modify) {
-      this.navTitle = '게시글 수정';
+      this.navTitle = 'community.title.modify';
       this.imageUpload.key = this.post_modify.key;
       this.title = this.post_modify.title,
       this.text = this.post_modify.description,

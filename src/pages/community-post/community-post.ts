@@ -4,7 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider, LoadingProvider, TranslateProvider, AlertProvider } from '../../providers';
 import * as firebase from 'firebase';
 import { FirebaseListObservable } from 'angularfire2/database-deprecated';
-import { Keyboard } from '@ionic-native/keyboard';
+
 import { Subscription } from 'rxjs';
 import { ModalController } from 'ionic-angular';
 import { GalleryModal } from 'ionic-gallery-modal';
@@ -26,7 +26,7 @@ export class CommunityPostPage {
   private writer;
   private comment = '';
   private subscriptions: Subscription[];
-  private callback;
+  private resolve;
 
   constructor(public navCtrl: NavController, 
               public navParams : NavParams, 
@@ -36,7 +36,7 @@ export class CommunityPostPage {
               public modalCtrl: ModalController,
               public translate: TranslateProvider,
               public alertProvider: AlertProvider,
-              public keyboard: Keyboard) {
+              ) {
     
   }
 
@@ -46,29 +46,7 @@ export class CommunityPostPage {
     this.userId = firebase.auth().currentUser.uid;
     this.postId = this.navParams.get('postId');
     this.menu = this.navParams.get('menu');
-    this.callback = this.navParams.get("callback")
-
     this.subscriptions = [];
-
-
-    this.subscriptions = [];
-
-    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
-      
-    document.querySelector(".tabbar")['style'].display = 'none';
-    this.contentBox.marginBottom = 0;
-    this.contentHandle.resize();
-    })
-
-    let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
-     
-    document.querySelector(".tabbar")['style'].display = 'flex';
-    this.contentBox.marginBottom = this.tabBarHeight;
-    this.contentHandle.resize();
-    })
-
-    this.subscriptions.push(subscription);
-    this.subscriptions.push(subscription_)
 
 
     this.dataProvider.getPost(this.menu.name, this.postId).valueChanges().take(1).subscribe(post => {
@@ -217,7 +195,7 @@ export class CommunityPostPage {
   deletePost(post){
 
     
-    this.alertProvider.showConfirm(this.translate.get('post.menu.delete.title'), this.translate.get('post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+    this.alertProvider.showConfirm(this.translate.get('community.post.menu.delete.title'), this.translate.get('community.post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
       if (confirm) {
         this.loadingProvider.show();
         let postRef = this.dataProvider.getPost(this.menu.name, this.postId)
@@ -233,8 +211,8 @@ export class CommunityPostPage {
               commentRef.remove();
             });
           this.loadingProvider.hide();
-          this.callback(true).then(()=> {
-            this.navCtrl.pop();
+          this.navCtrl.pop().then(()=> {
+            this.navParams.get('resolve')(true);
           })
         })  
         

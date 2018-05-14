@@ -8,7 +8,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateProvider } from '../providers';
 import { ImageLoaderConfig } from 'ionic-image-loader';
-import { Keyboard } from '@ionic-native/keyboard';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
 
@@ -31,7 +30,6 @@ export class MyApp {
     private afAuth:AngularFireAuth,
     private translateService: TranslateService,
     private translate: TranslateProvider,
-    private keyboard: Keyboard,
     private toastCtrl: ToastController,
     private app: App,
     private ionicApp: IonicApp,
@@ -65,16 +63,11 @@ export class MyApp {
       imageLoader.setFallbackUrl('assets/imgs/logo.png')
       imageLoader.setMaximumCacheAge(7 * 24 * 60 * 60 * 1000);
       
-      keyboard.disableScroll(true);
       mobileAccessibility.usePreferredTextZoom(false);
       
-      translateService.setDefaultLang('en');
-      translateService.use('en');
-      translateService.getTranslation('en').subscribe(translations => {
-      translate.setTranslations(translations);
-      this.rootPage = 'LoaderPage';
-      })
-         
+      
+      this.initTranslate();
+      
 
       let lastTimeBackPress = 0;
       let timePeriodToExit = 2000;
@@ -95,9 +88,9 @@ export class MyApp {
             if (new Date().getTime() - lastTimeBackPress < timePeriodToExit) {
 
               
-                this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
-                  connection:'disconnected'
-                })
+                // this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+                //   connection:'disconnected'
+                // })
                 platform.exitApp(); //Exit from app
 
             } else {
@@ -110,15 +103,42 @@ export class MyApp {
             }
         }            
       });
+
       
     }).catch(()=> {
-      translateService.setDefaultLang('en');
-      translateService.use('en');
-      translateService.getTranslation('en').subscribe(translations => {
-      translate.setTranslations(translations);
-      this.rootPage = 'LoaderPage';
-      })
+      this.initTranslate();
     });
     
   }
+
+  initTranslate() {
+    // Set the default language for translation strings, and the current language.
+    this.translateService.setDefaultLang('en');
+    const browserLang = this.translateService.getBrowserLang();
+
+    if (browserLang) {
+      if (browserLang === 'zh') {
+        this.translateService.use('zh-cmn-Hans');
+        this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
+          this.translate.setTranslations(translations);
+          this.rootPage = 'LoaderPage';
+        })
+        
+      } else {
+        this.translateService.use('zh-cmn-Hans'); // Set your language here
+      this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
+        this.translate.setTranslations(translations);
+        this.rootPage = 'LoaderPage';
+      })
+      }
+    } else {
+      this.translateService.use('en'); // Set your language here
+      this.translateService.getTranslation('en').subscribe(translations => {
+        this.translate.setTranslations(translations);
+        this.rootPage = 'LoaderPage';
+      })
+    }
+
+  }
+
 }

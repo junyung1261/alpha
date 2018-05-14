@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,Platform, ViewController, Toast } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { AuthProvider, ToastProvider, TranslateProvider } from '../../providers';
+import { AuthProvider, ToastProvider, TranslateProvider, LoadingProvider } from '../../providers';
 
-import { LoadingProvider } from '../../providers/loading/loading';
-import { AlertProvider } from '../../providers/alert/alert';
 
 
 @IonicPage()
@@ -36,7 +34,6 @@ export class LoginViewPage {
               public navParams: NavParams, 
               public authProvider: AuthProvider,
               public loadingProvider: LoadingProvider, 
-              public alertProvider: AlertProvider,
               public toastProvider: ToastProvider,
               public translate: TranslateProvider,
               public formBuilder: FormBuilder, 

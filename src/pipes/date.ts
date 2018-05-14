@@ -1,7 +1,6 @@
 import { Injectable, Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
-import 'moment/locale/zh-cn';
-import 'moment/locale/ko';
+
 
 
 @Pipe({
@@ -13,7 +12,8 @@ export class DateFormatPipe implements PipeTransform {
   // Show moment.js dateFormat for time elapsed.
   
   transform(date: any, args?: any): any {
-    //moment.locale('zh-cn')
+    var locale = window.navigator.language;
+    moment.locale(locale);
     return moment(new Date(date)).fromNow();
   }
 }

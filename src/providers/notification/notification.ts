@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Platform, App, ModalController } from 'ionic-angular';
 import { FCM } from '@ionic-native/fcm';
-import { DataProvider } from '../';
+import { DataProvider, AuthProvider, TranslateProvider } from '../';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Headers, RequestOptions } from '@angular/http';
 import { Environment } from '../../environments/environment';
 import { Subscription } from 'rxjs/Subscription';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 @Injectable()
 export class NotificationProvider {
@@ -16,7 +16,8 @@ export class NotificationProvider {
     private fcm: FCM,
     private dataProvider: DataProvider,
     private modalCtrl: ModalController,
-    
+    private authProvider: AuthProvider,
+    private translate: TranslateProvider,
     private http: HttpClient) { }
 
   // Called after user is logged in to set the pushToken on Firestore.
@@ -92,9 +93,11 @@ export class NotificationProvider {
 
   // Called when the user logged out to clear the pushToken on Firestore.
   public destroy(): Promise<any> {
+    
     return new Promise((resolve, reject) => {
+      
       if (this.platform.is('cordova')) {
-        this.dataProvider.removePushToken(firebase.auth().currentUser.uid);
+        this.dataProvider.removePushToken(this.authProvider.getUserData().userId);
         resolve();
       } else {
         reject();

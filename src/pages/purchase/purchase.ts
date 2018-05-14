@@ -25,7 +25,7 @@ export class PurchasePage implements OnInit{
   private user: any;
   public product: any = {
     name: 'xianghanguo',
-    appleProductId: '1234',
+    appleProductId: 'test.xinhan.tianya.test001',
     googleProductId: 'test.xinhan.tianya.test001'
   };
 
@@ -69,7 +69,7 @@ export class PurchasePage implements OnInit{
       } else if (this.platform.is('android')) {
         productId = this.product.googleProductId;
       }
-      alert('초기화');
+      alert(productId);
       
       // Register Product
       // Set Debug High

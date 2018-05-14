@@ -20,11 +20,11 @@
       <ion-row *ngFor="let message of conversation.messages | slice:from:conversation.messages.length; last as last; index as index" tappable>
         <ion-col class="profile" col-2 text-center *ngIf="message.sender == partner.key" tappable ><img src="{{ partner.payload.val().profileImg }}" class="photo-round"></ion-col>
         <ion-col class="message" col-12 *ngIf="message.sender == 'tianya'" text-center>
-          <div class="message-notice" *ngIf="message.type == 'notice_start'">채팅이 시작되었습니다!</div>
+          <div class="message-notice" *ngIf="message.type == 'notice_start'">{{ 'chats.message.new' | translate }}</div>
         </ion-col>
 
         <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
-          <div class="message-notice" *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} 님께서 채팅방을 나갔습니다.</div>
+          <div class="message-notice" *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} {{ chats.message.end }}</div>
         </ion-col>
 
         <ion-col class="message" col-10 *ngIf="message.sender == partner.key">

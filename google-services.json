@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:629459665964:android:c9a6809f5e1e1648",
+        "mobilesdk_app_id": "1:629459665964:android:9ab984c0f1072dd2",
         "android_client_info": {
-          "package_name": "alpha.xinhan.tianya"
+          "package_name": "com.xinhan.xianghanguo"
         }
       },
       "oauth_client": [

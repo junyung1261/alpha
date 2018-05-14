@@ -1,8 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, Content } from 'ionic-angular';
-import { DataProvider } from '../../providers/data/data';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { RequestProvider, TranslateProvider, NotificationProvider } from '../../providers';
+import { TranslateProvider, NotificationProvider, DataProvider } from '../../providers';
 import { Camera } from '@ionic-native/camera';
 import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -55,7 +54,6 @@ export class ChatPage {
     public navParams: NavParams,
     public alertCtrl: AlertController,
     public dataProvider: DataProvider,
-    public requestProvider: RequestProvider,
     public translate: TranslateProvider,
     public afAuth: AngularFireAuth,
     public notification: NotificationProvider,
@@ -159,7 +157,7 @@ export class ChatPage {
           message: text
         });
         // Update conversation on database.
-        this.requestProvider.getConversation(this.conversationId).update({
+        this.dataProvider.getConversation(this.conversationId).update({
           messages: this.conversation.messages
         }).then((success) => {
           if (this.partner.payload.val().pushToken) {

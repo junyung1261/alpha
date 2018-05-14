@@ -39,18 +39,9 @@ export class HomePage {
     });
     this.contentBox=document.querySelector(".home .scroll-content")['style'];
     this.tabBarHeight = this.contentBox.marginBottom;
-    
+    this.getPost();
 
-    this.dataProvider.getPostMenu().valueChanges().take(1).subscribe(menu=>{
-      this.postMenu = menu;
-      this.postMenu.forEach(menu=>{
-        this.dataProvider.getLatestPosts(menu.name).snapshotChanges().take(1).subscribe(posts => {
-         
-          menu.posts = posts.reverse();
-          
-        });
-      });
-    });
+    
   }
 
 
@@ -85,6 +76,19 @@ export class HomePage {
       
   }
 
+  getPost(){
+    this.dataProvider.getPostMenu().valueChanges().take(1).subscribe(menu=>{
+      this.postMenu = menu;
+      this.postMenu.forEach(menu=>{
+        this.dataProvider.getLatestPosts(menu.name).snapshotChanges().take(1).subscribe(posts => {
+         
+          menu.posts = posts.reverse();
+          
+        });
+      });
+    });
+  }
+
  
 
   openCommunityPage(menu, index) {
@@ -92,9 +96,29 @@ export class HomePage {
     this.navCtrl.push('CommunityPage', { menu: menu, index: index});
   }
 
-  openPost(menu,key){
-    
-    this.navCtrl.push('CommunityPostPage',{ menu:menu, postId : key });
+  openPost(menu, key){
+    new Promise((resolve, reject)=> {
+      this.navCtrl.push('CommunityPostPage',{menu: menu, postId : key, resolve: resolve});
+
+    }).then(data => {
+      if(data){
+        this.getPost();
+      }
+    })
+
+   
   }
+  
+  
+
+doRefresh(refresher) {
+  console.log('Begin async operation', refresher);
+
+  setTimeout(() => {
+    this.getPost();
+    console.log('Async operation has ended');
+    refresher.complete();
+  }, 2000);
+}
 
 }

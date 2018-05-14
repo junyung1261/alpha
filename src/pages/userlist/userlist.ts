@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
-import { DataProvider, RequestProvider, NotificationProvider } from '../../providers';
-import { Observable } from 'rxjs/Observable';
+import { DataProvider, NotificationProvider, AlertProvider, TranslateProvider } from '../../providers';
 import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '@ngx-translate/core';
 
 
 @IonicPage()
 @Component({
-  selector: 'page-requests',
-  templateUrl: 'requests.html',
+  selector: 'page-userlist',
+  templateUrl: 'userlist.html',
 })
-export class RequestsPage {
+export class UserListPage {
   chatId;
   user;
   myChat: any;
@@ -31,16 +29,16 @@ export class RequestsPage {
   private excludedIds = [];
   
   constructor(
-    public alertCtrl: AlertController,
     public navCtrl: NavController, 
     public modalCtrl: ModalController,
     public navParams: NavParams,
     public afDB: AngularFireDatabase,
     public afAuth: AngularFireAuth,
     public dataProvider: DataProvider,
+    public alertProvider: AlertProvider,
+    public alertCtrl: AlertController,
     public notificationProvider: NotificationProvider,
-    public translate: TranslateService,
-    public requestProvider: RequestProvider
+    public translate: TranslateProvider
   ) {
   }
   
@@ -201,74 +199,83 @@ addOrUpdateFriend(friend) {
 presentAlert(req, user) {
   /* 쪽지 전송 시작 req=0 */
   if(req==0){
-    let alert = this.alertCtrl.create({
-      title: '쪽지 전송',
-      subTitle: '상대방에게 쪽지를 전송합니다. 전송 시 90p가 차감됩니다. (최대 100자)',
-      inputs: [
-        {
-          name: 'msg',
-          placeholder: '전송할 내용을 작성하세요.',
-          type: 'text',
-        }
-      ],
-      buttons: [
-        {
-          text: '취소',
-          role: 'cancel',
-          handler: data => {
-            console.log('Cancel clicked');
-          }
-        },
-        {
-          text: '전송',
-          handler: data => {
+    
+    this.alertProvider.showConfirm( this.translate.get('chats.message.sent.photo'), this.translate.get('chats.message.sent.photo'),this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+      if(confirm){
+
+      }
+    })
+    // let alert = this.alertCtrl.create({
+    //   title: '쪽지 전송',
+    //   subTitle: '상대방에게 쪽지를 전송합니다. 전송 시 90p가 차감됩니다. (최대 100자)',
+    //   inputs: [
+    //     {
+    //       name: 'msg',
+    //       placeholder: '전송할 내용을 작성하세요.',
+    //       type: 'text',
+    //     }
+    //   ],
+    //   buttons: [
+    //     {
+    //       text: '취소',
+    //       role: 'cancel',
+    //       handler: data => {
+    //         console.log('Cancel clicked');
+    //       }
+    //     },
+    //     {
+    //       text: '전송',
+    //       handler: data => {
             
-          }
-        }
-      ]
-    });
-    alert.present();
+    //       }
+    //     }
+    //   ]
+    // });
+    // alert.present();
   }
   /* 쪽지 전송 끝 req=0 */
   /* 대화 요청 시작 req=1 */
   if(req==1){
-    let alert = this.alertCtrl.create({
-      title: '대화 참가',
-      subTitle: '상대방에게 대화를 신청합니다',
-      buttons: [
-        {
-          text:'취소',
-          role:'cancel',
-          handler:() => {
-            console.log('Cancel clicked');
+
+    this.alertProvider.showConfirm( this.translate.get('userlist.add.title'), this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('ADD_BUTTON')).then(confirm => {
+      if(confirm){
+        this.dataProvider.sendFriendRequest(this.user.key, user.key).then(() => {
+          if(user.payload.val().notifications){
+            this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, this.translate.get('push.requests.sent'), {newRequest: true});
           }
-        },
-        {
-          text:'신청',
-          handler:() => {
-            this.requestProvider.sendFriendRequest(this.user.key, user.key).then(() => {
-              if(user.payload.val().notifications){
-                
-                var text;
-                this.translate.get('push.requests.sent').subscribe(res => {
-                  text = res;
-                } );
-                this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, text , {newRequest: true});
-              }
-            })
-            // this.afDB.object('/chat/'+ chatId + '/request').update({})
-            // this.navCtrl.push('ChatRoomPage',{chatId: this.chatId, user:this.user});
-          }
-        }
-      ]
-    });
-    alert.present();
+        })
+      }
+    })
+    // let alert = this.alertCtrl.create({
+    //   title: '대화 참가',
+    //   subTitle: '상대방에게 대화를 신청합니다',
+    //   buttons: [
+    //     {
+    //       text:'취소',
+    //       role:'cancel',
+    //       handler:() => {
+    //         console.log('Cancel clicked');
+    //       }
+    //     },
+    //     {
+    //       text:'신청',
+    //       handler:() => {
+            
+    //         // this.afDB.object('/chat/'+ chatId + '/request').update({})
+    //         // this.navCtrl.push('ChatRoomPage',{chatId: this.chatId, user:this.user});
+    //       }
+    //     }
+    //   ]
+    // });
+    // alert.present();
   }
-  /* 대화 요청 끝 req=1 */
+  
 }
 
 // Accept Friend Request.
 acceptFriendRequest(user) {
+
+
   this.alert = this.alertCtrl.create({
     
     title: 'Confirm Friend Request',
@@ -281,14 +288,14 @@ acceptFriendRequest(user) {
       {
         text: 'Reject Request',
         handler: () => {
-          this.requestProvider.cancelFriendRequest(user.key, this.user.key);
+          this.dataProvider.cancelFriendRequest(user.key, this.user.key);
           this.requestsReceived.splice( this.requestsReceived.indexOf(user), 1)
         }
       },
       {
         text: 'Accept Request',
         handler: () => {
-          this.requestProvider.acceptFriendRequest(user.key, this.user.key);
+          this.dataProvider.acceptFriendRequest(user.key, this.user.key);
           this.requestsReceived.splice( this.requestsReceived.indexOf(user), 1)
 
            // New Conversation with friend.
@@ -323,11 +330,7 @@ acceptFriendRequest(user) {
           });
 
           if(user.payload.val().notifications){
-            var text;
-            this.translate.get('push.requests.accept').subscribe(res => {
-              text = res;
-            } );
-            this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, text , {acceptRequest: true});
+            this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, this.translate.get('push.requests.accept') , {acceptRequest: true});
           }
         });
 
@@ -350,7 +353,7 @@ cancelFriendRequest(user) {
       {
         text: 'Delete',
         handler: () => {
-          this.requestProvider.cancelFriendRequest(this.user.key, user.key);
+          this.dataProvider.cancelFriendRequest(this.user.key, user.key);
         }
       }
     ]

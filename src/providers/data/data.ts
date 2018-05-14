@@ -3,13 +3,17 @@ import { AngularFireDatabase, AngularFireObject } from 'angularfire2/database';
 import * as firebase from 'firebase';
 import 'rxjs/add/operator/map'; // you might need to import this, or not depends on your setup
 import 'rxjs/add/operator/take'
+import { LoadingProvider, AlertProvider } from '../';
 
 @Injectable()
 export class DataProvider {
   // Data Provider
   // This is the provider class for most of the Firebase observables in the app.
 
-  constructor(public angularfireDatabase: AngularFireDatabase,
+  constructor(
+    public angularfireDatabase: AngularFireDatabase,
+    public loadingProvider: LoadingProvider,
+    public alertProvider: AlertProvider,
   ) {
     console.log("Initializing Data Provider");
   }
@@ -179,6 +183,15 @@ export class DataProvider {
   }
 
 
+  getRequestsReceived(userId){
+    return this.angularfireDatabase.list('/accounts/' + userId + '/requestsReceived');
+  }
+
+  getRequestsSent(userId){
+    return this.angularfireDatabase.list('/accounts/' + userId + '/requestsSent');
+  }
+
+
 
   // Set the pushToken of the user given the userId.
   public setPushToken(userId: string, token: string): void {
@@ -190,6 +203,7 @@ export class DataProvider {
 
   // Remove the pushToken of the user given the userId.
   public removePushToken(userId: string): void {
+    
     this.angularfireDatabase.object('accounts/' + userId).update({
         pushToken: ''
       })
@@ -201,6 +215,142 @@ export class DataProvider {
     return new Promise(resolve => {
       resolve(this.angularfireDatabase.object(path));
     });
+  }
+
+
+  
+  // Send friend request to userId.
+  sendFriendRequest(from: string, to: string): Promise<any> {
+    
+    this.loadingProvider.show();
+    return new Promise((resolve, reject)=>{
+      var requestsSent;
+      // Use take(1) so that subscription will only trigger once.
+      this.getRequestsSent(from).valueChanges().take(1).subscribe((requests) => {
+        console.log(requestsSent);    
+      requestsSent = requests;
+      
+        if (!requestsSent) {
+          requestsSent = [to];
+        } else {
+          
+          if (requestsSent.indexOf(to) == -1)
+            requestsSent.push(to);
+        }
+        // Add requestsSent information.
+        this.angularfireDatabase.object('/accounts/' + from).update({
+          requestsSent: requestsSent
+        }).then((success) => {
+          var requestsReceived;
+          this.getRequestsReceived(to).valueChanges().take(1).subscribe((requests) => {
+            requestsReceived = requests;
+            if (!requestsReceived) {
+            requestsReceived = [from];
+            } else {
+            
+              if (requestsReceived.indexOf(from) == -1)
+              requestsReceived.push(from);
+            }
+            // Add chatRequests information.
+            this.angularfireDatabase.object('/accounts/' + to).update({
+              requestsReceived: requestsReceived
+            }).then((success) => {
+              this.loadingProvider.hide();
+              this.alertProvider.showFriendRequestSent();
+              resolve();
+            }).catch((error) => {
+              reject();
+              this.loadingProvider.hide();
+            });
+          });
+        }).catch((error) => {
+          reject();
+          this.loadingProvider.hide();
+        });
+      });
+    })
+    
+  }
+
+  // Cancel friend request sent to userId.
+  cancelFriendRequest(from: string, to: string){
+
+    
+    
+    this.loadingProvider.show();
+
+    var requestsSent;
+    this.getRequestsSent(from).valueChanges().take(1).subscribe((requests) => {
+      requestsSent = requests;
+      requestsSent.splice(requestsSent.indexOf(to), 1);
+      // Update requestSent information.
+      this.angularfireDatabase.object('/accounts/' + from ).update({
+        requestsSent: requestsSent
+      }).then((success) => {
+        var requestsReceived;
+        this.getRequestsReceived(to).valueChanges().take(1).subscribe((requests) => {
+          requestsReceived = requests;
+          
+          requestsReceived.splice(requestsReceived.indexOf(from), 1);
+          console.log(requestsReceived);
+          // Update chatRequests information.
+          this.angularfireDatabase.object('/accounts/' + to ).update({
+            requestsReceived: requestsReceived
+          }).then((success) => {
+            this.loadingProvider.hide();
+          }).catch((error) => {
+            this.loadingProvider.hide();
+          });
+        });
+      }).catch((error) => {
+        this.loadingProvider.hide();
+      });
+    });
+  }
+
+  
+  // Accept friend request.
+  acceptFriendRequest(from: string, to: string): Promise<any> {
+   
+    return new Promise((resolve, reject) => {
+      this.cancelFriendRequest(from, to);
+      this.cancelFriendRequest(to, from);
+      
+      this.getUser(from).snapshotChanges().take(1).subscribe((account) => {
+        var friends = account.payload.val().friends;
+        if (!friends) {
+          friends = [to];
+        } else {
+          if(friends.indexOf(to) == -1)
+          friends.push(to);
+        }
+        // Add both users as friends.
+        this.getUser(from).update({
+          friends: friends
+        }).then((success) => {
+          this.getUser(to).snapshotChanges().take(1).subscribe((account) => {
+            var friends = account.payload.val().friends;
+            if (!friends) {
+              friends = [from];
+            } else {
+              if(friends.indexOf(from) == -1)
+              friends.push(from);
+            }
+            this.getUser(to).update({
+              friends: friends
+            }).then((success) => {
+            resolve();
+            }).catch((error) => {
+            reject();
+            });
+          });
+        }).catch((error) => {
+          
+        });
+      });
+    })
+    // Delete friend request.
+    
   }
 
 }

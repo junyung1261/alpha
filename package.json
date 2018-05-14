@@ -82,12 +82,12 @@
       "cordova-plugin-shake": {},
       "cordova-plugin-vibration": {},
       "cordova-plugin-fcm": {},
-      "ionic-plugin-keyboard": {},
       "cordova-plugin-file": {},
       "cc.fovea.cordova.purchase": {
         "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcD1X2/9U6NWSYiT/9tZQASSBvs/UrLShlTd5rZkRFfew/22t1Nu2zy1aqC21yHdTWOiY3STnfDgHcusklv04omDIU9qoVdR4SiJS8rwXXDXtgbUlfUYgyVSA565f7FM7pvW3gEe/uvVDqgOR8bP9zGFqi+co882YJEhhwEXpC2vsCLpjsrPILBKTBo0+twPSjw+fCS5ZvepwsUcIlzMiyao14ZVIXW/iBcV/EtxFIzaE6ftN5fvgZooK3v20d/ZVX8nsfovarQAs84yzdVVbpvHwzy3qWircmr8TJSicsQU1WlGI40jX04rnzSCKeGf81pyZxOxQByqdJlUn/sQ2QIDAQAB"
       },
-      "cordova-plugin-screen-orientation": {}
+      "cordova-plugin-screen-orientation": {},
+      "ionic-plugin-keyboard": {}
     },
     "platforms": [
       "android"

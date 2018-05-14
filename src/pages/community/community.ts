@@ -110,7 +110,16 @@ export class CommunityPage {
   }
 
   openPost(menu, key){
-    this.navCtrl.push('CommunityPostPage',{menu: menu, postId : key, callback: this.myCallbackFunction});
+    new Promise((resolve, reject)=> {
+      this.navCtrl.push('CommunityPostPage',{menu: menu, postId : key, resolve: resolve});
+
+    }).then(data => {
+      if(data){
+        this.getPost();
+      }
+    })
+
+   
   }
 
   writePost(){
@@ -118,7 +127,6 @@ export class CommunityPage {
     let modalCtrl = this.modalCtrl.create('CommunityWritePage',{ category: this.category });
     modalCtrl.onDidDismiss(data => {
       if(data){
-        
         this.getPost();
         
       }
@@ -126,12 +134,7 @@ export class CommunityPage {
     modalCtrl.present();
   }
   
-  myCallbackFunction = (_params) => {
-     return new Promise((resolve, reject) => {
-          if(_params) this.getPost();
-         resolve();
-     });
-}
+  
 
 
 doRefresh(refresher) {

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {ActionSheetController, AlertController, Platform, ToastController} from "ionic-angular";
 import {Camera, CameraOptions} from "@ionic-native/camera";
-import { ImageProvider } from "../../providers/data/image"
+import { ImageProvider } from "../../providers/image/image"
 
 @Component({
     selector: 'image-upload',

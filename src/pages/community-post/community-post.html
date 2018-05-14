@@ -3,7 +3,7 @@
     <ion-buttons left>
       <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
     </ion-buttons>
-    <ion-title>게시글보기</ion-title>
+    <ion-title>{{ 'community.post.title' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="navCtrl.pop()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
     </ion-buttons>
@@ -15,7 +15,7 @@
     <ion-grid no-padding class="x-boardview-post">
       <ion-row class="x-boardview-row">
         <ion-col col-12>
-          <span class="x-boardview-category">[{{post.category}}]</span>
+          <span class="x-boardview-category">[{{post.category | translate}}]</span>
           <span class="x-boardview-title">{{post.title}}</span>         
         </ion-col>
       </ion-row>
@@ -26,8 +26,8 @@
             <div class="x-boardview-nickname">
                 {{writer.username}}
                 <div class="x-boardview-modify">
-                    <span  *ngIf="post.writer == userId" (click)="modifyPost(post)">{{ 'post.menu.modify' | translate }}</span>
-                    <span  *ngIf="post.writer == userId" (click)="deletePost(post)">{{ 'post.menu.delete' | translate }}</span>
+                    <span  *ngIf="post.writer == userId" (click)="modifyPost(post)">{{ 'community.post.menu.modify' | translate }}</span>
+                    <span  *ngIf="post.writer == userId" (click)="deletePost(post)">{{ 'community.post.menu.delete' | translate }}</span>
                 </div>
                 
             </div>
@@ -73,7 +73,7 @@
       <ion-row class="x-boardview-row">
         <ion-col col-12>
           <div class="x-boardview-comment-title">
-            <span class="x-boardview-comment-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;이 글의 댓글</div>
+            <span class="x-boardview-comment-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;{{ 'community.post.comment' | translate}}</div>
         </ion-col>
       </ion-row>
       <div >
@@ -97,7 +97,7 @@
 <ion-footer class ="post && post.title" no-border no-padding >
   <ion-toolbar class="x-boardview-comment-write" no-padding color="x-white">
     <div class="x-boardview-comment-txt">
-      <ion-input type="text" class="x-boardview-comment-input" placeholder="댓글을 남겨주세요" [(ngModel)]="comment"></ion-input>
+      <ion-input type="text" class="x-boardview-comment-input" placeholder="{{ 'community.post.comment.placeholder' | translate}}" [(ngModel)]="comment"></ion-input>
     </div>
     <div class="x-boardview-comment-btn">
       <button ion-button class="x-boardview-comment-submit" (click)="writeComment()">작성</button>

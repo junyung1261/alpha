@@ -5,16 +5,17 @@
       <ion-buttons left>
         <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
       </ion-buttons>
-      <ion-title text-center>{{ 'auth.nav.title.profile' | translate }}</ion-title>
+      <ion-title text-center>{{ 'TAB5_TITLE' | translate }}</ion-title>
       <ion-buttons end *ngIf="user">
-        <button ion-button class="text-on-bottom" (click)="navCtrl.push('PurchasePage')">
+        <button ion-button class="text-on-bottom" >
+            <!-- (click)="navCtrl.push('PurchasePage')" -->
           <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value">{{user.heart}}</span>
         </button>
       </ion-buttons>
     </ion-navbar>
   </ion-header>
 
-  <ion-content class="profile-content" [ngClass]="{'android': android}">
+  <ion-content class="profile-content"  #content  [ngClass]="{'android': android}">
     <div class="profile" *ngIf="user" text-center>
       <img-loader src=" {{user.profileImg}}" tappable (click)="setPhoto(user.profileImg)"></img-loader>
     </div>
@@ -22,7 +23,7 @@
       <form [formGroup]="profileForm">
         <ion-list no-lines>
           <!--기본정보 헤더-->
-          <div class="profile-header">User Profiles</div>          
+          <div class="profile-header">{{ 'auth.profile.title' | translate }}</div>          
           <!--닉네임-->
           <div class="profile-error" *ngIf="(profileForm.controls.username.hasError('required') || !profileForm.controls.username.valid) && hasError">{{ 'auth.form.error.username' | translate }}</div>
           <div class="profile-error" *ngIf="!uniqueUsername && profileForm.controls.username.valid && hasError">{{ 'auth.form.error.exists' | translate }}</div>
@@ -43,7 +44,7 @@
           </ion-item>
           <!--생년월일-->
           <ion-item no-lines>
-            <ion-label>Birth</ion-label>
+            <ion-label>{{ translate.get('auth.form.birth') }}</ion-label>
             <ion-datetime displayFormat="MM/DD/YYYY" formControlName="birth" [placeholder]="translate.get('auth.form.birth.null')" ></ion-datetime>
           </ion-item>
           <ion-item no-lines>

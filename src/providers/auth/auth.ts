@@ -1,20 +1,64 @@
 import { Injectable } from '@angular/core';
-import { NavController, App } from 'ionic-angular';
-import { LoadingProvider, AlertProvider } from '../';
+import { TranslateProvider, DataProvider } from '../';
 import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { Subscription } from 'rxjs';
+
 
 @Injectable()
 export class AuthProvider {
   
-  private navCtrl: NavController;
+  private fbSubscription: Subscription;
+  private fsSubscription: Subscription;
+  private user: any;
 
-  constructor(public loadingProvider: LoadingProvider, public alertProvider: AlertProvider, public afAuth: AngularFireAuth, public appCtrl: App) {
-    console.log("Initializing Login Provider");
+  constructor(
+              private translate: TranslateProvider,
+              private dataProvider: DataProvider,
+              private afAuth: AngularFireAuth, 
+              ) {
+
+    console.log("Initializing AuthProvider");
   }
 
-  setNavController(navCtrl) {
-    this.navCtrl = navCtrl;
+
+  getUserData(): any {
+    return this.user;
   }
+
+  getUser(): Promise<firebase.User> {
+    return new Promise((resolve, reject) => {
+      if (this.fbSubscription) {
+        this.fbSubscription.unsubscribe();
+      }
+      this.fbSubscription = this.afAuth.authState.subscribe((user: firebase.User) => {
+        
+        // User is logged in on Firebase.
+        if (user) {
+          let userId = user.uid;
+          this.dataProvider.get('accounts/' + user.uid).then(ref => {
+            if (this.fsSubscription) {
+              this.fsSubscription.unsubscribe();
+            }
+            
+            // Update userData variable from Firestore.
+            this.fsSubscription = ref.valueChanges().subscribe((user: any) => {
+              this.user = user;
+              this.user.userId = userId;
+              
+            });
+            
+            console.log(this.user);
+          }).catch(() => {
+            reject();
+          });
+        }
+        resolve(user);
+      });
+    });
+  }
+
+  
   // Anonymous Login, after successful authentication, triggers firebase.auth().onAuthStateChanged((user) on top and
   // redirects the user to its respective views. Make sure to enable Anonymous login on Firebase app authentication console.
   // Login on Firebase given the email and password.
@@ -39,20 +83,20 @@ export class AuthProvider {
     });
   }
 
-  // Send Password Reset Email to the user.
-  sendPasswordReset(email) {
-    this.loadingProvider.show();
-    this.afAuth.auth.sendPasswordResetEmail(email)
-      .then((success) => {
-        this.loadingProvider.hide();
-        this.alertProvider.showPasswordResetMessage(email);
-      })
-      .catch((error) => {
-        this.loadingProvider.hide();
-        let code = error["code"];
-        this.alertProvider.showErrorMessage(code);
-      });
-  }
+  // // Send Password Reset Email to the user.
+  // sendPasswordReset(email) {
+  //   this.loadingProvider.show();
+  //   this.afAuth.auth.sendPasswordResetEmail(email)
+  //     .then((success) => {
+  //       this.loadingProvider.hide();
+  //       this.alertProvider.showPasswordResetMessage(email);
+  //     })
+  //     .catch((error) => {
+  //       this.loadingProvider.hide();
+  //       let code = error["code"];
+  //       this.alertProvider.showErrorMessage(code);
+  //     });
+  // }
 
   logout(): Promise<any> {
     return new Promise((resolve, reject) => {

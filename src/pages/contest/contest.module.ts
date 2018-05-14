@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { ContestPage } from './contest';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 @NgModule({
   declarations: [
@@ -8,6 +10,7 @@ import { ContestPage } from './contest';
   ],
   imports: [
     IonicPageModule.forChild(ContestPage),
+    TranslateModule.forChild(),
   ],
 })
 export class ContestPageModule {}

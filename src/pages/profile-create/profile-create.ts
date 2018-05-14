@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, ActionSheetController, Platform } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { AuthProvider, TranslateProvider, DataProvider, LoadingProvider, NotificationProvider, ImageProvider } from '../../providers';
-import { Keyboard } from '@ionic-native/keyboard';
 import { Camera } from '@ionic-native/camera';
 
 import firebase from 'firebase';

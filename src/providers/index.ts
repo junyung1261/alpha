@@ -1,12 +1,9 @@
-export { AlertProvider } from './alert/alert';
+export { TranslateProvider } from './translate/translate'
 export { LoadingProvider } from './loading/loading';
-export { AuthProvider } from './auth/auth';
+export { AlertProvider } from './alert/alert';
+export { ToastProvider } from './toast/toast';
 export { DataProvider } from './data/data';
-export { ImageProvider } from './data/image';
-export { RequestProvider } from './data/request';
+export { AuthProvider } from './auth/auth';
+export { ImageProvider } from './image/image';
 export { NotificationProvider } from './notification/notification';
 export { Settings } from './settings/settings';
-export { ToastProvider } from './toast/toast';
-export { FirebaseProvider } from './data/firebase'
-export { TranslateProvider } from './translate/translate'
-export { StorageProvider } from './storage/storage';

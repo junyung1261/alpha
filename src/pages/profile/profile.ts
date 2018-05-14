@@ -6,7 +6,6 @@ import { AuthProvider, TranslateProvider, LoadingProvider, ToastProvider, Notifi
 import { Camera } from '@ionic-native/camera';
 import { Subscription } from 'rxjs/Subscription';
 import firebase from 'firebase';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { Keyboard } from '@ionic-native/keyboard';
 import { ModalController } from 'ionic-angular';
 import { GalleryModal } from 'ionic-gallery-modal';
@@ -55,7 +54,6 @@ export class ProfilePage {
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
     private formBuilder: FormBuilder,
-    private afAuth: AngularFireAuth,
     private afDB:AngularFireDatabase,
     private alertProvider: AlertProvider,
     private imageProvider: ImageProvider,
@@ -77,6 +75,8 @@ export class ProfilePage {
       bio: ['', this.bioValidator],
       gender: ['', this.requiredValidator]
     });
+
+   
   }
 
   keyDownFunction(event) {
@@ -124,10 +124,9 @@ export class ProfilePage {
 
     
       // Check if user is logged in using email and password and show the change password button.
-      this.userId = this.afAuth.auth.currentUser.uid;
-    
-      // Get userData from Firestore and update the form accordingly.
-      this.dataProvider.getUser(this.userId).valueChanges().subscribe(user => {
+      this.authProvider.getUser().then((user) => {
+        this.userId = user.uid;
+        this.dataProvider.getUser(this.userId).valueChanges().subscribe(user => {
         
           this.user = user;
           this.hasPushToken = this.user.notifications;
@@ -140,6 +139,12 @@ export class ProfilePage {
             bio: this.user.bio
           });
         });
+
+
+      })
+    
+      // Get userData from Firestore and update the form accordingly.
+      
   }
 
   ionViewDidEnter(){
@@ -187,7 +192,7 @@ export class ProfilePage {
         title: this.translate.get('auth.profile.photo.title'),
         buttons: [
           {
-            text: this.translate.get('auth.profile.photo.take'),
+            text: this.translate.get('auth.profile.photo.view'),
            
             handler: () => {
               this.openGalleryModal([{url: photo}]);
@@ -266,15 +271,20 @@ export class ProfilePage {
   logout(): void {
     this.alertProvider.showConfirm(this.translate.get('auth.menu.logout.title'), this.translate.get('auth.menu.logout.text'), this.translate.get('auth.menu.logout.button.cancel'), this.translate.get('auth.menu.logout.button.logout')).then(confirm => {
       if (confirm) {
-        this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
-          lastLogin: firebase.database['ServerValue'].TIMESTAMP
-        })
+        // this.afDB.database.ref('/accounts/'+this.afAuth.auth.currentUser.uid).update({
+        //   lastLogin: firebase.database['ServerValue'].TIMESTAMP
+        // })
+        this.loadingProvider.show();
         this.authProvider.logout().then(() => {
+         
           this.notification.destroy();
+          this.loadingProvider.hide();
           this.app.getRootNavs()[0].setRoot('LoginPage');
-        }).catch(() => { });
+          window.location.reload();
+          
+        }).catch(() => {this.loadingProvider.hide(); });
       }
-    }).catch(() => { });
+    }).catch(() => { this.loadingProvider.hide();});
   }
   
 }

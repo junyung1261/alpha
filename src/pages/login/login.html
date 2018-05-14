@@ -5,13 +5,13 @@
     </div>
     <div class="x-btn-area">
       <button ion-button class="x-btn" (click)="viewLogin()">
-        <ion-icon name="flaticon-envelope-1" color="x-white"></ion-icon>&nbsp;&nbsp;이메일 로그인</button>
+        <ion-icon name="flaticon-envelope-1" color="x-white"></ion-icon>&nbsp;&nbsp;{{ 'LOGIN' | translate }}</button>
     </div>
     <div class="x-btn-area">
       <button ion-button class="x-btn" (click)="viewJoin()">
-        <ion-icon name="flaticon-user" color="x-white"></ion-icon>&nbsp;&nbsp;회원 신규가입</button>
+        <ion-icon name="flaticon-user" color="x-white"></ion-icon>&nbsp;&nbsp;{{ 'SIGNUP' | translate }}</button>
     </div>
     <div class="x-join-btn-area"></div>
   </div>
-  <div class="x-main-footer">원활한 서비스 이용을 위하여 Wi-Fi 사용을 권장합니다.</div>
+  <div class="x-main-footer">{{ 'LOGIN_INTRO' | translate }}</div>
 </ion-content>

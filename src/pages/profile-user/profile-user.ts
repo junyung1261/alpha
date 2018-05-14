@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Loading, ModalController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
-import { AuthProvider, LoadingProvider, NotificationProvider, TranslateProvider, DataProvider, RequestProvider } from '../../providers';
+import { AuthProvider, LoadingProvider, NotificationProvider, TranslateProvider, DataProvider } from '../../providers';
 import firebase from 'firebase';
 import { GalleryModal } from 'ionic-gallery-modal';
 
@@ -32,7 +32,6 @@ export class ProfileUserPage {
               public authProvider: AuthProvider,
               public loadingProvider: LoadingProvider,
               public dataProvider: DataProvider,
-              public requestProvider: RequestProvider,
               public translate: TranslateProvider,
               public notificationProvider: NotificationProvider,
               public modalCtrl: ModalController
@@ -100,7 +99,7 @@ export class ProfileUserPage {
 
   sendRequest(user: any): void {
     this.loadingProvider.show();
-    this.requestProvider.sendFriendRequest(this.currentUserId, this.userId).then(() => {
+    this.dataProvider.sendFriendRequest(this.currentUserId, this.userId).then(() => {
       // Send a push notification to the user.
       if (user.notifications) {
         this.notificationProvider.sendPush(user.pushToken, this.currentUser.username, this.translate.get('push.contact.sent'), { newRequest: true });
@@ -113,20 +112,20 @@ export class ProfileUserPage {
 
   cancelRequest(userId: string): void {
    
-    this.requestProvider.cancelFriendRequest(this.currentUserId, this.userId);
+    this.dataProvider.cancelFriendRequest(this.currentUserId, this.userId);
       
    
   }
 
   rejectRequest(userId: string): void {
     
-    this.requestProvider.cancelFriendRequest(this.userId, this.currentUserId);
+    this.dataProvider.cancelFriendRequest(this.userId, this.currentUserId);
   }
 
 
   acceptRequest(user: any): void {
     this.loadingProvider.show();
-    this.requestProvider.acceptFriendRequest(this.userId, this.currentUserId).then(() => {
+    this.dataProvider.acceptFriendRequest(this.userId, this.currentUserId).then(() => {
       // Send a push notification to the user.
       if (user.notifications) {
         this.notificationProvider.sendPush(user.pushToken, this.currentUser.username, this.translate.get('push.contact.accepted'), { acceptRequest: true });

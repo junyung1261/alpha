@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { RequestsPage } from './requests';
+import { UserListPage } from './userlist';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipeModule } from '../../pipes/pipe.module';
 
@@ -8,14 +8,14 @@ import { IonicImageLoader } from 'ionic-image-loader';
 
 @NgModule({
   declarations: [
-    RequestsPage,
+    UserListPage,
   ],
   imports: [
-    IonicPageModule.forChild(RequestsPage),
+    IonicPageModule.forChild(UserListPage),
     TranslateModule.forChild(),
     IonicImageLoader,
     PipeModule
   ],
   
 })
-export class FindListPageModule {}
+export class UserListPageModule {}
