@@ -129,6 +129,10 @@ export class CommunityWritePage {
       modified_data: firebase.database['ServerValue'].TIMESTAMP
     }).then((success) => {
       if (this.imageUpload.images.length > 0) {
+
+        if(this.imageUpload.removeImages.length > 0){
+          this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
+        }
         
         this.imageUpload.uploadPostImages(this.category.parent).then(() => {
           this.viewCtrl.dismiss({ data: true});

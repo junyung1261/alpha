@@ -42,9 +42,9 @@ export class ImageUpload {
             Promise.all(this.images.map(image => {
                 return this.uploadImage(image);
             }))
-                .then(resolve => {
+                .then((success) => {
                     this.imageProvider.updatePostUrl(this.key, this.imageURL, category);
-                    
+                    resolve();
                 })
                 .catch(reason => {
                     this.isUploading = false;

@@ -2,7 +2,6 @@ import { Component, ViewChild, NgZone } from '@angular/core';
 import { Platform, Nav, Config, AlertController, IonicApp, ToastController, App } from 'ionic-angular';
 import { ScreenOrientation } from '@ionic-native/screen-orientation';
 import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,7 +24,6 @@ export class MyApp {
   constructor(
     private platform: Platform, 
     private statusBar: StatusBar, 
-    private splashScreen: SplashScreen, 
     private mobileAccessibility: MobileAccessibility,
     private afAuth:AngularFireAuth,
     private translateService: TranslateService,
@@ -54,7 +52,7 @@ export class MyApp {
        }
 
       statusBar.styleDefault();
-      splashScreen.hide();
+      
       imageLoader.spinnerEnabled = false;
       imageLoader.fallbackAsPlaceholder = true;
       imageLoader.useImg = true;
