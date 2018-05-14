@@ -8,6 +8,7 @@ import { FirebaseListObservable } from 'angularfire2/database-deprecated';
 import { Subscription } from 'rxjs';
 import { ModalController } from 'ionic-angular';
 import { GalleryModal } from 'ionic-gallery-modal';
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
 @Component({
@@ -35,6 +36,7 @@ export class CommunityPostPage {
               public loadingProvider: LoadingProvider,
               public modalCtrl: ModalController,
               public translate: TranslateProvider,
+              public keyboard: Keyboard,
               public alertProvider: AlertProvider,
               ) {
     
@@ -47,6 +49,24 @@ export class CommunityPostPage {
     this.postId = this.navParams.get('postId');
     this.menu = this.navParams.get('menu');
     this.subscriptions = [];
+
+    
+    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
+      
+      document.querySelector(".tabbar")['style'].display = 'none';
+      this.contentBox.marginBottom = 0;
+      this.contentHandle.resize();
+      })
+  
+      let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
+       
+      document.querySelector(".tabbar")['style'].display = 'flex';
+      this.contentBox.marginBottom = this.tabBarHeight;
+      this.contentHandle.resize();
+      })
+  
+      this.subscriptions.push(subscription);
+      this.subscriptions.push(subscription_)
 
 
     this.dataProvider.getPost(this.menu.name, this.postId).valueChanges().take(1).subscribe(post => {
