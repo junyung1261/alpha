@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,Platform, ViewController, Toast } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,Platform, ViewController, Toast, App } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { AuthProvider, ToastProvider, TranslateProvider, LoadingProvider } from '../../providers';
 
@@ -18,6 +18,7 @@ export class LoginViewPage {
   private hasError: boolean;
   private loginText : string;
   private registerText : string;
+  
 
   private emailValidator: ValidatorFn = Validators.compose([
     Validators.required,
@@ -38,6 +39,7 @@ export class LoginViewPage {
               public translate: TranslateProvider,
               public formBuilder: FormBuilder, 
               public viewCtrl: ViewController, 
+              public app: App
     ) {
     this.viewType = this.navParams.get('type');
 
@@ -70,8 +72,7 @@ export class LoginViewPage {
       this.loadingProvider.show();
       this.authProvider.loginWithEmail(this.loginForm.value['email'], this.loginForm.value['password']).then(res => {
         this.loadingProvider.hide();
-        this.viewCtrl.dismiss();
-        this.navCtrl.setRoot('LoaderPage');
+        this.viewCtrl.dismiss({data: true});
       }).catch(err => {
         this.toastProvider.show(this.translate.get(err.code));
         this.loadingProvider.hide();
@@ -103,8 +104,7 @@ export class LoginViewPage {
       this.loadingProvider.show();
       this.authProvider.registerWithEmail(this.registerForm.value['email'], this.registerForm.value['password']).then(res => {
         this.loadingProvider.hide();
-        this.navCtrl.setRoot('LoaderPage');
-        this.loadingProvider.hide();
+        this.viewCtrl.dismiss({data: true});
       }).catch(err => {
         this.toastProvider.show(this.translate.get(err.code));
         this.loadingProvider.hide();

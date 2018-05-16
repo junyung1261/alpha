@@ -9,8 +9,8 @@ import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
-  selector: 'page-userlist',
-  templateUrl: 'userlist.html',
+  selector: 'page-user-list',
+  templateUrl: 'user-list.html',
 })
 export class UserListPage {
   chatId;
@@ -200,8 +200,47 @@ presentAlert(req, user) {
   /* 쪽지 전송 시작 req=0 */
   if(req==0){
     
-    this.alertProvider.showConfirm( this.translate.get('chats.message.sent.photo'), this.translate.get('chats.message.sent.photo'),this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+    this.alertProvider.showConfirm( this.translate.get('userlist.add.title'), this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
       if(confirm){
+        this.dataProvider.acceptFriendRequest(user.key, this.user.key);
+        this.requestsReceived.splice( this.requestsReceived.indexOf(user), 1)
+
+         // New Conversation with friend.
+      var messages = [];
+      messages.push({
+        date: new Date().toString(),
+        sender: 'tianya',
+        type: 'notice_start',
+        message: 'chat_start'
+      });
+      var users = [];
+      users.push(this.user.key);
+      users.push(user.key);
+      // Add conversation.
+      this.afDB.list('conversations').push({
+        dateCreated: new Date().toString(),
+        messages: messages,
+        users: users
+      }).then((success) => {
+        let conversationId = success.key;
+        this.afDB.object('/conversations/' + conversationId).update({
+          conversationId: conversationId
+        })
+        // Add conversation reference to the users.
+        this.afDB.object('/accounts/' + this.user.key + '/conversations/' + user.key).update({
+          conversationId: conversationId,
+          messagesRead: 0
+        });
+        this.afDB.object('/accounts/' + user.key + '/conversations/' + this.user.key).update({
+          conversationId: conversationId,
+          messagesRead: 0
+        });
+
+        if(user.payload.val().notifications){
+          this.notificationProvider.sendPush(user.payload.val().pushToken, this.user.payload.val().username, this.translate.get('push.requests.accept') , {acceptRequest: true});
+        }
+      });
+
 
       }
     })

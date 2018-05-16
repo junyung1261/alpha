@@ -45,7 +45,7 @@
 
   "WELCOME_TITLE": "欢迎",
 
-  "LOGIN_TITLE": "登录",
+  "LOGIN_TITLE": "登 录",
   "LOGIN_ERROR": "无法登录。请检查账号信息然后重试。",
   "LOGIN_BUTTON": "登 录",
   "SIGNUP_TITLE": "注 册",
@@ -252,6 +252,8 @@
   "chats.message.photo.take":  "相机",
   "chats.message.photo.gallery":  "从相册中选择",
   "chats.message.photo.cancel":  "取消",
+  "chats.list.message.start": "",
+  "chats.list.message.end": "",
   
   "chats.main.empty.noconversation.title": "找不到聊天记录",
   "chats.main.empty.noconversation.text": "抱歉，找不到与此用户的相关聊天记录",

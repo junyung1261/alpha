@@ -23,8 +23,8 @@
           <div class="message-notice" *ngIf="message.type == 'notice_start'">{{ 'chats.message.new' | translate }}</div>
         </ion-col>
 
-        <ion-col class="message" col-10 *ngIf="message.sender == 'tianya'">
-          <div class="message-notice" *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} {{ chats.message.end }}</div>
+        <ion-col class="message" col-12 *ngIf="message.sender == 'tianya'" text-center>
+          <div class="message-notice" *ngIf="message.type == 'notice_userOut'">{{ partner.payload.val().username }} {{ 'chats.message.end' |translate }}</div>
         </ion-col>
 
         <ion-col class="message" col-10 *ngIf="message.sender == partner.key">
@@ -42,13 +42,13 @@
       </ion-row>
     </div>
   </ion-content>
-  <ion-footer [ngClass]="{'iPhoneX': iPhoneX, 'android': android}" >
+  <ion-footer [ngClass]="{'iPhoneX': iPhoneX, 'android': android}" *ngIf="conversation && conversation.users.length == 2">
     <ion-row>
       <ion-col col-10>
           <ion-textarea class="input_txt" #messageBox id="messageBox" fz-elastic type="text" [placeholder]="translate.get('chats.message.write')" [(ngModel)]="message" rows="1" (keydown)="keyDownFunction($event)"></ion-textarea>
       </ion-col>
       <ion-col col-2 text-right>
-        <button ion-button icon-only clear *ngIf="message" class="input_btn" (mousedown)="$event.preventDefault(); send()">
+        <button ion-button icon-only clear *ngIf="message" class="input_btn" (mousedown)="$event.preventDefault(); send()"  >
           <ion-icon name="flaticon-edit"></ion-icon>
         </button>
       </ion-col>

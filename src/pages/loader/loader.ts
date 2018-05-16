@@ -24,7 +24,7 @@ export class LoaderPage {
 
   ionViewWillEnter() {
     // Show the splashScreen while the page to show to the user is still loading.
-    this.splashScreen.show();
+    
     this.storage.get('introShown').then((introShown: boolean) => {
       // Check if user is loading the app for the very first time and show the IntroPage.
       // if (introShown) {
