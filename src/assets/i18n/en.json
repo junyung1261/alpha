@@ -252,6 +252,8 @@
   "chats.message.photo.take": "Take a Photo",
   "chats.message.photo.gallery": "Choose from Gallery",
   "chats.message.photo.cancel": "Cancel",
+  "chats.list.message.start": "",
+  "chats.list.message.end": "",
 
   "chats.main.empty.noconversation.title": "No Conversation Found",
   "chats.main.empty.noconversation.text": "Uh-oh! Sorry but we couldn't find an existing conversation with that user",
