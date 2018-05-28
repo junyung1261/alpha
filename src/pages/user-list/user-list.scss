@@ -37,4 +37,11 @@ page-user-list {
     ion-item-group{
         background-color: map-get($colors,x-white) !important;
     }
+
+    .text-on-bottom > .button-inner {
+        flex-direction: column;
+      }
+      .heart-value {
+        font-size:2.5vw;
+      }
 }

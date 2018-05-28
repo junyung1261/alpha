@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, App, ModalController, Platform } from 'ionic-angular';
-import { AuthProvider, TranslateProvider, DataProvider } from '../../providers';
+import { AuthProvider, TranslateProvider, DataProvider, AlertProvider } from '../../providers';
 import { Subscription } from 'rxjs/Subscription';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
@@ -31,6 +31,7 @@ export class ChatListPage {
     private dataProvider: DataProvider,
     private translate: TranslateProvider,
     private modalCtrl: ModalController,
+    private alertProvier: AlertProvider,
     private app: App
   ) {
   }
@@ -114,6 +115,9 @@ export class ChatListPage {
   }
 
   deleteConversationById(conversationId): void {
+    // this.alertProvier.showConfirm().then((confirm) => {
+
+    // })
     if (this.conversations) {
       let index = -1;
       for (let i = 0; i < this.conversations.length; i++) {
