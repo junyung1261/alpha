@@ -95,7 +95,7 @@ export class MyApp {
 
             } else {
               toastCtrl.create({
-                message: "Press back button again to exit",
+                message: this.translate.get('BACKBUTTON_TO_EXIT'),
                 duration: 2000,
                 position: 'bottom'
               }).present();

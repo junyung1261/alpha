@@ -64,6 +64,7 @@
   "CANCEL_BUTTON": "Cancel",
   "ADD_BUTTON": "Add",
   "DELETE_BUTTON": "Delete",
+  "BACKBUTTON_TO_EXIT": "Press back button again to exit",
 
   "CARDS_TITLE": "Social",
 
@@ -86,6 +87,7 @@
   "search": "search",
   "monthly": "monthly",
   "deposit": "deposit",
+  "others" : "",
   
   "auth/email-already-in-use": "This email is already in use.",
   "auth/invalid-email": "You have entered an invalid email.",
@@ -237,6 +239,7 @@
   "userlist.button.latest": "latest",
   "userlist.add.title": "",
   "userlist.add.subtitle": "",
+  "userlist.add.heart.subtitle": "",
 
   "chats.nav.title": "Chats",
   "chats.new.title": "New Conversation",
@@ -254,7 +257,10 @@
   "chats.message.photo.cancel": "Cancel",
   "chats.list.message.start": "",
   "chats.list.message.end": "",
-
+  "chats.list.menu.delete": "",
+  "chats.list.menu.delete.title": "",
+  "chats.list.menu.delete.text": "",
+  
   "chats.main.empty.noconversation.title": "No Conversation Found",
   "chats.main.empty.noconversation.text": "Uh-oh! Sorry but we couldn't find an existing conversation with that user",
   "chats.main.empty.noconversations.title": "No Conversations",
@@ -316,7 +322,9 @@
   "push.requests.sent": "has sent you a chat request.",
   "push.requests.accpet": "has accepted you a chat request.",
   "push.contact.accepted": "has accepted your contact request.",
-  "push.message.photo": "has sent you a photo message."
+  "push.message.photo": "has sent you a photo message.",
 
-  
+  "purchase.text.title": "Purchase Heart",
+  "purchase.text.heart": "Hearts",
+  "purchase.text.count": ""
 }

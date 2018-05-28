@@ -14,7 +14,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class UserListPage {
   chatId;
-  user;
+  private user;
   myChat: any;
   myChatList: any;
   chatList= [];
@@ -200,8 +200,8 @@ presentAlert(req, user) {
   /* 쪽지 전송 시작 req=0 */
   if(req==0){
     
-    this.alertProvider.showConfirm( this.translate.get('userlist.add.title'), this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
-      if(confirm){
+    this.alertProvider.showConfirm( this.translate.get('userlist.add.title') + ' -> ' + user.payload.val().username, this.translate.get('userlist.add.heart.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+      if(confirm && this.user.payload.val().heart >= 15){
         this.dataProvider.acceptFriendRequest(user.key, this.user.key);
         this.requestsReceived.splice( this.requestsReceived.indexOf(user), 1)
 
@@ -222,6 +222,11 @@ presentAlert(req, user) {
         messages: messages,
         users: users
       }).then((success) => {
+
+        this.dataProvider.getCurrentUser().update({
+          heart: this.user.payload.val().heart - 15
+        })
+
         let conversationId = success.key;
         this.afDB.object('/conversations/' + conversationId).update({
           conversationId: conversationId
@@ -242,6 +247,9 @@ presentAlert(req, user) {
       });
 
 
+      }
+      else if(confirm &&  this.user.payload.val().heart < 15){
+        
       }
     })
     // let alert = this.alertCtrl.create({
@@ -276,7 +284,7 @@ presentAlert(req, user) {
   /* 대화 요청 시작 req=1 */
   if(req==1){
 
-    this.alertProvider.showConfirm( this.translate.get('userlist.add.title'), this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('ADD_BUTTON')).then(confirm => {
+    this.alertProvider.showConfirm( this.translate.get('userlist.add.title') + '->' + user.payload.val().username, this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('ADD_BUTTON')).then(confirm => {
       if(confirm){
         this.dataProvider.sendFriendRequest(this.user.key, user.key).then(() => {
           if(user.payload.val().notifications){

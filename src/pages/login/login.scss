@@ -1,11 +1,10 @@
 page-login {
     ion-content {
-        background-color: map-get($colors,x-mint) !important;
+        background-color: map-get($colors,x-white) !important;
     }
     .x-logo {
         width:100vw;
-        padding:15vw 28vw 0vw 28vw;
-        margin:20vw 0 25vw 0;
+        height:100vw;
     }
     .x-btn-area {
         width:100vw;
@@ -17,10 +16,10 @@ page-login {
         box-shadow:none;
         width:74vw;
         height:10vw;
-        border-left:3px solid map-get($colors,x-white);
+        border-left:3px solid map-get($colors,x-mint);
         border-radius:0vw;
-        background-color:rgba(255,255,255,0.4);
-        color:map-get($colors,x-white);
+        background-color:rgba(0,0,0,0.1);
+        color:map-get($colors,x-mint);
         padding:3vw 5vw 3vw 5vw;
         font-size:4vw;
     }

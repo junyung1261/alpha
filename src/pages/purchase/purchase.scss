@@ -1,3 +1,8 @@
 page-purchase {
-
+    .text-on-bottom > .button-inner {
+        flex-direction: column;
+      }
+      .heart-value {
+        font-size:2.5vw;
+      }
 }

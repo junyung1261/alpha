@@ -64,6 +64,7 @@
   "CANCEL_BUTTON": "取 消",
   "ADD_BUTTON": "添加",
   "DELETE_BUTTON": "删 除",
+  "BACKBUTTON_TO_EXIT": "想终止程序请再次点击后退到上一步",
 
   "CARDS_TITLE": "社交",
 
@@ -86,6 +87,7 @@
   "search": "求职",
   "monthly": "月租房",
   "deposit": "全税房",
+  "others" : "其他",
   
   "auth/email-already-in-use": "已经注册过的邮箱地址",
   "auth/invalid-email": "邮箱格式不准确",
@@ -237,8 +239,9 @@
   "userlist.button.latest": "最近的连接",
   "userlist.add.title": "选择聊天",
   "userlist.add.subtitle": "与正在使用的TA聊天",
+  "userlist.add.heart.subtitle": "使用 15 红心，即可马上和对方开始对话",
   
-  "chats.nav.title": "聊天 ",
+  "chats.nav.title": "聊天",
   "chats.new.title":  "新对话.",
   "chats.new.empty.nocontacts.text":  "您还没有联系人，有联系人后，您便可以随时与联系人开启对话",
   "chats.new.empty.nocontacts.button":  "管理联系人",
@@ -254,6 +257,9 @@
   "chats.message.photo.cancel":  "取消",
   "chats.list.message.start": "",
   "chats.list.message.end": "",
+  "chats.list.menu.delete": "",
+  "chats.list.menu.delete.title": "",
+  "chats.list.menu.delete.text": "",
   
   "chats.main.empty.noconversation.title": "找不到聊天记录",
   "chats.main.empty.noconversation.text": "抱歉，找不到与此用户的相关聊天记录",
@@ -316,6 +322,9 @@
   "push.requests.sent": "给你发送了小纸条",
   "push.requests.accpet":  "已接受您的聊天请求.",
   "push.contact.accepted":  "已接受您的好友请求.",
-  "push.message.photo":  "给您发送了一条图片信息"
+  "push.message.photo":  "给您发送了一条图片信息",
 
+  "purchase.text.title": "购买红心",
+  "purchase.text.heart": "红心",
+  "purchase.text.count": "个"
 }

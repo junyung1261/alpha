@@ -78,7 +78,10 @@
       "cordova-plugin-splashscreen": {},
       "cordova-plugin-ionic-webview": {},
       "phonegap-plugin-mobile-accessibility": {},
-      "cordova-plugin-camera": {},
+      "cordova-plugin-camera": {
+        "CAMERA_USAGE_DESCRIPTION": "Camera usage message",
+        "PHOTOLIBRARY_USAGE_DESCRIPTION": "Photo Library usage message"
+      },
       "cordova-plugin-shake": {},
       "cordova-plugin-vibration": {},
       "cordova-plugin-fcm": {},

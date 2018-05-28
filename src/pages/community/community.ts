@@ -21,6 +21,7 @@ export class CommunityPage {
   private segmentsPerRow: number;
   private posts: Map<string, any>;
   private subscriptions: Subscription[];
+  private selectedSearch = "total"
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -35,7 +36,7 @@ export class CommunityPage {
   
     this.contentBox=document.querySelector(".community .scroll-content")['style'];
     this.tabBarHeight = this.contentBox.marginBottom;
-
+  
     this.posts = new Map<string, any>();
     this.menu = this.navParams.get('menu');
     this.index = this.navParams.get('index');
