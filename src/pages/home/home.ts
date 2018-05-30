@@ -81,8 +81,15 @@ export class HomePage {
       this.postMenu = menu;
       this.postMenu.forEach(menu=>{
         this.dataProvider.getLatestPosts(menu.name).snapshotChanges().take(1).subscribe(posts => {
-         
-          menu.posts = posts.reverse();
+          menu.posts = [];
+          posts.forEach(postRef => {
+            
+            this.dataProvider.getPost(menu.name, postRef.payload.val(), postRef.key).snapshotChanges().take(1).subscribe(post => {
+              
+              menu.posts.unshift(post);
+              
+            })
+          })
           
         });
       });
@@ -96,9 +103,9 @@ export class HomePage {
     this.navCtrl.push('CommunityPage', { menu: menu, index: index});
   }
 
-  openPost(menu, key){
+  openPost(menu, post){
     new Promise((resolve, reject)=> {
-      this.navCtrl.push('CommunityPostPage',{menu: menu, postId : key, resolve: resolve});
+      this.navCtrl.push('CommunityPostPage',{menu: menu, category:post.payload.val().category, postId : post.key, resolve: resolve});
 
     }).then(data => {
       if(data){

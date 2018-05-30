@@ -48,7 +48,7 @@
           <ion-textarea class="input_txt" #messageBox id="messageBox" fz-elastic type="text" [placeholder]="translate.get('chats.message.write')" [(ngModel)]="message" rows="1" (keydown)="keyDownFunction($event)"></ion-textarea>
       </ion-col>
       <ion-col col-2 text-right>
-        <button ion-button icon-only clear *ngIf="message" class="input_btn" (mousedown)="$event.preventDefault(); send()"  >
+        <button ion-button icon-only clear *ngIf="message.trim().length > 0" class="input_btn" [disabled] (mousedown)="$event.preventDefault(); send()"  >
           <ion-icon name="flaticon-edit"></ion-icon>
         </button>
       </ion-col>

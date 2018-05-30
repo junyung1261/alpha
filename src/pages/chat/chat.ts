@@ -43,7 +43,7 @@ export class ChatPage {
   private conversation: any;
   private from: number;
 
-  private message: string;
+  private message = '';
   private collapsed: string;
   private expanded: string;
 

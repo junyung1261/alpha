@@ -63,6 +63,7 @@ export function provideSettings(storage: Storage) {
     BrowserModule,
     IonicModule.forRoot(MyApp, {
       scrollAssist: false,
+      tabsHideOnSubPages: true
     }),
     AngularFireModule.initializeApp(Environment.firebase),
     AngularFireAuthModule,
