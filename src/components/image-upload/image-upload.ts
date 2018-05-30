@@ -35,7 +35,7 @@ export class ImageUpload {
 
 
 
-    public uploadPostImages(category): Promise<Array<any>> {
+    public uploadPostImages(menu, category): Promise<Array<any>> {
         
         return new Promise((resolve, reject) => {
             this.isUploading = true;
@@ -43,7 +43,7 @@ export class ImageUpload {
                 return this.uploadImage(image);
             }))
                 .then((success) => {
-                    this.imageProvider.updatePostUrl(this.key, this.imageURL, category);
+                    this.imageProvider.updatePostUrl(this.key, this.imageURL, menu, category);
                     resolve();
                 })
                 .catch(reason => {

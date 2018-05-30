@@ -115,7 +115,7 @@ export class CommunityWritePage {
       })
       if (this.imageUpload.images.length > 0) {
         this.imageUpload.key = success.key;
-        this.imageUpload.uploadPostImages(this.category.parent);
+        this.imageUpload.uploadPostImages(this.category.parent , this.category.name);
       }
       this.communityLatestRef.update({[success.key]: this.category.name});
       this.accountRef.update({[success.key]: this.category.parent });
@@ -141,7 +141,7 @@ export class CommunityWritePage {
           this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
         }
         
-        this.imageUpload.uploadPostImages(this.category.parent).then(() => {
+        this.imageUpload.uploadPostImages(this.category.parent, this.category.name).then(() => {
           this.viewCtrl.dismiss({ data: true});
         });
       }
@@ -149,7 +149,7 @@ export class CommunityWritePage {
       else if(this.imageUpload.removeImages.length > 0 && this.imageUpload.images.length == 0){
        
         this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
-        this.imageProvider.updatePostUrl(this.post_modify.key, this.imageUpload.imageURL, this.category.parent).then(() => {
+        this.imageProvider.updatePostUrl(this.post_modify.key, this.imageUpload.imageURL, this.category.parent, this.category.name).then(() => {
           this.viewCtrl.dismiss({ data: true});
         });
 

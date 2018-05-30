@@ -112,7 +112,7 @@
           </ng-container>
       </ion-segment>
       <div *ngFor="let post of posts.get(category.name)">
-        <div class="x-photolist"  (click)="openPost(menu, post.key)">
+        <div class="x-photolist"  (click)="openPost(menu, post)">
           <div class="x-photolist-left" *ngIf="post.payload.val().images"><img src="{{post.payload.val().images[0]}}"></div>
           <div class="x-photolist-right">
             <div class="x-photolist-contents"><span class="x-photolist-category">{{ post.payload.val().option | translate }}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
@@ -130,7 +130,7 @@
         <ion-col col-12>구인구직 목록</ion-col>
       </ion-row>
       <div *ngFor="let post of posts.get(category.name )">
-        <ion-row class="x-list-row"  (click)="openPost(menu, post.key)">
+        <ion-row class="x-list-row"  (click)="openPost(menu, post)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().category}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
