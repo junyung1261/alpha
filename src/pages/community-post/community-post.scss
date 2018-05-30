@@ -11,7 +11,7 @@ page-community-post {
     .x-boardview-time {float:left;width:39vw;height:fit-content;color:map-get($colors,x-gray-count);font-size:3vw;margin-top:1vw;}
     .x-boardview-tags {float:left;width:39vw;height:fit-content;color:map-get($colors,x-gray-count);font-size:3vw;margin-top:1vw;text-align:right;}
     .x-boardview-post-photo {width:94vw;height:fit-content;}
-    .x-boardview-post-description {width:94vw;height:fit-content;min-height:40vh;font-size:3.5vw;color:map-get($colors,x-gray-dark);padding-bottom:3vw;}
+    .x-boardview-post-description {width:94vw;height:fit-content;font-size:3.5vw;color:map-get($colors,x-gray-dark);padding-bottom:3vw;}
     .x-boardview-cnt {width:94vw;height:fit-content;}
     .x-boardview-ico {font-size:2.5vw;}
     .x-boardview-view {float:left;width:46vw;height:fit-content;font-size:3vw;color:map-get($colors,x-gray-count);}

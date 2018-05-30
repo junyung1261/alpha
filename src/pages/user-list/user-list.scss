@@ -1,4 +1,4 @@
-page-userlist {
+page-user-list {
     .round {
         border-radius: 100%;
         padding:2vw;
@@ -37,4 +37,11 @@ page-userlist {
     ion-item-group{
         background-color: map-get($colors,x-white) !important;
     }
+
+    .text-on-bottom > .button-inner {
+        flex-direction: column;
+      }
+      .heart-value {
+        font-size:2.5vw;
+      }
 }

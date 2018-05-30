@@ -2,7 +2,12 @@
 <ion-header no-border>
   <ion-navbar color="x-mint" hideBackButton>
     <ion-title color="top-text">{{ 'TAB2_TITLE' | translate }}</ion-title>
-    <ion-buttons end></ion-buttons>
+    <ion-buttons left *ngIf="user">
+        <button ion-button class="text-on-bottom"  (click)="navCtrl.push('PurchasePage')">
+           
+          <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value">{{user.payload.val().heart}}</span>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -45,10 +50,11 @@
                 <span class="nickname">{{ lastestUser.payload.val().username }}</span>
                 <span class="distance">{{ lastestUser.payload.val().lastLogin | DateFormat }}</span>
                 <span class="introduce">{{ lastestUser.payload.val().bio }}</span>
-            
-                <span class="memo" item-right><ion-icon name="flaticon-note-1" color="x-pink" (click)="presentAlert(0)"></ion-icon></span>
-                <span class="conversation"  item-right *ngIf="getRequestStatus(lastestUser) == 0" ><ion-icon name="flaticon-chat" color="x-mint"  (click)="presentAlert(1, lastestUser)"></ion-icon></span>
-                <span class="conversation"  item-right *ngIf="getRequestStatus(lastestUser) == 1" ><ion-icon name="close" color="x-mint"  (click)="cancelFriendRequest(lastestUser)"></ion-icon></span>
+               
+                <ion-icon name="flaticon-chat" item-right (click)="presentAlert(1, lastestUser)" *ngIf="getRequestStatus(lastestUser) == 0" color="x-mint" ></ion-icon>
+                <ion-icon name="close" item-right (click)="cancelFriendRequest(lastestUser)" *ngIf="getRequestStatus(lastestUser) == 1" color="x-mint" ></ion-icon>
+                <ion-icon name="flaticon-like-1" item-right (click)="presentAlert(0, lastestUser)" color="x-mint" ></ion-icon>
+
                 </ion-item>
         </ion-item-group>
    

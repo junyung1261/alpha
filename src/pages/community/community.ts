@@ -21,6 +21,10 @@ export class CommunityPage {
   private segmentsPerRow: number;
   private posts: Map<string, any>;
   private subscriptions: Subscription[];
+  private lastPostId : any;
+  private selectedSearchBy = "title"
+  private searchIndex = "";
+  private numToLoad = 15;
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -33,9 +37,9 @@ export class CommunityPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad CommunityPage');
   
-    this.contentBox=document.querySelector(".community .scroll-content")['style'];
-    this.tabBarHeight = this.contentBox.marginBottom;
-
+    // this.contentBox=document.querySelector(".community .scroll-content")['style'];
+    // this.tabBarHeight = this.contentBox.marginBottom;
+  
     this.posts = new Map<string, any>();
     this.menu = this.navParams.get('menu');
     this.index = this.navParams.get('index');
@@ -49,22 +53,22 @@ export class CommunityPage {
   ionViewDidEnter(){
     this.subscriptions = [];
 
-    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
+    // let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
       
-    document.querySelector(".tabbar")['style'].display = 'none';
-    this.contentBox.marginBottom = 0;
-    this.contentHandle.resize();
-    })
+    // document.querySelector(".tabbar")['style'].display = 'none';
+    // this.contentBox.marginBottom = 0;
+    // this.contentHandle.resize();
+    // })
 
-    let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
+    // let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
      
-    document.querySelector(".tabbar")['style'].display = 'flex';
-    this.contentBox.marginBottom = this.tabBarHeight;
-    this.contentHandle.resize();
-    })
+    // document.querySelector(".tabbar")['style'].display = 'flex';
+    // this.contentBox.marginBottom = this.tabBarHeight;
+    // this.contentHandle.resize();
+    // })
 
-    this.subscriptions.push(subscription);
-    this.subscriptions.push(subscription_)
+    // this.subscriptions.push(subscription);
+    // this.subscriptions.push(subscription_)
   }
  
   ionViewWillLeave() {
@@ -101,17 +105,17 @@ export class CommunityPage {
   getPost(){
     this.menu.category.forEach(category => {
       
-      this.dataProvider.getPosts(this.menu.name, category.name).snapshotChanges().take(1).subscribe(post => {
+      this.dataProvider.getPosts(this.menu.name, category.name, this.numToLoad).snapshotChanges().take(1).subscribe(posts => {
           
-        this.posts.set(category.name, post.reverse());
-        
+        this.posts.set(category.name, posts.reverse());
+        this.lastPostId = posts[14].key;
       });
     });
   }
 
-  openPost(menu, key){
+  openPost(menu, post){
     new Promise((resolve, reject)=> {
-      this.navCtrl.push('CommunityPostPage',{menu: menu, postId : key, resolve: resolve});
+      this.navCtrl.push('CommunityPostPage',{menu: menu, category: post.payload.val().category, postId : post.key, resolve: resolve});
 
     }).then(data => {
       if(data){
@@ -119,7 +123,10 @@ export class CommunityPage {
       }
     })
 
-   
+  }
+
+  openSearchPage(option, index, category, menu){
+    this.navCtrl.push('CommunitySearchPage', {option: option, index: index, category: category, menu: menu});
   }
 
   writePost(){
@@ -145,6 +152,23 @@ doRefresh(refresher) {
     console.log('Async operation has ended');
     refresher.complete();
   }, 2000);
+}
+
+
+doInfinite(infiniteScroll) {
+  console.log('Begin async operation');
+    setTimeout(() => {
+    this.numToLoad +=20;
+     
+    this.dataProvider.getPosts(this.menu.name, this.category.name, this.numToLoad).snapshotChanges().take(1).subscribe(posts => {
+      
+      this.posts.set(this.category.name, posts.reverse());
+      
+    });
+    
+    console.log('Async operation has ended');
+    infiniteScroll.complete();
+  }, 500);
 }
 
 

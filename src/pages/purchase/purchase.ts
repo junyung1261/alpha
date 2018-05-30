@@ -4,6 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider, LoadingProvider, AlertProvider } from '../../providers';
 import { validateCallback } from '@firebase/util';
 import { InAppPurchase2, IAPProduct } from '@ionic-native/in-app-purchase-2';
+import { DecimalPipe } from '@angular/common';
 
 /**
  * Generated class for the PurchasePage page.
@@ -23,11 +24,7 @@ export class PurchasePage implements OnInit{
   private productIds = [];
   private products = [];
   private user: any;
-  public product: any = {
-    name: 'xianghanguo',
-    appleProductId: 'test.xinhan.tianya.test001',
-    googleProductId: 'test.xinhan.tianya.test001'
-  };
+
 
   constructor(private navCtrl: NavController, 
               private navParams: NavParams,
@@ -47,29 +44,32 @@ export class PurchasePage implements OnInit{
     this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
       this.user = user;
     })
-    this.dataProvider.getProducts().valueChanges().take(1).subscribe((products :any) => {
-      this.productsToShow = products;
-      
-      // this.configureProducts(products);
-    })
+    
 
   }
 
   
   ngOnInit() {
-    this.configurePurchasing();
+    this.dataProvider.getProducts().valueChanges().take(1).subscribe((products :any) => {
+      this.productsToShow = products;
+      this.productsToShow.forEach(product => {
+        this.configurePurchasing(product);
+      })
+      // this.configureProducts(products);
+    })
+    
   }
 
-  configurePurchasing() {
+  configurePurchasing(product) {
     if (!this.platform.is('cordova')) { return; }
     let productId;
     try {
       if (this.platform.is('ios')) {
-        productId = this.product.appleProductId;
+        productId = product.productId;
       } else if (this.platform.is('android')) {
-        productId = this.product.googleProductId;
+        productId = product.productId;
       }
-      alert(productId);
+      
       
       // Register Product
       // Set Debug High
@@ -77,11 +77,11 @@ export class PurchasePage implements OnInit{
       // Register the product with the store
       this.store.register({
         id: productId,
-        alias: productId,
+        alias: product.name,
         type: this.store.CONSUMABLE
       });
 
-      this.registerHandlers(productId);
+      this.registerHandlers(product);
 
       this.store.ready().then((status) => {
         console.log(JSON.stringify(this.store.get(productId)));
@@ -101,24 +101,28 @@ export class PurchasePage implements OnInit{
     }
   }
 
-  registerHandlers(productId) {
+  registerHandlers(selectedProduct) {
     // Handlers
-    this.store.when(productId).approved( (product: IAPProduct) => {
+    this.store.when(selectedProduct.productId).approved( (product: IAPProduct) => {
       // Purchase was approved
-      alert('된다된다');
-      product.finish();
+      this.dataProvider.getCurrentUser().update({
+        heart: this.user.heart + selectedProduct.ammount
+      }).then(()=>{
+        product.finish();
+      })
+      
     });
 
-    this.store.when(productId).registered( (product: IAPProduct) => {
+    this.store.when(selectedProduct.productId).registered( (product: IAPProduct) => {
       console.log('Registered: ' + JSON.stringify(product));
     });
 
-    this.store.when(productId).updated( (product: IAPProduct) => {
+    this.store.when(selectedProduct.productId).updated( (product: IAPProduct) => {
       console.log('Loaded' + JSON.stringify(product));
     });
 
-    this.store.when(productId).cancelled( (product) => {
-      alert('Purchase was Cancelled');
+    this.store.when(selectedProduct.productId).cancelled( (product) => {
+      console.log('Purchase was Cancelled');
     });
 
     // Overall Store Error
@@ -127,7 +131,7 @@ export class PurchasePage implements OnInit{
     });
   }
 
-  async purchase() {
+  async purchase(selectedProduct) {
     /* Only configuring purchase when you want to buy, because when you configure a purchase
     It prompts the user to input their apple id info on config which is annoying */
     if (!this.platform.is('cordova')) { return };
@@ -135,9 +139,9 @@ export class PurchasePage implements OnInit{
     let productId;
 
     if (this.platform.is('ios')) {
-      productId = this.product.appleProductId;
+      productId = selectedProduct.productId;
     } else if (this.platform.is('android')) {
-      productId = this.product.googleProductId;
+      productId = selectedProduct.productId;
     }
 
     console.log('Products: ' + JSON.stringify(this.store.products));
@@ -146,49 +150,14 @@ export class PurchasePage implements OnInit{
       let product = this.store.get(productId);
       console.log('Product Info: ' + JSON.stringify(product));
       let order = await this.store.order(productId);
-      alert('Finished Purchase');
+      console.log('Finished Purchase');
     } catch (err) {
       console.log('Error Ordering ' + JSON.stringify(err));
     }
   }
 
-  // configureProducts(products){
-  //   console.log(products);
-  //   this.loadingProvider.show();
-  //   if(products){
-
-  //     products.forEach(product => {
-  //       this.productIds.push(product.productId);
-  //     })
-  //     console.log(this.productIds);
-  //     this.iap.getProducts(this.productIds).then((products) => {
-  //       this.products = products
-  //       console.log(this.products);
-  //       this.loadingProvider.hide();
-  //     }).catch((err)=> {
-  //       console.log(err);
-  //       this.loadingProvider.hide();
-  //     })
-  //   }
-
-   
-  // }
-
-  // purchase(productId){
-  //   console.log(productId)
-  //   this.loadingProvider.show();
-  //   this.iap.buy(productId).then((data) => {
-  //     console.log(JSON.stringify(data));
-  //     console.log('transactionId:' + data.transactionId);
-  //     return this.iap.consume(data.productType, data.receipt, data.signature);
-  //   }).then(() => {
-  //     this.alertProvider.showAlert('Purchase was Successful!', 'Check your console log for the transaction data', 'Okay' );
-  //     this.loadingProvider.hide();
-  //   }).catch((err)=> {
-  //     console.log(err)
-  //     this.alertProvider.showAlert('error', 'error', 'Okay');
-  //     this.loadingProvider.hide();
-  //   })
-  // }
+  numToMoney(number : number){
+    return '￦ ' + number.toFixed().replace(/(\d)(?=(\d{3})+(,|$))/g, '$1,');
+  }
 
 }

@@ -9,6 +9,7 @@ import { TranslateProvider } from '../providers';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
+import { SplashScreen } from '@ionic-native/splash-screen';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,6 +26,7 @@ export class MyApp {
     private platform: Platform, 
     private statusBar: StatusBar, 
     private mobileAccessibility: MobileAccessibility,
+    private splashScreen: SplashScreen,
     private afAuth:AngularFireAuth,
     private translateService: TranslateService,
     private translate: TranslateProvider,
@@ -52,7 +54,7 @@ export class MyApp {
        }
 
       statusBar.styleDefault();
-      
+      splashScreen.show();
       imageLoader.spinnerEnabled = false;
       imageLoader.fallbackAsPlaceholder = true;
       imageLoader.useImg = true;
@@ -93,7 +95,7 @@ export class MyApp {
 
             } else {
               toastCtrl.create({
-                message: "Press back button again to exit",
+                message: this.translate.get('BACKBUTTON_TO_EXIT'),
                 duration: 2000,
                 position: 'bottom'
               }).present();

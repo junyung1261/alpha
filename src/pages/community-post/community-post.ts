@@ -23,11 +23,12 @@ export class CommunityPostPage {
   private tabBarHeight;
   private postId : any;
   private menu : any;
+  private category: any;
   private post;
   private writer;
   private comment = '';
   private subscriptions: Subscription[];
-  private resolve;
+  
 
   constructor(public navCtrl: NavController, 
               public navParams : NavParams, 
@@ -39,41 +40,44 @@ export class CommunityPostPage {
               public keyboard: Keyboard,
               public alertProvider: AlertProvider,
               ) {
+
+                this.userId = firebase.auth().currentUser.uid;
+    this.postId = this.navParams.get('postId');
+    this.menu = this.navParams.get('menu');
+    this.category = this.navParams.get('category');
     
   }
 
   ionViewDidLoad() {
-    this.contentBox=document.querySelector(".post .scroll-content")['style'];
-    this.tabBarHeight = this.contentBox.marginBottom;
-    this.userId = firebase.auth().currentUser.uid;
-    this.postId = this.navParams.get('postId');
-    this.menu = this.navParams.get('menu');
+    // this.contentBox=document.querySelector(".post .scroll-content")['style'];
+    // this.tabBarHeight = this.contentBox.marginBottom;
+    
     this.subscriptions = [];
 
     
-    let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
+    // let subscription = this.keyboard.onKeyboardShow().subscribe(() => {
       
-      document.querySelector(".tabbar")['style'].display = 'none';
-      this.contentBox.marginBottom = 0;
-      this.contentHandle.resize();
-      })
+    //   document.querySelector(".tabbar")['style'].display = 'none';
+    //   this.contentBox.marginBottom = 0;
+    //   this.contentHandle.resize();
+    //   })
   
-      let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
+    //   let subscription_ = this.keyboard.onKeyboardHide().subscribe(() => {
        
-      document.querySelector(".tabbar")['style'].display = 'flex';
-      this.contentBox.marginBottom = this.tabBarHeight;
-      this.contentHandle.resize();
-      })
+    //   document.querySelector(".tabbar")['style'].display = 'flex';
+    //   this.contentBox.marginBottom = this.tabBarHeight;
+    //   this.contentHandle.resize();
+    //   })
   
-      this.subscriptions.push(subscription);
-      this.subscriptions.push(subscription_)
+    //   this.subscriptions.push(subscription);
+    //   this.subscriptions.push(subscription_)
 
 
-    this.dataProvider.getPost(this.menu.name, this.postId).valueChanges().take(1).subscribe(post => {
+    this.dataProvider.getPost(this.menu.name, this.category, this.postId).valueChanges().take(1).subscribe(post => {
       this.post = post;
 
       if(this.post && this.post.title){
-        this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('views').transaction(function(currentCount){
+        this.afDB.database.ref('/community/' + this.menu.name + '/' +this.category + '/' + this.postId).child('views').transaction(function(currentCount){
           return currentCount+1;
         });
 
@@ -96,7 +100,7 @@ export class CommunityPostPage {
           this.subscriptions.push(subscription);
         });
   
-        let subscription_ = this.dataProvider.getPostLikes(this.menu.name, this.postId).snapshotChanges().subscribe(likes => {
+        let subscription_ = this.dataProvider.getPostLikes(this.menu.name, this.category,  this.postId).snapshotChanges().subscribe(likes => {
           this.post.likes = likes;
           this.subscriptions.push(subscription_);
         })
@@ -137,7 +141,7 @@ export class CommunityPostPage {
   
   // 게시글 좋아요 누르기 //
   likePost(key){
-    this.afDB.database.ref('/community/'+ this.menu.name + '/' + key + '/likes').push({
+    this.afDB.database.ref('/community/'+ this.menu.name + '/' +this.category + '/' + key + '/likes').push({
       uid: this.userId,
       date: firebase.database['ServerValue'].TIMESTAMP
     });
@@ -160,7 +164,7 @@ export class CommunityPostPage {
       });
     }
 
-    this.afDB.database.ref('/community/' + this.menu.name + '/'  + key + '/likes/' + likeKey[0].key).remove();
+    this.afDB.database.ref('/community/' + this.menu.name + '/' + this.category + '/'  +  key + '/likes/' + likeKey[0].key).remove();
   }
 
   // dislikeComment(key, target){
@@ -199,8 +203,7 @@ export class CommunityPostPage {
     let category = this.menu.category.filter((e) => {
       return e.name == post.category;
     })[0];
-
-    console.log(category)
+    
     let modal = this.modalCtrl.create('CommunityWritePage', {post: post, category: category});
     modal.onDidDismiss(data => {
       if(data){
@@ -218,7 +221,7 @@ export class CommunityPostPage {
     this.alertProvider.showConfirm(this.translate.get('community.post.menu.delete.title'), this.translate.get('community.post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
       if (confirm) {
         this.loadingProvider.show();
-        let postRef = this.dataProvider.getPost(this.menu.name, this.postId)
+        let postRef = this.dataProvider.getPost(this.menu.name, this.category, this.postId)
           postRef.remove().then(()=>{
       
             let commentRef = this.dataProvider.getComments(this.postId);
@@ -230,6 +233,7 @@ export class CommunityPostPage {
             this.afDB.database.ref('/accounts/' + this.userId + '/post/' + this.postId).remove().then(()=> {
               commentRef.remove();
             });
+            this.afDB.object('/community_Latest/' + this.menu.name +  this.postId).remove();
           this.loadingProvider.hide();
           this.navCtrl.pop().then(()=> {
             this.navParams.get('resolve')(true);
@@ -259,7 +263,7 @@ export class CommunityPostPage {
     }).then((success) => {
       commentRef.child(success.key).update({key: success.key});
       this.afDB.database.ref('/accounts/'+this.userId+'/comments/').update({[success.key]: this.postId }).then(() => {
-        this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('comments').transaction(function(currentCount){
+        this.afDB.database.ref('/community/' + this.menu.name + '/' + this.category + '/' + this.postId).child('comments').transaction(function(currentCount){
           return currentCount+1;
         })
       })
@@ -271,11 +275,11 @@ export class CommunityPostPage {
 
   deleteComment(comment){
     
-    this.alertProvider.showConfirm(this.translate.get('post.menu.delete.title'), this.translate.get('post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
+    this.alertProvider.showConfirm(this.translate.get('community.post.menu.delete.title'), this.translate.get('community.post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
       if (confirm) {
         this.loadingProvider.show();
         this.afDB.object('/comments/' + this.postId + '/' + comment.key).remove().then(() => {
-          this.afDB.database.ref('/community/' + this.menu.name + '/' + this.postId).child('comments').transaction(function(currentCount){
+          this.afDB.database.ref('/community/' + this.menu.name + '/' +this.category + '/' + this.postId).child('comments').transaction(function(currentCount){
             return currentCount-1;
           })
           this.afDB.object('/accounts/' + this.userId + '/comments/' + comment.key).remove();
@@ -296,6 +300,8 @@ export class CommunityPostPage {
       if(self.contentHandle._scroll) self.contentHandle.scrollToBottom();
     }, 300);
   }
+  
+
   
 
 }

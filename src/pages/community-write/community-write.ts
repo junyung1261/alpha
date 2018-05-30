@@ -4,7 +4,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { ImageUpload } from "../../components/image-upload/image-upload";
 import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Rx';
-import { ImageProvider } from '../../providers';
+import { ImageProvider, DataProvider } from '../../providers';
 
 
 @IonicPage()
@@ -21,12 +21,14 @@ export class CommunityWritePage {
   private options;
   private post_modify;
   private nav_title;
-  
+  private user;
+
   public navTitle;
   public submit;
 
   communityRef: any;
   accountRef : any;
+  communityLatestRef: any;
 
   title = '';
   text = '';
@@ -37,6 +39,7 @@ export class CommunityWritePage {
     public navParams: NavParams, 
     public viewCtrl: ViewController,
     public afDB: AngularFireDatabase,
+    public dataProvider: DataProvider,
     public imageProvider: ImageProvider) { 
 
     // life, beauty, study
@@ -58,6 +61,9 @@ export class CommunityWritePage {
     this.navTitle = 'community.title.write';
     
     
+    this.dataProvider.getCurrentUser().valueChanges().take(1).subscribe((user : any)=>{
+      this.user = user;
+    })
     
     if(this.category.option) this.options = this.category.option.slice(1,this.category.option.length);
 
@@ -77,9 +83,9 @@ export class CommunityWritePage {
     }
 
     
-    this.communityRef = this.afDB.database.ref('/community/' + this.category.parent);
+    this.communityRef = this.afDB.database.ref('/community/' + this.category.parent + '/' + this.category.name);
     this.accountRef = this.afDB.database.ref('/accounts/' +firebase.auth().currentUser.uid + '/post');
-    
+    this.communityLatestRef = this.afDB.database.ref('/community_Latest/' + this.category.parent);
   }
 
   write(title: string, text: string, tags: string) {
@@ -97,8 +103,8 @@ export class CommunityWritePage {
       title: title,
       views:0,
       writer: firebase.auth().currentUser.uid,
+      writerName: this.user.username,
       category_date: this.category.name + '_' + date,
-      
       comments: 0
       
       
@@ -109,8 +115,9 @@ export class CommunityWritePage {
       })
       if (this.imageUpload.images.length > 0) {
         this.imageUpload.key = success.key;
-        this.imageUpload.uploadPostImages(this.category.parent);
+        this.imageUpload.uploadPostImages(this.category.parent , this.category.name);
       }
+      this.communityLatestRef.update({[success.key]: this.category.name});
       this.accountRef.update({[success.key]: this.category.parent });
       this.viewCtrl.dismiss({ data: true});
     })
@@ -122,7 +129,7 @@ export class CommunityWritePage {
     
 
     this.communityRef.child(this.post_modify.key).update({
-      
+      writerName: this.user.username,
       title: title,
       description: text,
       tags: tags,
@@ -134,7 +141,7 @@ export class CommunityWritePage {
           this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
         }
         
-        this.imageUpload.uploadPostImages(this.category.parent).then(() => {
+        this.imageUpload.uploadPostImages(this.category.parent, this.category.name).then(() => {
           this.viewCtrl.dismiss({ data: true});
         });
       }
@@ -142,7 +149,7 @@ export class CommunityWritePage {
       else if(this.imageUpload.removeImages.length > 0 && this.imageUpload.images.length == 0){
        
         this.imageProvider.deletePostImageFile(this.post_modify.key, this.imageUpload.removeImages);
-        this.imageProvider.updatePostUrl(this.post_modify.key, this.imageUpload.imageURL, this.category.parent).then(() => {
+        this.imageProvider.updatePostUrl(this.post_modify.key, this.imageUpload.imageURL, this.category.parent, this.category.name).then(() => {
           this.viewCtrl.dismiss({ data: true});
         });
 

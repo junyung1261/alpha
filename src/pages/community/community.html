@@ -9,8 +9,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-
-<ion-content no-padding #content class="community">
+<!-- <ion-content no-padding #content class="community"> -->
+<ion-content no-padding >
 
 
   <ion-refresher (ionRefresh)="doRefresh($event)">
@@ -30,24 +30,25 @@
 
   <div *ngIf="menu">
     <ion-grid no-padding>
-      <ion-row class="x-search">
-        <ion-col col-12>
-          <div class="x-search-box">
-            <div class="x-search-left">
-              <select class="x-search-select">
-                <ng-container >
-                  <option >{{ 'community.search.title' | translate }}</option>
-                  <option >{{ 'community.search.content' | translate }}</option>
-                  <option >{{ 'community.search.writer' | translate }}</option>
-                </ng-container>
-              </select>
-            </div>
-            <div class="x-search-center"><ion-input type="text" class="x-search-input"></ion-input></div>
-            <div class="x-search-right">
-              <button ion-button class="x-search-btn"><ion-icon name="flaticon-search-1" color="x-white"></ion-icon></button>
-            </div>
-          </div>
-        </ion-col>
+      <ion-row >
+        <ion-col col-3 no-margin no-padding>
+          <ion-item no-margin no-padding no-lines>
+              <ion-select  style="max-width:90%; font-size: 1.5rem;" [(ngModel)] = "selectedSearchBy">
+                  <ion-option value="title">{{ 'community.searchBy.title' | translate }}</ion-option>
+                  <ion-option  value="description">{{ 'community.searchBy.content' | translate }}</ion-option>
+                  <ion-option  value="writerName">{{ 'community.searchBy.writer' | translate }}</ion-option>
+              </ion-select>
+            </ion-item>
+            </ion-col>
+          <ion-col col-9 no-margin no-padding>
+              <ion-item no-margin no-padding no-lines> 
+          <ion-input type="text" [(ngModel)]="searchIndex"></ion-input>
+          
+            <button icon-only item-right style="background-color: transparent;" (click)="openSearchPage(selectedSearchBy,searchIndex, category, menu )" [disabled]="searchIndex.trim().length == 0 "><ion-icon name="search"></ion-icon></button>
+
+              </ion-item>
+          </ion-col>
+      
       </ion-row>
     </ion-grid>
 
@@ -92,7 +93,7 @@
       </ion-segment>
     
       <div *ngFor="let post of posts.get(category.name)">
-        <ion-row class="x-list-row"  (click)="openPost(menu, post.key)">
+        <ion-row class="x-list-row"  (click)="openPost(menu, post)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{ post.payload.val().category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
@@ -111,7 +112,7 @@
           </ng-container>
       </ion-segment>
       <div *ngFor="let post of posts.get(category.name)">
-        <div class="x-photolist"  (click)="openPost(menu, post.key)">
+        <div class="x-photolist"  (click)="openPost(menu, post)">
           <div class="x-photolist-left" *ngIf="post.payload.val().images"><img src="{{post.payload.val().images[0]}}"></div>
           <div class="x-photolist-right">
             <div class="x-photolist-contents"><span class="x-photolist-category">{{ post.payload.val().option | translate }}&nbsp;&nbsp;</span>{{ post.payload.val().title }}</div>
@@ -129,7 +130,7 @@
         <ion-col col-12>구인구직 목록</ion-col>
       </ion-row>
       <div *ngFor="let post of posts.get(category.name )">
-        <ion-row class="x-list-row"  (click)="openPost(menu, post.key)">
+        <ion-row class="x-list-row"  (click)="openPost(menu, post)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().category}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
@@ -146,6 +147,10 @@
   <ion-fab class="x-float-button" >
       <button ion-fab color="x-mint" (click)="writePost();"><ion-icon name="flaticon-edit" color="x-white"></ion-icon></button>
   </ion-fab>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
     
 </ion-content>
   

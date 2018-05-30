@@ -352,10 +352,10 @@ export class ImageProvider {
       });
     }
 
-    updatePostUrl(postId, imageURL, category): Promise<any> {
+    updatePostUrl(postId, imageURL, menu, category): Promise<any> {
 
       return new Promise((resolve, reject) => {
-        this.angularfireDatabase.object('/community/' + category + '/' + postId ).update({ images: imageURL
+        this.angularfireDatabase.object('/community/' + menu + '/' + category + '/' + postId ).update({ images: imageURL
         }).then((success) => {
           resolve();
           this.loadingProvider.hide();

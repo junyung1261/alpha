@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { UserListPage } from './userlist';
+import { UserListPage } from './user-list';
 import { TranslateModule } from '@ngx-translate/core';
 import { PipeModule } from '../../pipes/pipe.module';
 

@@ -32,10 +32,16 @@ export class LoginPage {
 
   viewLogin(){
     let loginModal = this.modalCtrl.create('LoginViewPage',{type:'login'},this.opts_login);
+    loginModal.onDidDismiss(data => {
+      if(data) this.navCtrl.setRoot('LoaderPage');
+    })
     loginModal.present();
   }
   viewJoin(){
     let joinModal = this.modalCtrl.create('LoginViewPage',{type:'join'},this.opts_join);
+    joinModal.onDidDismiss(data => {
+      if(data) this.navCtrl.setRoot('LoaderPage');
+    })
     joinModal.present();
   }
 

@@ -1,14 +1,34 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      PURCHASE
-    </ion-title>
+
+<ion-header no-border>
+  <ion-navbar color="x-mint" hideBackButton>
+   
+    <ion-title text-center>{{ 'purchase.text.title' | translate }}</ion-title>
+    <ion-buttons left *ngIf="user">
+      <button ion-button class="text-on-bottom" >
+        <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value"> {{ user.payload.val().heart }}</span>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons end>
+        <button ion-button (click)="navCtrl.pop()"><ion-icon name="flaticon-cross-1" color="x-white"></ion-icon></button>
+      </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div *ngIf ="user">
-  나의 하트수 : {{ user.payload.val().heart }}
-  <button ion-button full (click)="purchase()" *ngFor="let product of productsToShow">{{product.title}}</button>
-</div>
+<ion-content>
+
+    <ion-list>
+      <ion-item (click)="purchase(product)" *ngFor="let product of productsToShow">
+        
+          <ion-icon item-start name="flaticon-like-1" color="danger"></ion-icon>
+          <h2>{{ 'purchase.text.heart' | translate }}</h2>
+          <p>{{product.amount}} {{ 'purchase.text.count' | translate }}</p>
+          <button ion-button item-end outline color="x-mint"  >{{ numToMoney(product.price) }}</button>
+      
+      </ion-item>
+      
+    </ion-list>
+  
+  
+
 </ion-content>
