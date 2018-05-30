@@ -53,46 +53,49 @@ export class PurchasePage implements OnInit{
     this.dataProvider.getProducts().valueChanges().take(1).subscribe((products :any) => {
       
       this.productsToShow = products;
-      this.productsToShow.forEach(product => {
-        this.configurePurchasing(product);
-      })
+      this.configurePurchasing(this.productsToShow)
       // this.configureProducts(products);
     })
     
   }
 
-  configurePurchasing(product) {
+  configurePurchasing(products) {
     if (!this.platform.is('cordova')) { return; }
-    let productId;
+    
     try {
-      if (this.platform.is('ios')) {
-        productId = product.productId;
-      } else if (this.platform.is('android')) {
-        productId = product.productId;
-      }
       
-      
-      // Register Product
       // Set Debug High
       this.store.verbosity = this.store.DEBUG;
-      // Register the product with the store
-      this.store.register({
-        id: productId,
-        alias: product.title,
-        type: this.store.CONSUMABLE
-      });
 
-      this.registerHandlers(product);
+      products.forEach(product => {
+        let productId;
+        if (this.platform.is('ios')) {
+          productId = product.productId;
+        } else if (this.platform.is('android')) {
+          productId = product.productId;
+        }
+
+        
+      // Register Product
+        this.store.register({
+          id: productId,
+          alias: product.title,
+          type: this.store.CONSUMABLE
+        });
+
+        this.registerHandlers(product);
+
+      })
+     
+      
+    
+      // Register the product with the store
+      
 
       this.store.ready().then((status) => {
-        console.log(JSON.stringify(this.store.get(productId)));
+        // console.log(JSON.stringify(this.store.get(productId)));
         console.log('Store is Ready: ' + JSON.stringify(status));
         console.log('Products: ' + JSON.stringify(this.store.products));
-      });
-
-      // Errors On The Specific Product
-      this.store.when(productId).error( (error) => {
-        alert('An Error Occured' + JSON.stringify(error));
       });
       // Refresh Always
       console.log('Refresh Store');
@@ -126,6 +129,10 @@ export class PurchasePage implements OnInit{
       console.log('Purchase was Cancelled');
     });
 
+    // Errors On The Specific Product
+    this.store.when(selectedProduct.productId).error( (error) => {
+      alert('An Error Occured' + JSON.stringify(error));
+    });
     // Overall Store Error
     this.store.error( (err) => {
       alert('Store Error ' + JSON.stringify(err));
