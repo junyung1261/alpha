@@ -41,7 +41,7 @@ export class PurchasePage implements OnInit{
   ionViewDidLoad() {
     console.log('ionViewDidLoad PurchasePage');
 
-    this.dataProvider.getCurrentUser().snapshotChanges().subscribe(user => {
+    this.dataProvider.getCurrentUser().valueChanges().subscribe(user => {
       this.user = user;
     })
     
@@ -51,6 +51,7 @@ export class PurchasePage implements OnInit{
   
   ngOnInit() {
     this.dataProvider.getProducts().valueChanges().take(1).subscribe((products :any) => {
+      
       this.productsToShow = products;
       this.productsToShow.forEach(product => {
         this.configurePurchasing(product);
@@ -77,7 +78,7 @@ export class PurchasePage implements OnInit{
       // Register the product with the store
       this.store.register({
         id: productId,
-        alias: product.name,
+        alias: product.title,
         type: this.store.CONSUMABLE
       });
 
@@ -132,6 +133,7 @@ export class PurchasePage implements OnInit{
   }
 
   async purchase(selectedProduct) {
+
     /* Only configuring purchase when you want to buy, because when you configure a purchase
     It prompts the user to input their apple id info on config which is annoying */
     if (!this.platform.is('cordova')) { return };

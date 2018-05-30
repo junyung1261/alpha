@@ -5,7 +5,7 @@
     <ion-title text-center>{{ 'purchase.text.title' | translate }}</ion-title>
     <ion-buttons left *ngIf="user">
       <button ion-button class="text-on-bottom" >
-        <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value"> {{ user.payload.val().heart }}</span>
+        <ion-icon name="flaticon-like-1" color="x-white"></ion-icon><span class="heart-value"> {{ user.heart }}</span>
       </button>
     </ion-buttons>
 
