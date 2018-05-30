@@ -54,7 +54,7 @@
       </ion-row>
      
       <div *ngFor="let post of menu.posts">
-        <ion-row class="x-list-row" (click)="openPost(menu, post.key)">
+        <ion-row class="x-list-row" (click)="openPost(menu, post)">
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{post.payload.val().category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>

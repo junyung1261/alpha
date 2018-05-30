@@ -1,6 +1,6 @@
 page-community {
-    .community {
-        background-color:map-get($colors,x-gray-bg);
+    ion-content {
+        background-color:map-get($colors,x-gray-bg) !important;
     } 
    
     .segment-activated{font-size:3.7vw !important; font-weight: bold !important;}  

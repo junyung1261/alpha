@@ -4,6 +4,7 @@ import * as firebase from 'firebase';
 import 'rxjs/add/operator/map'; // you might need to import this, or not depends on your setup
 import 'rxjs/add/operator/take'
 import { LoadingProvider, AlertProvider } from '../';
+import { last } from 'rxjs/operators';
 
 @Injectable()
 export class DataProvider {
@@ -95,23 +96,30 @@ export class DataProvider {
 
   // HOME 최신글 가져오기 5개씩 //
   getLatestPosts(menu) {
-    return this.angularfireDatabase.list('/community/'+ menu, ref => ref.orderByChild('date').limitToLast(5));
+    return this.angularfireDatabase.list('/community_Latest/'+ menu, ref => ref.limitToLast(5));
   }
 
   getUserPost(userId){
     return this.angularfireDatabase.list('/accounts/' + userId + '/post', ref => ref.orderByKey());
   }
 
-  getPost(category, postId){
-    return this.angularfireDatabase.object('/community/'+ category + '/' + postId);
+  getPost(menu, category, postId){
+    return this.angularfireDatabase.object('/community/'+ menu + '/' + category + '/' + postId);
   }
 
-  getPosts(child, category) {
-    return this.angularfireDatabase.list('/community/'+ child, ref => ref.orderByChild('category_date').startAt(category).endAt(category+"\uf8ff").limitToLast(5));
+  getPosts(menu, category, numberToLoad) {
+   
+      return this.angularfireDatabase.list('/community/'+ menu + '/' + category, ref => ref.limitToLast(numberToLoad));
+  
+    
   }
 
-  getPostLikes(category, postId){
-    return this.angularfireDatabase.list('/community/' + category + '/' + postId + '/likes');
+  getPostsBySearched(menu, category, searchBy, index) {
+    return this.angularfireDatabase.list('/community/'+ menu + '/' + category, ref => ref.orderByChild(searchBy).startAt(index).endAt(index+"\uf8ff").limitToLast(100));
+  }
+
+  getPostLikes(menu, category, postId){
+    return this.angularfireDatabase.list('/community/' + menu + '/' + category + '/' + postId + '/likes');
   }
 
   getCommentLikes(postId){
@@ -119,7 +127,7 @@ export class DataProvider {
   }
 
   getComments(postId) {
-    return this.angularfireDatabase.list('/comments/' + postId , ref=> ref);
+    return this.angularfireDatabase.list('/comments/' + postId);
   }
   
   getFeeds(batch, lastKey?) {

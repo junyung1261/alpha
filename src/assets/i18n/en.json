@@ -217,9 +217,9 @@
   "storage.upload.error": "Sorry, an error occurred uploading the photo.",
 
   "community.post.latest": "Latest posts",
-  "community.search.title": "by title",
-  "community.search.content": "by content",
-  "community.search.writer": "by writer",
+  "community.searchBy.title": "by title",
+  "community.searchBy.content": "by content",
+  "community.searchBy.writer": "by writer",
   "community.title.write": "Write",
   "community.title.modify": "Modify",
   "community.write.title.placeholder": "Write a title",
@@ -233,6 +233,7 @@
   "community.post.menu.delete" : "delete",
   "community.post.menu.delete.title" : "Confirm delete?",
   "community.post.menu.delete.text" : "Are you sure you want to delete it?",
+  "community.search.title": "result",
 
   "userlist.requestreceived.title": "Chat Requests",
   "userlist.latestuser.title": "Users",

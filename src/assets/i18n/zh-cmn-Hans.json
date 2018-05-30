@@ -217,9 +217,9 @@
   "storage.upload.error":  "抱歉，照片上传失败.",
 
   "community.post.latest": "最新动态",
-  "community.search.title": "主题",
-  "community.search.content": "内容",
-  "community.search.writer":  "作者",
+  "community.searchBy.title": "主题",
+  "community.searchBy.content": "内容",
+  "community.searchBy.writer":  "作者",
   "community.title.write": "文字",
   "community.title.modify": "修改",
   "community.write.title.placeholder":  "请输入主题",
@@ -233,6 +233,7 @@
   "community.post.menu.delete" : "删除",
   "community.post.menu.delete.title" :  "确认删除?",
   "community.post.menu.delete.text" :  "您确定要删除吗?",
+  "community.search.title": "搜索结果",
 
   "userlist.requestreceived.title": "请求对话",
   "userlist.latestuser.title": "正在使用的人",
