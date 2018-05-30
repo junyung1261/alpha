@@ -97,7 +97,7 @@ ion-title {
 .x-photolist-container { width:100vw;height:fit-content;background-color:map-get($colors,x-white);padding:0 3vw;}
 .x-photolist-title {width:94vw;height:10vw;padding-top:2.5vw;font-size:3.5vw;font-weight:bold;border-bottom:1px solid map-get($colors,x-skyblue-line);color:map-get($colors,x-gray-dark);}
 .x-photolist {width:94vw;height:25vw;padding:3vw 0;border-bottom:1px solid map-get($colors,x-gray-bg);}
-.x-photolist-left {float:left;width:18vw;height:18vw;border:1px solid map-get($colors,x-gray-bg);margin-right:3vw;}
+.x-photolist-left {float:left;width:18vw;height:18vw;border:1px solid map-get($colors,x-gray-bg);margin-right:3vw; img{ object-fit: cover; height: 100%; width: 100%;}}
 .x-photolist-right {float:left;width:fit-content;height:fit-content;}
 .x-photolist-contents {width:73vw;height:12vw;font-size:3.5vw;color:map-get($colors,x-gray-dark); overflow: hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;display: -webkit-box;-webkit-box-orient: vertical;}
 .x-photolist-category {color:map-get($colors,x-mint);}
