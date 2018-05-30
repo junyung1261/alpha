@@ -106,7 +106,7 @@ export class PurchasePage implements OnInit{
     this.store.when(selectedProduct.productId).approved( (product: IAPProduct) => {
       // Purchase was approved
       this.dataProvider.getCurrentUser().update({
-        heart: this.user.heart + selectedProduct.ammount
+        heart: this.user.heart + selectedProduct.amount
       }).then(()=>{
         product.finish();
       })
