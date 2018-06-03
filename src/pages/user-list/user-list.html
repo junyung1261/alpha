@@ -41,7 +41,7 @@
 
         <ion-item-group>
             <ion-item-divider color="light">{{ 'userlist.latestuser.title' | translate}} <button item-right>{{ 'userlist.button.latest' | translate }}</button></ion-item-divider>
-            <ion-item *ngFor="let lastestUser of users | slice:0:usersToShow" tappable [hidden]="excludedIds.indexOf(lastestUser.key) != -1">
+            <ion-item *ngFor="let lastestUser of users | slice:0:usersToShow" tappable [hidden]="excludedIds.indexOf(lastestUser.key) != -1 || withdrawalIds.indexOf(lastestUser.key) != -1">
                 <ion-avatar item-left>
                     <img-loader src=" {{lastestUser.payload.val().profileImg}}" tappable ></img-loader>
                 

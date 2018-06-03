@@ -92,8 +92,8 @@
           </ng-container>
       </ion-segment>
     
-      <div *ngFor="let post of posts.get(category.name)">
-        <ion-row class="x-list-row"  (click)="openPost(menu, post)">
+      <div *ngFor="let post of posts.get(category.name)" >
+        <ion-row class="x-list-row"  (click)="openPost(menu, post)"> 
           <ion-col col-12 class="x-list-col">
             <span class="x-list-label">{{ post.payload.val().category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
             <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
@@ -111,7 +111,7 @@
           <ion-segment-button class="x-category-btn" value="{{option}}" (ionSelect)="setCategoryOption(category, option)"> {{ option | translate }}</ion-segment-button>
           </ng-container>
       </ion-segment>
-      <div *ngFor="let post of posts.get(category.name)">
+      <div *ngFor="let post of posts.get(category.name)" [hidden]="postSegment(post.payload.val().option, category.selectedOption)">
         <div class="x-photolist"  (click)="openPost(menu, post)">
           <div class="x-photolist-left" *ngIf="post.payload.val().images"><img src="{{post.payload.val().images[0].url}}"></div>
           <div class="x-photolist-right">

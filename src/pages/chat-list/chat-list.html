@@ -20,7 +20,8 @@
                 <img src="{{ partners.get(conversation.conversationId).payload.val().profileImg }}" >
             </ion-avatar>
             <h2 text-uppercase *ngIf="partners.get(conversation.conversationId)">
-              <span>{{ partners.get(conversation.conversationId).payload.val().username }}</span>
+              <span *ngIf="!partners.get(conversation.conversationId).payload.val().withdrawalDate">{{ partners.get(conversation.conversationId).payload.val().username }}</span>
+              <span *ngIf="partners.get(conversation.conversationId).payload.val().withdrawalDate">{{ 'WITHDRAWAL_USER' | translate }}</span>
               <span text-lowercase class="message-time">{{ getLastMessageDate(conversation.messages)  | DateFormat }}</span></h2>
             <p text-wrap *ngIf="partners.get(conversation.conversationId)">{{ getLastMessage(conversation.messages) }}</p>
 

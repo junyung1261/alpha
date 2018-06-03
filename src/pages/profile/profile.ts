@@ -286,5 +286,58 @@ export class ProfilePage {
       }
     }).catch(() => { this.loadingProvider.hide();});
   }
+
+  withdrawal(){
+    let alert = this.alertCtrl.create({
+      title: this.translate.get('auth.button.withdrawal'),
+      subTitle: this.translate.get('auth.menu.withdrawal.button.text'),
+      inputs: [{
+        name: 'password',
+        placeholder: this.translate.get('auth.form.password'),
+        type: 'password'
+        }
+      ],
+      buttons:[
+        {
+          text: this.translate.get('auth.menu.logout.button.cancel'),
+          role: 'cancel',
+          handler: (data) => {
+            console.log('Cancel clicked');
+          },
+        },
+        {
+          text: this.translate.get('auth.button.withdrawal'),
+          handler: (data) => {
+            this.loadingProvider.show();
+            let user = firebase.auth().currentUser;
+            let credential = firebase.auth.EmailAuthProvider.credential(user.email, data.password);
+
+            user.reauthenticateWithCredential(credential).then(() => {
+                this.dataProvider.getCurrentUser().update({
+                  lastLogin: -1,
+                  notifications: false,
+                  profileImg: "assets/imgs/noavatar.png",
+                  withdrawalDate: firebase.database['ServerValue'].TIMESTAMP
+                }).then(success => {
+                  this.notification.destroy();
+                  this.authProvider.logout();
+                  user.delete();
+                  this.loadingProvider.hide();
+                  this.app.getRootNavs()[0].setRoot('LoginPage');
+                  window.location.reload();
+                })
+              this.loadingProvider.hide();
+            }).catch(err => {
+              this.toast.show(this.translate.get('auth/wrong-password'));
+              this.loadingProvider.hide();
+            })
+            
+          },
+        }
+      ]
+      
+    })
+    alert.present();
+  }
   
 }

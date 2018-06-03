@@ -8,6 +8,7 @@
   "LOGIN": "登 录",
   "SIGNUP": "注 册",
   "LOGIN_INTRO": "为了确保更优质的服务质量，建议在Wi-Fi环境下使用",
+  "WITHDRAWAL_USER": "Withdrew User",
 
   "TAB1_TITLE": "享韩国",
   "TAB2_TITLE": "用户列表",
@@ -115,6 +116,7 @@
   "auth.menu.logout.text": "确定要退出吗?",
   "auth.menu.logout.button.logout": "退出登录",
   "auth.menu.logout.button.cancel": "取消",
+  "auth.menu.withdrawal.button.text": "",
   "auth.menu.title.home": "享韩国",
   "auth.menu.title.page": "主页",
   "auth.nav.title.create": "创建用户信息",
@@ -165,6 +167,7 @@
   "auth.button.save": "保存更改",
   "auth.button.change": "修改密码",
   "auth.button.logout": "退出登录",
+  "auth.button.withdrawal": "退出会员",
   "auth.login.text": "请输入邮箱和密码",
   "auth.register.text":  "或者您可以",
   "auth.login.question":  "还未注册的用户?请, ",

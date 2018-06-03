@@ -14,6 +14,7 @@ page-profile {
   .profile-submit{width:88vw;margin:0 auto;text-align:center;margin-top:3vw;}
   .profile-submit button{width:88vw;border-radius:0;box-shadow:none;background-color:map-get($colors,x-mint);color:map-get($colors,x-white);font-weight:normal !important;font-size:4vw;height:44px;}
   .profile-logout{background-color:map-get($colors,x-gray-category) !important;color:map-get($colors,x-white) !important;}
+  .profile-withdrawal{background-color:map-get($colors, danger) !important;color:map-get($colors,x-white) !important;}
   .text-on-bottom > .button-inner {
     flex-direction: column;
   }

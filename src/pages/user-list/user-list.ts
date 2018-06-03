@@ -27,6 +27,7 @@ export class UserListPage {
   private usersToShow: number = 10;
   private subscriptions: Subscription [];
   private excludedIds = [];
+  private withdrawalIds = [];
   
   constructor(
     public navCtrl: NavController, 
@@ -63,6 +64,10 @@ export class UserListPage {
 
     this.subscriptions = [];
     let subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
+      this.withdrawalIds = [];
+      this.users.forEach(user => {
+        if(user.payload.val().withdrawalDate) this.withdrawalIds.push(user.key);
+      })
       this.users = users.reverse();
       this.subscriptions.push(subscription);
     });
@@ -284,7 +289,7 @@ presentAlert(req, user) {
   /* 대화 요청 시작 req=1 */
   if(req==1){
 
-    this.alertProvider.showConfirm( this.translate.get('userlist.add.title') + '->' + user.payload.val().username, this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('ADD_BUTTON')).then(confirm => {
+    this.alertProvider.showConfirm( this.translate.get('userlist.add.title') + ' -> ' + user.payload.val().username, this.translate.get('userlist.add.subtitle'),this.translate.get('CANCEL_BUTTON'), this.translate.get('ADD_BUTTON')).then(confirm => {
       if(confirm){
         this.dataProvider.sendFriendRequest(this.user.key, user.key).then(() => {
           if(user.payload.val().notifications){

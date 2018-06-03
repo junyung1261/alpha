@@ -21,7 +21,6 @@ export class CommunityPage {
   private segmentsPerRow: number;
   private posts: Map<string, any>;
   private subscriptions: Subscription[];
-  private lastPostId : any;
   private selectedSearchBy = "title"
   private searchIndex = "";
   private numToLoad = 15;
@@ -82,7 +81,7 @@ export class CommunityPage {
   }
 
   getCategory(index){
-    
+
     if(this.menu){
       this.category = this.menu.category[index];
       if(this.category.option){
@@ -97,7 +96,6 @@ export class CommunityPage {
 
   setCategoryOption(category, option){
     if(category){
-      
       category.selectedOption = option;
     }
   }
@@ -108,7 +106,7 @@ export class CommunityPage {
       this.dataProvider.getPosts(this.menu.name, category.name, this.numToLoad).snapshotChanges().take(1).subscribe(posts => {
           
         this.posts.set(category.name, posts.reverse());
-        this.lastPostId = posts[14].key;
+        
       });
     });
   }
@@ -141,6 +139,15 @@ export class CommunityPage {
     modalCtrl.present();
   }
   
+
+  postSegment(postOption, selectedOption){
+    if(selectedOption == 'total') return false
+    
+    else if(postOption != selectedOption) return true
+
+    else return false;
+   
+  }
   
 
 

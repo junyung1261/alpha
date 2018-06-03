@@ -8,6 +8,7 @@
   "LOGIN": "Sign in",
   "SIGNUP": "Sign up",
   "LOGIN_INTRO": "为了确保更优质的服务质量，建议在Wi-Fi环境下使用",
+  "WITHDRAWAL_USER": "Withdrew User",
 
   "TAB1_TITLE": "Xiǎng Hánguó",
   "TAB2_TITLE": "User List",
@@ -115,6 +116,7 @@
   "auth.menu.logout.text": "Are you sure you want to sign out?",
   "auth.menu.logout.button.logout": "Sign out",
   "auth.menu.logout.button.cancel": "Cancel",
+  "auth.menu.withdrawal.button.text": "",
   "auth.menu.title.home": "Home",
   "auth.menu.title.page": "Page",
   "auth.nav.title.create": "Create Profile",
@@ -165,6 +167,7 @@
   "auth.button.save": "SAVE CHANGES",
   "auth.button.change": "CHANGE PASSWORD",
   "auth.button.logout": "SIGN OUT",
+  "auth.button.withdrawal": "WITHDRAWAL",
   "auth.login.text": "Please enter your emali and password",
   "auth.register.text": "or you can",
   "auth.login.question": "Not registered yet? Please, ",
