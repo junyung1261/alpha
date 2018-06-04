@@ -23,8 +23,8 @@
           <ion-icon item-start name="flaticon-like-1" color="danger"></ion-icon>
           <h2>{{ 'purchase.text.heart' | translate }}</h2>
           <p>{{product.amount}} {{ 'purchase.text.count' | translate }}</p>
-          <button ion-button item-end outline color="x-mint"  >{{ numToMoney(product.price) }}</button>
-      
+          <button ion-button item-end outline color="x-mint"  *ngIf="platform.is('android')">{{ numToMoney(product.price) }}</button>
+          <button ion-button item-end outline color="x-mint"  *ngIf="platform.is('ios')">$ {{ product.price_ios }}</button>
       </ion-item>
       
     </ion-list>

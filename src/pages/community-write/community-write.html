@@ -35,7 +35,7 @@
   </div>
 
   <div class="x-boardwrite-tags">
-    <ion-input type="text" class="x-boardwrite-tags-input" placeholder="{{ 'community.write.tag.placeholder' | translate }}  ex)#정치 #사회 #문화" [(ngModel)]="tags"></ion-input>
+    <ion-input type="text" class="x-boardwrite-tags-input" placeholder="{{ 'community.write.tag.placeholder' | translate }}  ex)#政治 #社会 #文化" [(ngModel)]="tags"></ion-input>
   </div>
   <div class="x-boardwrite-btn">
     <button ion-button class="x-boardwrite-submit" *ngIf="!post_modify" [disabled]="checkTrim(text, title)" (click)="write(title, text, tags)">{{ 'community.post.menu.write' | translate }}</button>
