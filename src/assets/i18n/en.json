@@ -244,6 +244,7 @@
   "userlist.add.title": "",
   "userlist.add.subtitle": "",
   "userlist.add.heart.subtitle": "",
+  "userlist.toast.heart.lack" : "",
 
   "chats.nav.title": "Chats",
   "chats.new.title": "New Conversation",
@@ -252,8 +253,8 @@
   "chats.message.sent.photo": "You sent a photo message.",
   "chats.message.received.photo": "has sent you a photo message.",
   "chats.message.you": "You: ",
-  "chats.message.new": "채팅이 시작되었습니다.",
-  "chats.message.end": "님이 대화방을 나갔습니다.",
+  "chats.message.new": "Chat has started.",
+  "chats.message.end": "Chat has ended",
   "chats.message.write": "Write a message ...",
   "chats.message.photo.title": "Send Photo Message",
   "chats.message.photo.take": "Take a Photo",

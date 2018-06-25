@@ -113,7 +113,7 @@ export class MyApp {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translateService.setDefaultLang('en');
+    this.translateService.setDefaultLang('zh-cmn-Hans');
     const browserLang = this.translateService.getBrowserLang();
 
     if (browserLang) {
@@ -132,8 +132,8 @@ export class MyApp {
       })
       }
     } else {
-      this.translateService.use('en'); // Set your language here
-      this.translateService.getTranslation('en').subscribe(translations => {
+      this.translateService.use('zh-cmn-Hans'); // Set your language here
+      this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
         this.translate.setTranslations(translations);
         this.rootPage = 'LoaderPage';
       })

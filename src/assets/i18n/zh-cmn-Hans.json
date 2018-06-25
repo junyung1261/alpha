@@ -244,6 +244,7 @@
   "userlist.add.title": "选择聊天",
   "userlist.add.subtitle": "与正在使用的TA聊天",
   "userlist.add.heart.subtitle": "使用 15 红心，即可马上和对方开始对话",
+  "userlist.toast.heart.lack" : "没有足够的心",
   
   "chats.nav.title": "聊天",
   "chats.new.title":  "新对话.",

@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, ModalController, AlertController }
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
-import { DataProvider, NotificationProvider, AlertProvider, TranslateProvider } from '../../providers';
+import { DataProvider, NotificationProvider, AlertProvider, TranslateProvider, ToastProvider } from '../../providers';
 import { Subscription } from 'rxjs/Subscription';
 
 
@@ -39,7 +39,8 @@ export class UserListPage {
     public alertProvider: AlertProvider,
     public alertCtrl: AlertController,
     public notificationProvider: NotificationProvider,
-    public translate: TranslateProvider
+    public translate: TranslateProvider,
+    public toast: ToastProvider
   ) {
   }
   
@@ -254,7 +255,7 @@ presentAlert(req, user) {
 
       }
       else if(confirm &&  this.user.payload.val().heart < 15){
-        
+        this.toast.show(this.translate.get('userlist.toast.heart.lack'));
       }
     })
     // let alert = this.alertCtrl.create({
