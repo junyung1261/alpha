@@ -113,7 +113,7 @@ export class CommunityPage {
 
   openPost(menu, post){
     new Promise((resolve, reject)=> {
-      this.navCtrl.push('CommunityPostPage',{menu: menu, category: post.payload.val().category, postId : post.key, resolve: resolve});
+      this.navCtrl.push('CommunityPostPage',{menu: menu, category: this.category.name, postId : post.key, resolve: resolve});
 
     }).then(data => {
       if(data){

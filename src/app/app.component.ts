@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { MobileAccessibility } from '@ionic-native/mobile-accessibility';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TranslateService } from '@ngx-translate/core';
-import { TranslateProvider } from '../providers';
+import { TranslateProvider, Settings } from '../providers';
 import { ImageLoaderConfig } from 'ionic-image-loader';
 import { AngularFireDatabase } from 'angularfire2/database';
 import firebase from 'firebase';
@@ -35,6 +35,7 @@ export class MyApp {
     private ionicApp: IonicApp,
     private imageLoader: ImageLoaderConfig,
     private afDB: AngularFireDatabase,
+    private settings: Settings,
     private screenOrientation : ScreenOrientation
 
   
@@ -65,8 +66,10 @@ export class MyApp {
       
       mobileAccessibility.usePreferredTextZoom(false);
       
-      
-      this.initTranslate();
+      this.settings.load().then(() => {
+        this.initTranslate(this.settings.allSettings);
+      });
+  
       
 
       let lastTimeBackPress = 0;
@@ -106,38 +109,46 @@ export class MyApp {
 
       
     }).catch(()=> {
-      this.initTranslate();
+     
     });
     
   }
 
-  initTranslate() {
+  initTranslate(options) {
+    console.log(options)
     // Set the default language for translation strings, and the current language.
-    this.translateService.setDefaultLang('zh-cmn-Hans');
-    const browserLang = this.translateService.getBrowserLang();
+    let lang = options.option1
+    this.translateService.setDefaultLang(lang);
+    //const browserLang = this.translateService.getBrowserLang();
 
-    if (browserLang) {
-      if (browserLang === 'zh') {
-        this.translateService.use('zh-cmn-Hans');
-        this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
-          this.translate.setTranslations(translations);
-          this.rootPage = 'LoaderPage';
-        })
+    this.translateService.use(lang);
+    this.translateService.getTranslation(lang).subscribe(translations => {
+      this.translate.setTranslations(translations);
+      this.rootPage = 'LoaderPage';
+    })
+
+    // if (browserLang) {
+    //   if (browserLang === 'ko') {
+    //     this.translateService.use('ko');
+    //     this.translateService.getTranslation('ko').subscribe(translations => {
+    //       this.translate.setTranslations(translations);
+    //       this.rootPage = 'LoaderPage';
+    //     })
         
-      } else {
-        this.translateService.use('zh-cmn-Hans'); // Set your language here
-      this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
-        this.translate.setTranslations(translations);
-        this.rootPage = 'LoaderPage';
-      })
-      }
-    } else {
-      this.translateService.use('zh-cmn-Hans'); // Set your language here
-      this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
-        this.translate.setTranslations(translations);
-        this.rootPage = 'LoaderPage';
-      })
-    }
+    //   } else {
+    //     this.translateService.use('zh-cmn-Hans'); // Set your language here
+    //   this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
+    //     this.translate.setTranslations(translations);
+    //     this.rootPage = 'LoaderPage';
+    //   })
+    //   }
+    // } else {
+    //   this.translateService.use('zh-cmn-Hans'); // Set your language here
+    //   this.translateService.getTranslation('zh-cmn-Hans').subscribe(translations => {
+    //     this.translate.setTranslations(translations);
+    //     this.rootPage = 'LoaderPage';
+    //   })
+    // }
 
   }
 

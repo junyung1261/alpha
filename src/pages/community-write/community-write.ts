@@ -94,7 +94,6 @@ export class CommunityWritePage {
 
     this.communityRef.push({
       
-      category: this.category.name,
       date: date,
       description: text,
       option: this.selectedOption,
@@ -162,8 +161,8 @@ export class CommunityWritePage {
   }
 
   checkTrim() {
-    if ((this.title.trim() == null) || (this.title.trim() == "") ||  (this.category.name != 'FREE' && this.selectedOption == null) ||
-    (this.imageUpload.images.length == 0) && (this.text.trim() == "") || (this.text.trim() == null) || (this.category.name != 'FREE' && this.imageUpload.images.length == 0)) return true;
+    if ((this.title.trim() == null) || (this.title.trim() == "") ||  (this.category.name != 'freeboard' && this.selectedOption == null) ||
+    (this.imageUpload.images.length == 0) && (this.text.trim() == "") || (this.text.trim() == null) || (this.category.name != 'freeboard' && this.imageUpload.images.length == 0)) return true;
 
     else return false;
 

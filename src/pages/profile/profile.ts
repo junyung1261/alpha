@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, AlertController, ActionSheetController, Content, App } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { AuthProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider, AlertProvider } from '../../providers';
+import { AuthProvider, TranslateProvider, LoadingProvider, ToastProvider, NotificationProvider, DataProvider, ImageProvider, AlertProvider, Settings } from '../../providers';
 
 import { Camera } from '@ionic-native/camera';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,6 +10,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { ModalController } from 'ionic-angular';
 import { GalleryModal } from 'ionic-gallery-modal';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { TranslateService } from '../../../node_modules/@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,7 @@ export class ProfilePage {
   private tabBarHeight;
   private android: boolean;
   private profileForm: FormGroup;
+  private optionForm: FormGroup;
   private user: any;
   private userId: string;
   private hasError: boolean;
@@ -31,6 +33,8 @@ export class ProfilePage {
   private hasPushToken: boolean;
   private subscriptions: Subscription [];
   private uniqueUsername: boolean;
+  private options: any;
+  public settingsReady = false;
   private nameValidator: ValidatorFn = Validators.compose([
     Validators.required
   ]);
@@ -58,11 +62,13 @@ export class ProfilePage {
     private alertProvider: AlertProvider,
     private imageProvider: ImageProvider,
     private translate: TranslateProvider,
+    private translateService: TranslateService,
     private dataProvider: DataProvider,
     private authProvider: AuthProvider,
     private loadingProvider: LoadingProvider,
     private toast: ToastProvider,
     private notification: NotificationProvider,
+    private settings: Settings,
     private camera: Camera,
     private modalCtrl: ModalController,
     private keyboard: Keyboard) {
@@ -73,11 +79,23 @@ export class ProfilePage {
       address: ['', this.requiredValidator],
       email: ['', this.emailValidator],
       bio: ['', this.bioValidator],
-      gender: ['', this.requiredValidator]
+      gender: ['', this.requiredValidator],
+      
     });
 
+    this.optionForm = this.formBuilder.group({});
+
    
+
+    this.settings.load().then(() => {
+      this.settingsReady = true;
+      this.options = this.settings.allSettings;
+     
+      this._buildForm();
+    });
+
   }
+
 
   keyDownFunction(event) {
     // User pressed return on keypad, proceed with updating profile.
@@ -87,19 +105,6 @@ export class ProfilePage {
     }
   }
 
-  onInput(username: string) {
-    // Check if the username entered on the form is still available.
-    // this.uniqueUsername = true;
-    // if (this.profileForm.controls.username.valid && !this.profileForm.controls.username.hasError('required')) {
-    //   this.firestore.getUserByUsername('@' + username.toLowerCase()).then((user: User) => {
-    //     if (user && (this.userId != user.userId)) {
-    //       this.uniqueUsername = false;
-    //     }
-    //   }).catch(() => { });
-    // }
-  }
-
-  
   openGalleryModal(photos){
     let modal = this.modalCtrl.create(GalleryModal, {
       photos: photos,
@@ -142,9 +147,6 @@ export class ProfilePage {
 
 
       })
-    
-      // Get userData from Firestore and update the form accordingly.
-      
   }
 
   ionViewDidEnter(){
@@ -339,5 +341,30 @@ export class ProfilePage {
     })
     alert.present();
   }
+
+  _buildForm() {
+    let group: any = {
+      option1: [this.options.option1]
+      // option2: [this.options.option2],
+      // option3: [this.options.option3]
+    };
+    console.log(group.option1)
+    this.optionForm = this.formBuilder.group(group);
+    this.optionForm.setValue(
+      {option1 : this.options.option1})
+    // Watch the form for changes, and
+    this.optionForm.valueChanges.subscribe((v) => {
+      this.settings.merge(this.optionForm.value);
+    });
+  }
   
+  changeLanguage(event){
+    window.location.reload();
+    this.translateService.use(event);
+    this.translateService.getTranslation(event).subscribe(translations => {
+      this.translate.setTranslations(translations);
+    })
+      
+  }
+
 }

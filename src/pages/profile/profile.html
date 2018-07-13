@@ -74,16 +74,30 @@
         </ion-list>
       </form>
     </div>
+    
     <div class="toggle">
-      <ion-list>
-        <!--부가정보 헤더-->
-        <div class="profile-header">{{ 'auth.profile.notifications' | translate }}</div>
-        <ion-item no-lines>
-          <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
-          <ion-toggle [(ngModel)]="hasPushToken" color="x-gray-category"></ion-toggle>
-        </ion-item>
-      </ion-list>
+     
+        <ion-list>
+          <!--부가정보 헤더-->
+          <div class="profile-header">{{ 'SETTINGS_TITLE' | translate }}</div>
+          <ion-item no-lines>
+            <ion-label>{{ 'auth.profile.push' | translate }}</ion-label>
+            <ion-toggle [(ngModel)]="hasPushToken" color="x-gray-category"></ion-toggle>
+          </ion-item>
+
+          <form [formGroup]="optionForm" *ngIf="settingsReady">
+          <ion-item no-lines>
+            <ion-label>{{ 'auth.profile.language' | translate }}</ion-label>
+            <ion-select formControlName="option1"  color="x-gray-category" (ionChange)="changeLanguage($event)">
+              <ion-option value="zh-cmn-Hans">{{ translate.get('auth.form.language.chinese') }}</ion-option>
+              <ion-option value="ko">{{ translate.get('auth.form.language.korean') }}</ion-option>
+            </ion-select>
+          </ion-item>
+        </form>
+        </ion-list>
+      
     </div>
+    
     <div text-center class="profile-submit">
       <button ion-button (click)="updateProfile()"><b>{{ 'auth.button.save' | translate }}</b></button>
       <button ion-button (click)="logout()" class="profile-logout"><b>{{ 'auth.button.logout' | translate }}</b></button>

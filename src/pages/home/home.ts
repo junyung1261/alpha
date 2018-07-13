@@ -84,10 +84,9 @@ export class HomePage {
           menu.posts = [];
           posts.forEach(postRef => {
             
-            this.dataProvider.getPost(menu.name, postRef.payload.val(), postRef.key).snapshotChanges().take(1).subscribe(post => {
-              
-              menu.posts.unshift(post);
-              
+            this.dataProvider.getPost(menu.name, postRef.payload.val(), postRef.key).snapshotChanges().take(1).subscribe((post:any) => {
+             post.category = postRef.payload.val();
+             menu.posts.unshift(post);
             })
           })
           
@@ -105,7 +104,7 @@ export class HomePage {
 
   openPost(menu, post){
     new Promise((resolve, reject)=> {
-      this.navCtrl.push('CommunityPostPage',{menu: menu, category:post.payload.val().category, postId : post.key, resolve: resolve});
+      this.navCtrl.push('CommunityPostPage',{menu: menu, category:post.category, postId : post.key, resolve: resolve});
 
     }).then(data => {
       if(data){

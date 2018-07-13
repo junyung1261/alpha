@@ -47,6 +47,14 @@ export class LoaderPage {
                   this.splashScreen.hide();
                 }
                 else {
+                  
+                  let userId = firebase.auth().currentUser.uid;
+                  this.afDB.database.ref('/accounts/' + userId + '/history').push({
+                    abs: '-' + new Date().getTime(),
+                    date: new Date().getTime(),
+                    activity: 'Logged In'
+                  })
+                
                   this.zone.run(() => {
                     this.navCtrl.setRoot('TabsPage');
                   });

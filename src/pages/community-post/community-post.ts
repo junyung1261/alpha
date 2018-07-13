@@ -75,7 +75,6 @@ export class CommunityPostPage {
 
     this.dataProvider.getPost(this.menu.name, this.category, this.postId).valueChanges().take(1).subscribe(post => {
       this.post = post;
-
       if(this.post && this.post.title){
         this.afDB.database.ref('/community/' + this.menu.name + '/' +this.category + '/' + this.postId).child('views').transaction(function(currentCount){
           return currentCount+1;
@@ -141,10 +140,7 @@ export class CommunityPostPage {
   
   // 게시글 좋아요 누르기 //
   likePost(key){
-    this.afDB.database.ref('/community/'+ this.menu.name + '/' +this.category + '/' + key + '/likes').push({
-      uid: this.userId,
-      date: firebase.database['ServerValue'].TIMESTAMP
-    });
+    this.afDB.database.ref('/community/'+ this.menu.name + '/' +this.category + '/' + key + '/likes').update({[this.userId]: firebase.database['ServerValue'].TIMESTAMP});
   }
 
   // likeComment(key){
@@ -156,7 +152,7 @@ export class CommunityPostPage {
 
   // 게시글 좋아요 취소 //
   dislikePost(key, target){
-
+    console.log(target)
     let likeKey;
     if(target.likes){
       likeKey =  target.likes.filter(e => {
@@ -164,7 +160,7 @@ export class CommunityPostPage {
       });
     }
 
-    this.afDB.database.ref('/community/' + this.menu.name + '/' + this.category + '/'  +  key + '/likes/' + likeKey[0].key).remove();
+    this.afDB.database.ref('/community/' + this.menu.name + '/' + this.category + '/'  +  key + '/likes/' + this.userId).remove();
   }
 
   // dislikeComment(key, target){
@@ -180,7 +176,7 @@ export class CommunityPostPage {
   checkPostLiked(){
     if(this.post.likes && this.post.likes.length > 0){
       return this.post.likes.filter(e => {
-        return e.payload.val().uid == this.userId
+        return e.key == this.userId
       }).length;
     }
     return 0;

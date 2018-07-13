@@ -124,7 +124,7 @@
   "auth.form.username": "Username",
   "auth.form.error.username": "Username must only contain letters and numbers and should be 3-10 characters",
   "auth.form.gender": "Gender",
-  "auth.form.error.gender": "Please selec your gender",
+  "auth.form.error.gender": "Please select your gender",
   "auth.form.gender.null": "Select",
   "auth.form.birth": "Birth",
   "auth.form.birth.null": "Select your birth",

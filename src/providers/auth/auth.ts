@@ -3,6 +3,7 @@ import { TranslateProvider, DataProvider } from '../';
 import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
 import { Subscription } from 'rxjs';
+import { AngularFireDatabase } from '../../../node_modules/angularfire2/database';
 
 
 @Injectable()
@@ -15,6 +16,7 @@ export class AuthProvider {
   constructor(
               private translate: TranslateProvider,
               private dataProvider: DataProvider,
+              private afDB: AngularFireDatabase,
               private afAuth: AngularFireAuth, 
               ) {
 
@@ -48,7 +50,6 @@ export class AuthProvider {
               
             });
             
-            console.log(this.user);
           }).catch(() => {
             reject();
           });
@@ -100,10 +101,18 @@ export class AuthProvider {
 
   logout(): Promise<any> {
     return new Promise((resolve, reject) => {
+      this.afDB.database.ref('accounts/' + this.afAuth.auth.currentUser.uid + '/history').push({
+        abs: '-' + new Date().getTime(),
+        date: new Date().getTime(),
+        activity: 'Logged out'
+      });
+
       this.afAuth.auth.signOut().then(() => {
         // this.facebook.logout();
         // this.googlePlus.logout();
         // this.twitterConnect.logout();
+        
+
         resolve();
       }).catch(() => {
         reject();
