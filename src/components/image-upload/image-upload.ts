@@ -40,7 +40,7 @@ export class ImageUpload {
         return new Promise((resolve, reject) => {
             this.isUploading = true;
             Promise.all(this.images.map(image => {
-                return this.uploadImage(image);
+                return this.uploadImage(image, menu, category);
             }))
                 .then((success) => {
                     this.imageProvider.updatePostUrl(this.key, this.imageURL, menu, category);
@@ -171,13 +171,13 @@ export class ImageUpload {
 
 
 
-    private uploadImage(targetPath) {
+    private uploadImage(targetPath, menu, category) {
         return new Promise((resolve, reject) => {
             this.uploadingProgress[targetPath] = 0;
 
             if (window['cordova']) {
 
-              this.imageProvider.uploadPhoto(this.key, targetPath).then((url)=>{
+              this.imageProvider.uploadPhoto(this.key, targetPath, menu, category).then((url)=>{
                   
                   resolve(this.imageURL.push({url: url}));
                   

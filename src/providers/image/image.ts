@@ -128,7 +128,7 @@ export class ImageProvider {
         let metadata = {
           'contentType': imgBlob.type
         };
-        firebase.storage().ref().child('images/' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+        firebase.storage().ref().child('images/accounts/' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
           // Delete previous profile photo on Storage if it exists.
           // URL of the uploaded image!
           let url = snapshot.metadata.downloadURLs[0];
@@ -292,7 +292,7 @@ export class ImageProvider {
 
  
 
-  uploadPhoto(Id, imageData): Promise<any> {
+  uploadPhoto(Id, imageData, menu, category): Promise<any> {
     return new Promise(resolve => {
       //this.photoMessageOptions.sourceType = sourceType;
       this.loadingProvider.show();
@@ -304,7 +304,7 @@ export class ImageProvider {
           'contentType': imgBlob.type
         };
         // Generate filename and upload to Firebase Storage.
-        firebase.storage().ref().child('images/' + Id + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+        firebase.storage().ref().child('images/' + menu + '/' + category + '/' + Id + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
           // URL of the uploaded image!
           let url = snapshot.metadata.downloadURLs[0];
           this.loadingProvider.hide();
