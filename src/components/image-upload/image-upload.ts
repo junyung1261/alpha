@@ -201,7 +201,7 @@ export class ImageUpload {
                     }
                     else {
                         if (!this.isUploading) return reject(null);
-                        this.uploadImage(targetPath).then(resolve, reject);
+                        this.uploadImage(targetPath, menu, category).then(resolve, reject);
                     }
                 });if (!this.isUploading) return reject(null);
                 this.util.confirm('Do you wish to retry?', 'Upload failed').then(res => {
@@ -214,7 +214,7 @@ export class ImageUpload {
                     }
                     else {
                         if (!this.isUploading) return reject(null);
-                        this.uploadImage(targetPath).then(resolve, reject);
+                        this.uploadImage(targetPath, menu, category).then(resolve, reject);
                     }
                 });
             };

@@ -88,7 +88,7 @@ export class ImageProvider {
         };
         // Generate filename and upload to Firebase Storage.
        
-        firebase.storage().ref().child('images/' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
+        firebase.storage().ref().child('images/accounts' + userId + '/' + this.generateFilename()).put(imgBlob, metadata).then((snapshot) => {
           // Delete previous profile photo on Storage if it exists.
           // URL of the uploaded image!
           let url = snapshot.metadata.downloadURLs[0];

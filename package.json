@@ -87,7 +87,7 @@
       "cordova-plugin-fcm": {},
       "cordova-plugin-file": {},
       "cc.fovea.cordova.purchase": {
-        "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlcD1X2/9U6NWSYiT/9tZQASSBvs/UrLShlTd5rZkRFfew/22t1Nu2zy1aqC21yHdTWOiY3STnfDgHcusklv04omDIU9qoVdR4SiJS8rwXXDXtgbUlfUYgyVSA565f7FM7pvW3gEe/uvVDqgOR8bP9zGFqi+co882YJEhhwEXpC2vsCLpjsrPILBKTBo0+twPSjw+fCS5ZvepwsUcIlzMiyao14ZVIXW/iBcV/EtxFIzaE6ftN5fvgZooK3v20d/ZVX8nsfovarQAs84yzdVVbpvHwzy3qWircmr8TJSicsQU1WlGI40jX04rnzSCKeGf81pyZxOxQByqdJlUn/sQ2QIDAQAB"
+        "BILLING_KEY": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsjOQex4kGFb3ZdzwNv7GiIc5Asx4SpRDoN/q5elGg8zQU9IHVKDFGaJ+eIQBBmwgwmxN+k+NpKEdfrQKWNY5K/jhfEgu5zXegyu7hyQTXzCt3dwTpWjL7v49dPOEI3q2/cIlGNEB75P9t2/c3LsO4yLZuf/BqpHgdGtMqGGnLd/J4VZ48FY/wZrlYtpQ0KZO7I8xWp52i3EbzF+qJlnD9TpVO/73XciRlLK7QWez8oSwbkql8TqP79+6f5zU0zoM3vO4KpBk6PjNbU77iGey7oQ7ntZG2jEsiuKIsb0a+raPcT1Bny8PmTOydKbFCob93ZtsGlOTG2NdfO8Ux2+ReQIDAQAB"
       },
       "cordova-plugin-screen-orientation": {},
       "ionic-plugin-keyboard": {}
