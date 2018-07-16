@@ -348,7 +348,6 @@ export class ProfilePage {
       // option2: [this.options.option2],
       // option3: [this.options.option3]
     };
-    console.log(group.option1)
     this.optionForm = this.formBuilder.group(group);
     this.optionForm.setValue(
       {option1 : this.options.option1})

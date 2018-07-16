@@ -43,10 +43,10 @@
     
     <ion-grid class="x-list" no-padding *ngFor="let menu of postMenu; let i = index; ">
       
-      <ion-row class="x-list-title">
+      <ion-row class="x-list-category">
         <ion-col col-10>{{ menu.name | translate }} {{ 'community.post.latest' | translate }}</ion-col>
         <ion-col col-2 text-right>
-          <span class="x-list-title-more">
+          <span class="x-list-category-more">
             <ion-icon name="flaticon-mark" (click)="openCommunityPage(menu, 0);"></ion-icon>
           </span>
         </ion-col>
@@ -54,11 +54,18 @@
       </ion-row>
      
       <div *ngFor="let post of menu.posts">
+
         <ion-row class="x-list-row" (click)="openPost(menu, post)" *ngIf="post.payload.val()">
-          <ion-col col-12 class="x-list-col">
-            <span class="x-list-label">{{post.category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
-            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
+
+
+          <ion-col col-10 class="x-list-col">
+            <span class="x-list-label" >{{post.category | translate}}</span>
+            <span class="x-list-title">{{post.payload.val().title}}</span>
           </ion-col>
+          <ion-col col-2>
+              <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon>&nbsp;{{post.payload.val().comments}}</span>
+          </ion-col>
+         
         </ion-row>
       </div>
       <ion-row class="x-list-row x-list-ctg" *ngIf="menu.category && menu.name == 'LIFE'">

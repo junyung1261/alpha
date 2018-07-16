@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Content, ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { TranslateProvider, NotificationProvider, DataProvider } from '../../providers';
 import { Camera } from '@ionic-native/camera';
@@ -59,7 +59,8 @@ export class ChatPage {
     public notification: NotificationProvider,
     public afDB: AngularFireDatabase,
     public camera: Camera,
-    public keyboard: Keyboard
+    public keyboard: Keyboard,
+    public actionSheetCtrl: ActionSheetController
     ) {
   }
 
@@ -280,6 +281,36 @@ export class ChatPage {
     //   페이지 나가면 쳐다보는거 그만해! DB에서도 빼!
     // this.afDB.list('/conversations/'+this.conversationId).remove();
     // this.afDB.list('/chat/'+firebase.auth().currentUser.uid+'/conversations/'+this.userId).remove();
+  }
+
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: '채팅 메뉴',
+      buttons: [
+        {
+          text: '신고하기',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },
+        {
+          text: '채팅방 삭제',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+ 
+    actionSheet.present();
   }
 
 }

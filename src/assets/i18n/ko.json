@@ -90,6 +90,7 @@
     "monthly": "월세",
     "charter": "전세",
     "etc" : "기타",
+    "study": "유학",
     
     "auth/email-already-in-use": "이미 사용중인 이메일입니다.",
     "auth/invalid-email": "부적합한 이메일 입니다.",
@@ -257,8 +258,8 @@
     "chats.message.sent.photo":  "您发送了一条图片信息.",
     "chats.message.received.photo":  "给您发送了一条图片信息.",
     "chats.message.you": "您: ",
-    "chats.message.new": "聊天开始.",
-    "chats.message.end": "已退出聊天室.",
+    "chats.message.new": "채팅이 시작되었습니다.",
+    "chats.message.end": "채팅이 종료되었습니다.",
     "chats.message.write": "请输入 ...",
     "chats.message.photo.title":  "发送图片信息",
     "chats.message.photo.take":  "相机",

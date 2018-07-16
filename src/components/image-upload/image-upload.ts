@@ -95,8 +95,6 @@ export class ImageUpload {
         if (this.isUploading)
             return;
         this.util.confirm("Are you sure to remove it?").then(value => {
-            console.log(image);
-            console.log(this.imageURL);
             if (value) {
                 if(this.imagesValue)this.util.removeFromArray(this.imagesValue, image);
                 if(this.images) this.util.removeFromArray(this.images, image.url);
@@ -178,7 +176,6 @@ export class ImageUpload {
             this.uploadingProgress[targetPath] = 0;
 
             if (window['cordova']) {
-              console.log('cordova');
 
               this.imageProvider.uploadPhoto(this.key, targetPath).then((url)=>{
                   

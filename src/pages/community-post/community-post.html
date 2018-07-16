@@ -1,7 +1,7 @@
 <ion-header no-border class="feed-header">
   <ion-navbar color="x-mint" hideBackButton>
     <ion-buttons left>
-      <button ion-button><ion-icon name="flaticon-cross-1" color="x-mint"></ion-icon></button>
+      <button ion-button (click)="presentActionSheet()"><ion-icon name="more" color="x-white"></ion-icon></button>
     </ion-buttons>
     <ion-title>{{ 'community.post.title' | translate }}</ion-title>
     <ion-buttons end>

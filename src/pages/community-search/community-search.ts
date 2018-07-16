@@ -34,9 +34,7 @@ export class CommunitySearchPage {
 
   ionViewDidLoad() {
    
-    console.log(this.searchBy)
-    console.log(this.index)
-    console.log(this.category)
+    
     console.log('ionViewDidLoad CommunitySearchPage');
     this.getPost(this.index);
   }
@@ -45,7 +43,7 @@ export class CommunitySearchPage {
   getPost(index){
    
     this.dataProvider.getPostsBySearched(this.category.parent, this.category.name, this.searchBy, index).snapshotChanges().take(1).subscribe(posts => {
-      console.log(posts)
+      
       this.posts = posts;
       
     });
@@ -62,7 +60,7 @@ export class CommunitySearchPage {
 
   search(){
     this.dataProvider.getPostsBySearched(this.category.parent, this.category.name, this.searchBy, this.searchIndex).snapshotChanges().take(1).subscribe(posts => {
-      console.log(posts)
+      
       this.posts = posts;
       
     });

@@ -90,6 +90,7 @@
   "monthly": "月租房",
   "charter": "全税房",
   "etc" : "其他",
+  "study": "留学",
   
   "auth/email-already-in-use": "已经注册过的邮箱地址",
   "auth/invalid-email": "邮箱格式不准确",

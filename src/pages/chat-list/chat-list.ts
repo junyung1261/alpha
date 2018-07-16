@@ -147,9 +147,9 @@ export class ChatListPage {
       if (message.sender == this.afAuth.auth.currentUser.uid) {
         return this.translate.get('chats.message.you') + message.message;
       } else if(message.type == 'notice_start') {
-        return '채팅이 시작되었습니다.';
+        return this.translate.get('chats.message.new');
       } else if(message.type == 'notice_userOut') {
-        return '대화가 종료되었습니다.'
+        return this.translate.get('chats.message.end');
       } else{
         return message.message;
       }

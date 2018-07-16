@@ -121,8 +121,6 @@ export class ContestPage {
 
       }
       else{
-
-        console.log('없다')
         this.loadingProvider.hide();
       }
       
@@ -364,6 +362,6 @@ export class ContestPage {
     this.candidatesByGender.final = candidates.filter((user)=> {
       return this.champions.indexOf(user.key) != -1;
     })
-    console.log(this.candidatesByGender.final );
+    
   }
 }

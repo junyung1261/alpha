@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
 import { Subscription } from 'rxjs';
 import { AngularFireDatabase } from '../../../node_modules/angularfire2/database';
+import { User } from '../../models';
 
 
 @Injectable()
@@ -44,10 +45,10 @@ export class AuthProvider {
             }
             
             // Update userData variable from Firestore.
-            this.fsSubscription = ref.valueChanges().subscribe((user: any) => {
+            this.fsSubscription = ref.valueChanges().subscribe((user: User) => {
+              
               this.user = user;
               this.user.userId = userId;
-              
             });
             
           }).catch(() => {
@@ -105,17 +106,16 @@ export class AuthProvider {
         abs: '-' + new Date().getTime(),
         date: new Date().getTime(),
         activity: 'Logged out'
-      });
+      }).then((success) => {
 
-      this.afAuth.auth.signOut().then(() => {
-        // this.facebook.logout();
-        // this.googlePlus.logout();
-        // this.twitterConnect.logout();
-        
-
-        resolve();
-      }).catch(() => {
-        reject();
+        this.afAuth.auth.signOut().then(() => {
+          // this.facebook.logout();
+          // this.googlePlus.logout();
+          // this.twitterConnect.logout();
+          resolve();
+        }).catch(() => {
+          reject();
+        });
       });
     });
   }

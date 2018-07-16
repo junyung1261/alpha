@@ -82,7 +82,7 @@
         </ion-row>
       </ion-grid> -->
      
-      <ion-row class="x-list-title">
+      <ion-row class="x-list-category">
         <ion-col col-12>{{ category.name | translate }}</ion-col>
       </ion-row>
       
@@ -94,9 +94,12 @@
     
       <div *ngFor="let post of posts.get(category.name)" >
         <ion-row class="x-list-row"  (click)="openPost(menu, post)"> 
-          <ion-col col-12 class="x-list-col">
-            <span class="x-list-label">{{ post.payload.val().category | translate}}</span>&nbsp;&nbsp;{{post.payload.val().title}}&nbsp;
-            <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon></span>&nbsp;<span class="x-list-count">{{post.payload.val().comments}}</span>
+          <ion-col col-10 class="x-list-col">
+              <span class="x-list-label" >{{category.name | translate}}</span>
+              <span class="x-list-title">{{post.payload.val().title}}</span>
+          </ion-col>
+          <ion-col col-2>
+              <span class="x-list-ico"><ion-icon name="flaticon-interface"></ion-icon>&nbsp;{{post.payload.val().comments}}</span>
           </ion-col>
         </ion-row>
       </div>
@@ -126,7 +129,7 @@
     
     
     <ion-grid class="x-list" no-padding *ngSwitchCase="'photo'">
-      <ion-row class="x-list-title">
+      <ion-row class="x-list-category">
         <ion-col col-12>구인구직 목록</ion-col>
       </ion-row>
       <div *ngFor="let post of posts.get(category.name )">

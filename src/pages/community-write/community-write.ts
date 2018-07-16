@@ -161,10 +161,17 @@ export class CommunityWritePage {
   }
 
   checkTrim() {
-    if ((this.title.trim() == null) || (this.title.trim() == "") ||  (this.category.name != 'freeboard' && this.selectedOption == null) ||
-    (this.imageUpload.images.length == 0) && (this.text.trim() == "") || (this.text.trim() == null) || (this.category.name != 'freeboard' && this.imageUpload.images.length == 0)) return true;
 
-    else return false;
+
+    if(this.category && this.category.option){
+      return (this.title.trim() == "") || (this.text.trim() == "") || (this.imageUpload.images.length == 0) || (this.selectedOption == null);
+    }
+
+    else{
+      return (this.title.trim() == "") || (this.text.trim() == "");
+    }
+
+    
 
   }
 

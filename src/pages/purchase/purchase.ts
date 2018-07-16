@@ -92,8 +92,7 @@ export class PurchasePage implements OnInit{
       // Register the product with the store
       
 
-      this.store.ready().then((status) => {
-        // console.log(JSON.stringify(this.store.get(productId)));
+      this.store.ready((status) => {
         console.log('Store is Ready: ' + JSON.stringify(status));
         console.log('Products: ' + JSON.stringify(this.store.products));
       });

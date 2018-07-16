@@ -123,7 +123,6 @@ export class ContestVotePage {
                 let total;
                 this.upvotesRef.child(this.user.key).child(this.currentRound).once('value',snapshot => {
                   total = snapshot.val() + +data;
-                  console.log(total);
                 });
                 myVote.push({
                   date: firebase.database['ServerValue'].TIMESTAMP,

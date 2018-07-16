@@ -72,11 +72,7 @@ export class ProfileCreatePage {
     console.log('ionViewDidLoad ProfileCreatePage');
     
       this.userId = firebase.auth().currentUser.uid;
-      console.log(this.userId);
-     
       let username = '';
-      
-      
       this.profileForm.setValue({
         username: username,
         gender: null,
@@ -92,7 +88,6 @@ export class ProfileCreatePage {
   ionViewWillUnload() {
     // Check if userData exists on Firestore. If no userData exists yet, delete the photo uploaded to save Firebase storage space.
     firebase.database().ref('accounts/' + this.userId).once('value', user => {
-      console.log(user)
       if (!user.exists()) {
        
         this.imageProvider.deleteImageFile(this.photo);

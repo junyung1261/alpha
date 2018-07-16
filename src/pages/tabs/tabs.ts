@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 import { Subscription } from 'rxjs/Subscription';
 import { User } from '../../models';
 import { App, NavParams, Tabs } from 'ionic-angular';
+import { AngularFireDatabase } from '../../../node_modules/angularfire2/database';
 
 
 @IonicPage()
@@ -32,6 +33,7 @@ export class TabsPage {
     private authProvider: AuthProvider,
     private notification: NotificationProvider,
     private navParams: NavParams,
+    private afDB: AngularFireDatabase,
     private app: App
   ) {
     this.selectedIndex = navParams.data.tabIndex || 0;
@@ -47,23 +49,27 @@ export class TabsPage {
     
     this.subscriptions = [];
     // Subscribe to current user data on Firestore and sync.
-    this.dataProvider.get('/accounts/' + this.authProvider.getUserData().userId).then(ref => {
+
+    
+    this.user = this.authProvider.getUserData();
+    if (this.authProvider.getUserData().notifications) {
+      this.notification.init();
+      this.notification.setApp(this.app);
+    }
+    // this.dataProvider.get('/accounts/' + this.authProvider.getUserData().userId).then(ref => {
       
     
-      let subscription = ref.valueChanges().subscribe((user: User) => {
-        this.user = user;
+    //   // let subscription = ref.valueChanges().subscribe((user: User) => {
+    //   //   this.user = user;
+    //   //   console.log(user);
         
-      });
-      this.subscriptions.push(subscription);
-      // Initialize the push notifications (set pushToken) when user logged in.
-      ref.valueChanges().take(1).subscribe((user: User) => {
-        if (user.notifications) {
-          
-          this.notification.init();
-          this.notification.setApp(this.app);
-        }
-      });
-    }).catch(() => { });
+    //   // });
+    //   // this.subscriptions.push(subscription);
+    //   // Initialize the push notifications (set pushToken) when user logged in.
+      
+     
+      
+    // }).catch(() => { });
 
     
     let conversationSubscription = this.dataProvider.getConversations().snapshotChanges().subscribe(conversations => {

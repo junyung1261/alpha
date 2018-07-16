@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, ActionSheetController } from 'ionic-angular';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { DataProvider, LoadingProvider, TranslateProvider, AlertProvider } from '../../providers';
 import * as firebase from 'firebase';
@@ -39,6 +39,7 @@ export class CommunityPostPage {
               public translate: TranslateProvider,
               public keyboard: Keyboard,
               public alertProvider: AlertProvider,
+              public actionSheetCtrl: ActionSheetController
               ) {
 
                 this.userId = firebase.auth().currentUser.uid;
@@ -143,16 +144,8 @@ export class CommunityPostPage {
     this.afDB.database.ref('/community/'+ this.menu.name + '/' +this.category + '/' + key + '/likes').update({[this.userId]: firebase.database['ServerValue'].TIMESTAMP});
   }
 
-  // likeComment(key){
-  //   this.afDB.database.ref('/comments/' + this.postId + '/' + key + '/likes').push({
-  //     uid: this.userId,
-  //     date: firebase.database['ServerValue'].TIMESTAMP
-  //   });
-  // }
-
   // 게시글 좋아요 취소 //
   dislikePost(key, target){
-    console.log(target)
     let likeKey;
     if(target.likes){
       likeKey =  target.likes.filter(e => {
@@ -163,16 +156,6 @@ export class CommunityPostPage {
     this.afDB.database.ref('/community/' + this.menu.name + '/' + this.category + '/'  +  key + '/likes/' + this.userId).remove();
   }
 
-  // dislikeComment(key, target){
-  //   let likeKey;
-  //   if(target.likes){
-  //     likeKey =  target.likes.filter(e => {
-  //       return e.payload.val().uid == this.userId
-  //     });
-  //   }
-  //   this.afDB.database.ref('/community/' + this.postId + '/' + key + '/likes/' + likeKey[0].key).remove();
-  // }
-
   checkPostLiked(){
     if(this.post.likes && this.post.likes.length > 0){
       return this.post.likes.filter(e => {
@@ -182,18 +165,6 @@ export class CommunityPostPage {
     return 0;
   }
 
-  // checkCommentsLiked(comment){
-  //   if(comment.likes && comment.likes.length > 0){
-  //     return comment.likes.filter(e => {
-  //       return e.uid === this.userId
-  //     }).length;
-  //   }
-  //   else return 0;
-  // }
-
-
-  //댓글 쓰기 //
- 
   modifyPost(post){
     post.key = this.postId;
     let category = this.menu.category.filter((e) => {
@@ -212,8 +183,6 @@ export class CommunityPostPage {
   }
 
   deletePost(post){
-
-    
     this.alertProvider.showConfirm(this.translate.get('community.post.menu.delete.title'), this.translate.get('community.post.menu.delete.text'), this.translate.get('CANCEL_BUTTON'), this.translate.get('DELETE_BUTTON')).then(confirm => {
       if (confirm) {
         this.loadingProvider.show();
@@ -238,16 +207,9 @@ export class CommunityPostPage {
         
       }
     }).catch(() => { });
-
-
-
-
-
-
-   
-  
   }
 
+  //댓글 쓰기 //
   writeComment(){
     this.loadingProvider.show();
     let commentRef = this.afDB.database.ref('/comments/' + this.postId)
@@ -279,17 +241,13 @@ export class CommunityPostPage {
             return currentCount-1;
           })
           this.afDB.object('/accounts/' + this.userId + '/comments/' + comment.key).remove();
-          
           this.loadingProvider.hide();
         })
-        
       }
     }).catch(() => { });
 
   }
 
-
-  
   scrollBottom(): void {
     let self = this;
     setTimeout(function() {
@@ -297,6 +255,35 @@ export class CommunityPostPage {
     }, 300);
   }
   
+  presentActionSheet() {
+    let actionSheet = this.actionSheetCtrl.create({
+      title: '게시글 메뉴',
+      buttons: [
+        {
+          text: '신고하기',
+          role: 'destructive',
+          handler: () => {
+            console.log('Destructive clicked');
+          }
+        },
+        {
+          text: '숨기기',
+          handler: () => {
+            console.log('Archive clicked');
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+ 
+    actionSheet.present();
+  }
 
   
 

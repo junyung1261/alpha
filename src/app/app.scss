@@ -81,16 +81,17 @@ ion-title {
 
 // 기본 BBS 디자인 //
 .x-list {width:100vw;padding:0 3vw 0 3vw !important;background-color:map-get($colors,x-white);margin-bottom:3vw;}
-.x-list-label{color:map-get($colors,x-mint);}
-.x-list-title{align-items:center;height:10vw;border-bottom:1px solid map-get($colors,x-skyblue-line);font-size:3.5vw;font-weight:bold;color:map-get($colors,x-gray-dark);}
-.x-list-title-more {font-size:3.5vw;font-weight:bold;color:map-get($colors,x-mint);}
+.x-list-label{color:map-get($colors,x-mint); white-space: nowrap;}
+.x-list-title{}
+.x-list-category{align-items:center;height:10vw;border-bottom:1px solid map-get($colors,x-skyblue-line);font-size:3.5vw;font-weight:bold;color:map-get($colors,x-gray-dark);}
+.x-list-category-more {font-size:3.5vw;font-weight:bold;color:map-get($colors,x-mint);}
 .x-list-row {align-items:center;height:10vw;border-bottom:1px solid map-get($colors,x-gray-line);font-size:3.5vw;color:map-get($colors,x-gray-dark);}
 .x-list-col {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .x-list-end {border-bottom:1px solid map-get($colors,x-skyblue-line);}
 .x-list-noctg {border:none;}
 .x-list-ctg {height:10vw;border:none;color:map-get($colors,x-gray-category);}
-.x-list-ico {font-size:2.5vw;color:map-get($colors,x-gray-count);}
-.x-list-count {font-size:3vw;color:map-get($colors,x-gray-count);}
+.x-list-ico {font-size:2.5vw;color:map-get($colors,x-gray-count); float: right;}
+.x-list-count {font-size:3vw;color:map-get($colors,x-gray-count); }
 .x-list-rank {font-size:4vw; font-weight:bold;}
 
 // 앨범형 BBS 디자인 //

@@ -11,15 +11,15 @@ export namespace Environment {
     // Firebase Cloud Messaging Server Key.
     // Get your gcmKey on https://console.firebase.google.com, under Overview -> Project Settings -> Cloud Messaging.
     // This is needed to send push notifications.
-    export const gcmKey = 'AAAAko64RCw:APA91bFvJT5kz7B4-IK4JqluQuHXXhET7rp7n6g6ojpYmG8oaaCz-yt_qRF84Sf5ooJmpohJiqHFc5wDylkwAMd1uXZOhur-GMghY02YmDAtT90pHItMu42zz-YXw-a1aWTk8rSN4sqR';
+    export const gcmKey = 'AAAA-1_2Tc0:APA91bEucYEU_LWTb9cNFvdtyx1tER0ohWSa7SpJEkQhhJhO0HMffLyVXR4wcu7jflTpT6UwPbf-3ynS9-iHKXfgYTp-mbftOhyfmzq_3wJUQ5_eb3_-pRq6WWuTlKI6FtAg2SiFmNSHGkMb1FthvBpQZnZ1QtBFdw';
     // Set to your Firebase app, you can find your credentials on Firebase app console -> Add Web App.
     export const firebase = {
-      apiKey: "AIzaSyB2ORtfxXYsQJz-muNPN8y98xHHUr_6nFg",
-      authDomain: "xianghanguo-alpha.firebaseapp.com",
-      databaseURL: "https://xianghanguo-alpha.firebaseio.com",
-      projectId: "xianghanguo-alpha",
-      storageBucket: "xianghanguo-alpha.appspot.com",
-      messagingSenderId: "629459665964"
+      apiKey: "AIzaSyABxBy_86Quogyl0yViQKpUGa738qK5Mdw",
+      authDomain: "xianghanguo-832c7.firebaseapp.com",
+      databaseURL: "https://xianghanguo-832c7.firebaseio.com",
+      projectId: "xianghanguo-832c7",
+      storageBucket: "xianghanguo-832c7.appspot.com",
+      messagingSenderId: "1079646768589"
     };
     // You can find your googleWebClientId on your Firebase app console -> Authentication -> Sign-in Method -> Google -> Web client ID
     export const googleWebClientId: string = '579230665805-qbcjf6jips1e8v4siv7bgfd5dqbde2v7.apps.googleusercontent.com';

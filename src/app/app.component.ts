@@ -115,7 +115,6 @@ export class MyApp {
   }
 
   initTranslate(options) {
-    console.log(options)
     // Set the default language for translation strings, and the current language.
     let lang = options.option1
     this.translateService.setDefaultLang(lang);

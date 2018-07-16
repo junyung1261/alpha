@@ -235,7 +235,6 @@ export class DataProvider {
       var requestsSent;
       // Use take(1) so that subscription will only trigger once.
       this.getRequestsSent(from).valueChanges().take(1).subscribe((requests) => {
-        console.log(requestsSent);    
       requestsSent = requests;
       
         if (!requestsSent) {
@@ -300,7 +299,6 @@ export class DataProvider {
           requestsReceived = requests;
           
           requestsReceived.splice(requestsReceived.indexOf(from), 1);
-          console.log(requestsReceived);
           // Update chatRequests information.
           this.angularfireDatabase.object('/accounts/' + to ).update({
             requestsReceived: requestsReceived

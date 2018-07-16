@@ -42,7 +42,7 @@ export class CommunityPage {
     this.posts = new Map<string, any>();
     this.menu = this.navParams.get('menu');
     this.index = this.navParams.get('index');
-    
+    console.log(this.menu);
     this.getCategory(this.index)
     this.getPost();
     
@@ -84,6 +84,7 @@ export class CommunityPage {
 
     if(this.menu){
       this.category = this.menu.category[index];
+      console.log(this.category);
       if(this.category.option){
         if(!this.category.selectedOption) this.category.selectedOption = 'total';
         this.segmentsPerRow = 3;
