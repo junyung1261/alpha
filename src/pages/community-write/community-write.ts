@@ -117,7 +117,7 @@ export class CommunityWritePage {
         this.imageUpload.uploadPostImages(this.category.parent , this.category.name);
       }
       this.communityLatestRef.update({[success.key]: this.category.name});
-      this.accountRef.update({[success.key]: this.category.parent });
+      this.accountRef.update({[success.key]: this.category.parent + '/' + this.category.name });
       this.viewCtrl.dismiss({ data: true});
     })
 
