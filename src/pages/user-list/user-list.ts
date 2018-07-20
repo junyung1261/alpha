@@ -18,7 +18,7 @@ export class UserListPage {
   myChat: any;
   myChatList: any;
   chatList= [];
-  users = [];
+  public users = [];
   requestsReceived: any;
   requestsSent: any;
   alert: any;
@@ -28,6 +28,8 @@ export class UserListPage {
   private subscriptions: Subscription [];
   private excludedIds = [];
   private withdrawalIds = [];
+  public numToLoad = 30;
+  
   
   constructor(
     public navCtrl: NavController, 
@@ -62,13 +64,19 @@ export class UserListPage {
     
     console.log('ionViewDidLoad ChatListPage');
     //this.chatId = this.navParams.get('chatId');
+    this.getLatestUsers();
+    
+   
+ 
+  }
+
+  getLatestUsers(){
     this.users = [];
     this.subscriptions = [];
-    let subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
+    let subscription = this.dataProvider.getLatestUsers(this.numToLoad).snapshotChanges().take(1).subscribe(users => {
       this.withdrawalIds = [];
       
       users.forEach(user => {
-        console.log(user.key)
         if(user.payload.val().userIdentify != 'normal' || user.payload.val().lastLogin == null) this.withdrawalIds.push(user.key);
         else this.users.unshift(user);
       })
@@ -103,9 +111,6 @@ export class UserListPage {
       else this.requestsReceived = [];
       this.subscriptions.push(subscription_);
     });
-    
-   
- 
   }
 
 
@@ -137,8 +142,17 @@ export class UserListPage {
    doInfinite(): Promise<any> {
     return new Promise(resolve => {
       setTimeout(() => {
-        // Show 10 more users on the list.
-        this.usersToShow += 10;
+
+        if (this.subscriptions) {
+          for (let i = 0; i < this.subscriptions.length; i++) {
+            this.subscriptions[i].unsubscribe();
+          }
+        }
+
+        this.numToLoad +=20;
+        this.getLatestUsers();
+        // Show 20 more users on the list.
+        
         resolve();
       }, 500);
     })

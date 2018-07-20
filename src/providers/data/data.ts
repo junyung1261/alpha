@@ -107,9 +107,9 @@ export class DataProvider {
     return this.angularfireDatabase.object('/community/'+ menu + '/' + category + '/' + postId);
   }
 
-  getPosts(menu, category, numberToLoad) {
+  getPosts(menu, category, numToLoad) {
    
-      return this.angularfireDatabase.list('/community/'+ menu + '/' + category, ref => ref.limitToLast(numberToLoad));
+      return this.angularfireDatabase.list('/community/'+ menu + '/' + category, ref => ref.limitToLast(numToLoad));
   
     
   }
@@ -137,9 +137,9 @@ export class DataProvider {
     return this.angularfireDatabase.list(location, ref => lastKey?  ref.orderByKey().limitToLast(batch).endAt(lastKey) : ref.orderByKey().limitToLast(batch));
   }
 
-  getLatestUsers(){
+  getLatestUsers(numToLoad){
    
-    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(30));
+    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(numToLoad));
   }
 
   getChatList(){
