@@ -139,7 +139,7 @@ export class DataProvider {
 
   getLatestUsers(){
    
-    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(100));
+    return this.angularfireDatabase.list('/accounts', ref => ref.orderByChild('lastLogin').limitToFirst(30));
   }
 
   getChatList(){

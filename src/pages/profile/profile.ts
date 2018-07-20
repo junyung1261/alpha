@@ -319,6 +319,7 @@ export class ProfilePage {
                   lastLogin: -1,
                   notifications: false,
                   profileImg: "assets/imgs/noavatar.png",
+                  userIdentify: 'withdrew',
                   withdrawalDate: firebase.database['ServerValue'].TIMESTAMP
                 }).then(success => {
                   this.notification.destroy();

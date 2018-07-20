@@ -42,7 +42,7 @@
       </ion-row>
     </div>
   </ion-content>
-  <ion-footer [ngClass]="{'iPhoneX': iPhoneX, 'android': android}" *ngIf="conversation && conversation.users.length == 2">
+  <ion-footer [ngClass]="{'iPhoneX': iPhoneX, 'android': android}" *ngIf="conversation && conversation.users.length == 2 && partner.payload.val().userIdentify == 'normal'">
     <ion-row>
       <ion-col col-10>
           <ion-textarea class="input_txt" #messageBox id="messageBox" fz-elastic type="text" [placeholder]="translate.get('chats.message.write')" [(ngModel)]="message" rows="1" (keydown)="keyDownFunction($event)"></ion-textarea>

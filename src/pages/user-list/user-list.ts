@@ -62,14 +62,17 @@ export class UserListPage {
     
     console.log('ionViewDidLoad ChatListPage');
     //this.chatId = this.navParams.get('chatId');
-
+    this.users = [];
     this.subscriptions = [];
     let subscription = this.dataProvider.getLatestUsers().snapshotChanges().take(1).subscribe(users => {
       this.withdrawalIds = [];
-      this.users.forEach(user => {
-        if(user.payload.val().withdrawalDate) this.withdrawalIds.push(user.key);
+      
+      users.forEach(user => {
+        console.log(user.key)
+        if(user.payload.val().userIdentify != 'normal' || user.payload.val().lastLogin == null) this.withdrawalIds.push(user.key);
+        else this.users.unshift(user);
       })
-      this.users = users.reverse();
+      // this.users = users.reverse();
       this.subscriptions.push(subscription);
     });
 

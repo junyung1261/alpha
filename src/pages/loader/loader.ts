@@ -1,9 +1,9 @@
 import { Component, NgZone } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Storage } from '@ionic/storage';
 import firebase from 'firebase';
-import { AuthProvider, DataProvider } from '../../providers';
+import { AuthProvider, DataProvider, NotificationProvider } from '../../providers';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 @IonicPage()
@@ -18,6 +18,8 @@ export class LoaderPage {
     private splashScreen: SplashScreen,
     private storage: Storage,
     private authProvider: AuthProvider,
+    private notification: NotificationProvider,
+    private alertCtrl: AlertController,
     private afDB: AngularFireDatabase,
     private zone: NgZone) {
   }
@@ -46,23 +48,39 @@ export class LoaderPage {
                   this.navCtrl.setRoot('ProfileCreatePage');
                   this.splashScreen.hide();
                 }
-                else {
-                  
-                  let userId = firebase.auth().currentUser.uid;
-                  this.afDB.database.ref('/accounts/' + userId + '/history').push({
-                    abs: '-' + new Date().getTime(),
-                    date: new Date().getTime(),
-                    activity: 'Logged In'
-                  })
-                
-                  this.zone.run(() => {
-                    this.navCtrl.setRoot('TabsPage');
-                  });
+                else {                 
+                  if(account.val().userIdentify != 'normal'){
+                    this.authProvider.logout().then(() => {                        
+                      let alert = this.alertCtrl.create({
+                        title: '차단회원',
+                        subTitle: '부적절한 이용으로 차단된 회원입니다.',
+                        buttons: ['확인']
+                      });
+                      alert.present();
+                      alert.onDidDismiss(success => {
+                        this.notification.destroy();
+                        // this.loadingProvider.hide();
+                        // this.app.getRootNavs()[0].setRoot('LoginPage');
+                        window.location.reload();
+                      });                                  
+                    }).catch(() => {});
+                  }
+
+                  else{
+                    let userId = account.key;
+                    this.afDB.database.ref('/accounts/' + userId + '/history').push({
+                      abs: '-' + new Date().getTime(),
+                      date: new Date().getTime(),
+                      activity: 'Logged In'
+                    });                    
+                    this.zone.run(() => {
+                      this.navCtrl.setRoot('TabsPage');
+                    });
+                  }                   
                   this.splashScreen.hide();
                 }
               }).catch(() => { });
-            }
-            
+            }             
           }
         })
       // } else {
