@@ -51,25 +51,17 @@ export class TabsPage {
     // Subscribe to current user data on Firestore and sync.
 
     
-    this.user = this.authProvider.getUserData();
+    let userData = this.authProvider.getUserData();
     if (this.authProvider.getUserData().notifications) {
       this.notification.init();
       this.notification.setApp(this.app);
     }
-    // this.dataProvider.get('/accounts/' + this.authProvider.getUserData().userId).then(ref => {
-      
-    
-    //   // let subscription = ref.valueChanges().subscribe((user: User) => {
-    //   //   this.user = user;
-    //   //   console.log(user);
-        
-    //   // });
-    //   // this.subscriptions.push(subscription);
-    //   // Initialize the push notifications (set pushToken) when user logged in.
-      
-     
-      
-    // }).catch(() => { });
+
+    this.dataProvider.getUser(userData.userId).valueChanges().subscribe((user: any) => {
+      this.user = user;
+    })
+
+   
 
     
     let conversationSubscription = this.dataProvider.getConversations().snapshotChanges().subscribe(conversations => {

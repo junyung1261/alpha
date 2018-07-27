@@ -49,7 +49,7 @@ export class LoaderPage {
                   this.splashScreen.hide();
                 }
                 else {                 
-                  if(account.val().userIdentify != 'normal'){
+                  if(account.val().userIdentify == 'stop'){
                     this.authProvider.logout().then(() => {                        
                       let alert = this.alertCtrl.create({
                         title: '차단회원',
